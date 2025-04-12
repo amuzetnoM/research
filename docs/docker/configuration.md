@@ -1,6 +1,16 @@
 # Docker Configuration
 
-This document explains the Docker configuration options available in this project.
+This document explains the Docker configuration options available in the AI Research Environment.
+
+## Docker Location
+
+All Docker configuration files are now located in the `head_1` directory, providing a centralized location for container management:
+
+```
+head_1/
+├── Dockerfile        # Main environment Dockerfile
+└── docker-compose.yml # Container orchestration setup
+```
 
 ## Dockerfile
 
@@ -20,7 +30,7 @@ For CPU-only:
 FROM ubuntu:22.04
 ```
 
-The system automatically selects the appropriate base image depending on your hardware.
+The system automatically selects the appropriate base image depending on your hardware using the `environment_manager.py` script.
 
 ## Docker Compose
 
@@ -33,7 +43,7 @@ services:
   ml-app:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: head_1/Dockerfile
     volumes:
       - .:/app
     ports:
@@ -53,6 +63,8 @@ services:
 Default port mappings:
 - 8888:8888 - JupyterLab
 - 6006:6006 - TensorBoard
+- 3000:3000 - Grafana (when monitoring is enabled)
+- 9090:9090 - Prometheus (when monitoring is enabled)
 
 ## Volume Mappings
 
@@ -61,34 +73,69 @@ The default volume mapping mounts the current directory to /app in the container
 $(pwd):/app
 ```
 
+Additional volumes can be mounted as needed for data directories, model storage, etc.
+
 ## Starting Docker Containers
 
-### Using start_docker.py
+### Using environment_manager.py
 
-The recommended way to start containers is using the `start_docker.py` script:
+The recommended way to start containers is using the unified `environment_manager.py` script:
 
 ```bash
-python start_docker.py
+python environment_manager.py
 ```
 
 This script:
-1. Checks for Docker installation
-2. Detects GPU availability
-3. Creates necessary configuration files if they don't exist
-4. Builds and runs the Docker container
+1. Checks for Docker and Docker Compose installation
+2. Detects GPU availability using the integrated `gpu_utils` module
+3. Automatically determines optimal memory and CPU allocations with `system_utils`
+4. Configures and launches the appropriate Docker Compose setup
 
 ### Customizing Docker Configuration
 
 You can customize the Docker configuration with command-line arguments:
 
 ```bash
-python start_docker.py --port 8080:8888 --volume /data:/app/data
+python environment_manager.py --port 8080:8888 --volume /data:/app/data
 ```
 
 Available options:
-- `--image NAME`: Custom Docker image name
-- `--container NAME`: Custom container name
-- `--no-gpu`: Disable GPU support
 - `--port HOST:CONTAINER`: Map additional ports
-- `--volume HOST:CONTAINER`: Mount additional volumes
-- `--command CMD`: Specify a custom command to run
+- `--mem-limit LIMIT`: Set memory limit (e.g., 16g)
+- `--cpu-limit COUNT`: Set CPU core limit
+- `--no-gpu`: Disable GPU support
+- `--enable-monitoring`: Enable Prometheus and Grafana monitoring
+- `--build`: Rebuild containers before starting
+- `--no-cache`: Do not use cache when building images
+- `--stop`: Stop the running environment
+
+For a complete list of options:
+```bash
+python environment_manager.py --help
+```
+
+## Container Entry Point
+
+The environment uses an enhanced `entrypoint.sh` script that:
+
+1. Automatically detects and configures GPU support
+2. Optimizes resource allocation based on container limits
+3. Sets up monitoring if enabled
+4. Applies system-level optimizations for improved performance
+5. Provides comprehensive diagnostics on failure
+
+## Monitoring Integration
+
+The Docker configuration integrates with Prometheus and Grafana for monitoring:
+
+```bash
+python environment_manager.py --enable-monitoring
+```
+
+This will automatically:
+1. Start Prometheus for metrics collection
+2. Start Grafana for visualization dashboards
+3. Configure appropriate network settings
+4. Mount necessary volume mappings
+
+See the [Monitoring Documentation](../monitoring/overview.md) for more details.
