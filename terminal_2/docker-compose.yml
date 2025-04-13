@@ -1,0 +1,100 @@
+version: '3.8'
+
+services:
+  research_2:
+    build:
+      context: ..
+      dockerfile: head_1/Dockerfile  # Using the same base Dockerfile
+    image: ai-research-2:latest
+    container_name: ai-research-2
+    restart: unless-stopped
+    ports:
+      - "8889:8888"  # JupyterLab (adjust port to avoid conflict)
+      - "6007:6006"  # TensorBoard (adjust port to avoid conflict)
+    volumes:
+      - ../:/app
+      - research_data_2:/app/data
+      - ~/.aws:/home/researcher/.aws:ro  # Optional: For AWS access
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - JUPYTER_TOKEN=${JUPYTER_TOKEN:-researchenv2}
+      - MEMORY_LIMIT=${MEMORY_LIMIT:-16g}
+      - NUM_THREADS=${NUM_THREADS:-4}
+      - ENABLE_MONITORING=${ENABLE_MONITORING:-false}
+      - CONTAINER_ID=research_2
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    deploy:
+      resources:
+        limits:
+          cpus: "${CPU_LIMIT:-4}"
+          memory: "${MEMORY_LIMIT:-16g}"
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8888/api"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    depends_on:
+      - prometheus_2
+
+  prometheus_2:
+    image: prom/prometheus:latest
+    container_name: prometheus_2
+    restart: unless-stopped
+    ports:
+      - "9091:9090"  # Adjusted port to avoid conflict
+    volumes:
+      - ../monitoring/prometheus:/etc/prometheus
+      - prometheus_data_2:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+    depends_on:
+      - node-exporter_2
+
+  grafana_2:
+    image: grafana/grafana:latest
+    container_name: grafana_2
+    restart: unless-stopped
+    ports:
+      - "3001:3000"  # Adjusted port to avoid conflict
+    volumes:
+      - ../monitoring/grafana/provisioning:/etc/grafana/provisioning
+      - grafana_data_2:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus_2
+
+  node-exporter_2:
+    image: prom/node-exporter:latest
+    container_name: node-exporter_2
+    restart: unless-stopped
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    ports:
+      - "9101:9100"  # Adjusted port to avoid conflict
+
+volumes:
+  research_data_2:
+  prometheus_data_2:
+  grafana_data_2:

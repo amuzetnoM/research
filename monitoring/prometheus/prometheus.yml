@@ -29,6 +29,19 @@ scrape_configs:
       - targets: ["research:8888"]
     metrics_path: /metrics
 
+  - job_name: "research_container_2"
+    static_configs:
+      - targets: ["research_2:8889"]
+    metrics_path: /metrics
+
+  - job_name: "node_exporter_2"
+    static_configs:
+      - targets: ["node-exporter_2:9100"]
+
+  - job_name: "prometheus_2"
+    static_configs:
+      - targets: ["prometheus_2:9090"]
+
   - job_name: "cadvisor"
     static_configs:
       - targets: ["cadvisor:8080"]
