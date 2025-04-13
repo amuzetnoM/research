@@ -1,6 +1,6 @@
 # What you pay attention to, becomes you
 
-## Research Journal: Advanced AI Research
+## A Systems-Level Research of Awareness, Reasoning, and Dynamic Relevance
 
 ```
 /
@@ -11,15 +11,39 @@
 │   ├── advanced.md          # Advanced techniques
 │   └── research_papers/     # Academic research
 │       ├── abstraction_theory.md  # Theory on abstraction mechanisms
-│       └── hybrid_type_theory.md  # Type theory foundations
+│       ├── hybrid_type_theory.md  # Type theory foundations
+│       ├── non_euclidean_representations.md  # Non-Euclidean geometry models
+│       └── consciousness_theory.md  # Theories of consciousness and awareness
 ├── setup/                   # Setup utilities
-├── head_1/                  # Docker configuration
+│   ├── gpu_setup.sh         # GPU environment configuration
+│   └── dependencies.py      # Dependency management
+├── docker/                  # Docker configuration
+│   ├── Dockerfile           # Main container definition
+│   ├── docker-compose.yml   # Multi-container orchestration
+│   └── config/              # Container configurations
 ├── monitoring/              # Monitoring configurations
+│   ├── metrics_collector.py # System metrics collection
+│   ├── visualization.py     # Metrics visualization
+│   └── alerting.py          # Critical alerts system
+├── models/                  # Model definitions
+│   ├── neural/              # Neural network architectures
+│   ├── symbolic/            # Symbolic reasoning systems
+│   └── neuro_symbolic/      # Integration layers
 ├── utils/                   # Utility scripts
 │   ├── gpu_utils.py         # GPU detection and optimization
 │   ├── system_utils.py      # System resource management
 │   ├── memory_optimizer.py  # Memory usage optimization
 │   └── diagnostics.py       # Diagnostics and error handling
+├── frameworks/              # Core AI frameworks
+│   ├── attention/           # Dynamic attention mechanisms
+│   ├── recursive_logic/     # Self-referential reasoning
+│   ├── error_handling/      # Advanced error processing
+│   └── uncertainty/         # Uncertainty quantification
+├── experiments/             # Experimental configurations
+│   ├── hyperbolic_space/    # Non-Euclidean geometry tests
+│   ├── self_modification/   # Self-modifying system tests
+│   └── meta_reasoning/      # Meta-cognitive experiments
+├── notebooks/               # Jupyter notebooks for analysis
 ├── environment_manager.py   # Main environment manager
 ├── entrypoint.sh            # Container entrypoint
 └── README.md                # This research journal
