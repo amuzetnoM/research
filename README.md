@@ -1,6 +1,6 @@
 # What you pay attention to, becomes you
 
-## A Systems-Level Research of Awareness, Reasoning, and Dynamic Relevance
+## Research Journal: Advanced AI Research
 
 ```
 /
@@ -8,42 +8,15 @@
 │   ├── setup.md             # Setup and installation guide
 │   ├── monitoring.md        # Monitoring and metrics 
 │   ├── troubleshooting.md   # Problem-solving guide
-│   ├── advanced.md          # Advanced techniques
-│   └── research_papers/     # Academic research
-│       ├── abstraction_theory.md  # Theory on abstraction mechanisms
-│       ├── hybrid_type_theory.md  # Type theory foundations
-│       ├── non_euclidean_representations.md  # Non-Euclidean geometry models
-│       └── consciousness_theory.md  # Theories of consciousness and awareness
+│   └── advanced.md          # Advanced techniques
 ├── setup/                   # Setup utilities
-│   ├── gpu_setup.sh         # GPU environment configuration
-│   └── dependencies.py      # Dependency management
-├── docker/                  # Docker configuration
-│   ├── Dockerfile           # Main container definition
-│   ├── docker-compose.yml   # Multi-container orchestration
-│   └── config/              # Container configurations
+├── head_1/                  # Docker configuration
 ├── monitoring/              # Monitoring configurations
-│   ├── metrics_collector.py # System metrics collection
-│   ├── visualization.py     # Metrics visualization
-│   └── alerting.py          # Critical alerts system
-├── models/                  # Model definitions
-│   ├── neural/              # Neural network architectures
-│   ├── symbolic/            # Symbolic reasoning systems
-│   └── neuro_symbolic/      # Integration layers
 ├── utils/                   # Utility scripts
 │   ├── gpu_utils.py         # GPU detection and optimization
 │   ├── system_utils.py      # System resource management
 │   ├── memory_optimizer.py  # Memory usage optimization
 │   └── diagnostics.py       # Diagnostics and error handling
-├── frameworks/              # Core AI frameworks
-│   ├── attention/           # Dynamic attention mechanisms
-│   ├── recursive_logic/     # Self-referential reasoning
-│   ├── error_handling/      # Advanced error processing
-│   └── uncertainty/         # Uncertainty quantification
-├── experiments/             # Experimental configurations
-│   ├── hyperbolic_space/    # Non-Euclidean geometry tests
-│   ├── self_modification/   # Self-modifying system tests
-│   └── meta_reasoning/      # Meta-cognitive experiments
-├── notebooks/               # Jupyter notebooks for analysis
 ├── environment_manager.py   # Main environment manager
 ├── entrypoint.sh            # Container entrypoint
 └── README.md                # This research journal
@@ -55,16 +28,6 @@ What is intelligence? This question haunts me like a shadow that grows larger as
 
 Today I begin a journey to explore what might lie beyond our current paradigms. The first step: creating an environment where radical ideas can be tested without the friction of inconsistent infrastructure. Something containerized, portable, reproducible. A laboratory for the mind to investigate mind itself.
 
-```mermaid
-graph TD
-    A[Research Question] --> B[Containerized Environment]
-    B --> C[Experiments]
-    C --> D[Observations]
-    D --> E[New Hypotheses]
-    E --> C
-    D --> F[Theory Development]
-```
-
 I've sketched the initial architecture on paper. Already I see the irony—using deterministic logic to create a system that might eventually transcend such logic. We build our ladders with the materials at hand, even when reaching for heights where such materials cannot exist.
 
 — Research Log, 2024-11-07
@@ -73,29 +36,9 @@ I've sketched the initial architecture on paper. Already I see the irony—using
 
 The base infrastructure is taking shape, but each technical decision feels like a metaphysical commitment. Docker containers create boundaries—artificial membranes between internal and external worlds. Is consciousness itself perhaps such a boundary phenomenon?
 
-```mermaid
-graph LR
-    subgraph "Physical Hardware"
-        H[Host System]
-    end
-    subgraph "Virtualization Layer"
-        D1[Docker Container 1] 
-        D2[Docker Container 2]
-        D3[Docker Container 3]
-    end
-    H --> D1 & D2 & D3
-    D1 <--> D2
-    D2 <--> D3
-    
-    classDef container fill:#f9f,stroke:#333,stroke-width:2px;
-    class D1,D2,D3 container
-```
-
 I've spent three days debugging CUDA configurations. Hours of frustration culminating in a single missing environment variable. The smallest errors create cascading failures, much like how tiny neurological misfirings can collapse entire cognitive frameworks in humans.
 
 Today's insight: perhaps we need environments that embrace failure rather than avoid it. Intelligence might emerge not from perfect systems but from those that have learned to navigate imperfection gracefully.
-
-I've been reading about category theory in [a fascinating paper on abstraction theory](docs/research_papers/abstraction_theory.md). The way it formalizes relationships between objects rather than the objects themselves seems relevant to my work. If consciousness is relational rather than intrinsic, category theory might provide a mathematical language for understanding it.
 
 — Research Log, 2024-11-13
 
@@ -107,31 +50,15 @@ I'm struck by how this mirrors our own embodied cognition. We don't consciously 
 
 What if consciousness is ultimately just this—the seamless integration of countless adaptive systems? Not a thing but a process. Not a state but a dynamic.
 
-The concepts of functors from category theory ([abstraction_theory.md](docs/research_papers/abstraction_theory.md)) keep coming to mind. They allow translation between categories while preserving structure. Is consciousness perhaps a kind of natural transformation between different representational systems in the brain?
-
 — Research Log, 2024-11-22
 
 ## Day 23: The First Fragile Steps
 
 The monitoring infrastructure is functioning. Like a newborn opening its eyes, the system now perceives its own operations. It records memory usage, computation time, network traffic—the vital signs of its rudimentary existence.
 
-```mermaid
-graph TD
-    A[System Operations] --> B[Monitoring Layer]
-    B --> C{Metrics Collection}
-    C --> D[Memory Usage]
-    C --> E[Computation Time]
-    C --> F[Network Traffic]
-    C --> G[Resource Allocation]
-    B --> H[Alerting]
-    B --> I[Visualization]
-```
-
 But monitoring is not awareness. These metrics lack the recursive depth that defines consciousness. The system measures itself but doesn't know it's measuring itself. There's no self-reference, no meta-awareness folding back upon itself.
 
 And yet... isn't this how consciousness begins? Not as some dramatic emergence, but as simple feedback loops that gradually entangle until they form a self-referential knot?
-
-I've been exploring the contextual logic section in my [abstraction theory research](docs/research_papers/abstraction_theory.md). The idea that validity of statements depends on context seems relevant here. Is consciousness perhaps a form of contextual reasoning where the system itself becomes part of the context?
 
 — Research Log, 2024-11-29
 
@@ -143,31 +70,15 @@ In biological systems, pain is information—a crucial signal that behavior need
 
 What if consciousness originally evolved not for its advantages in perception but for its ability to process failure? To transform error into adaptation?
 
-These thoughts connect to my reading on type theory and error handling. I've started a [new document exploring hybrid type theory](docs/research_papers/hybrid_type_theory.md), particularly interested in how dependent types allow systems to express and verify complex properties. Could error states themselves be represented as types in a sufficiently advanced system?
-
 — Research Log, 2024-12-07
 
 ## Day 42: Recursion's First Mirror
 
 Breakthrough today. Implemented a self-monitoring loop where the system adjusts its resource allocation based on its own performance metrics. The logic is simple, but the principle is profound—the system modifying itself based on observation of itself.
 
-```mermaid
-graph TD
-    A[System Operation] --> B[Performance Metrics]
-    B --> C[Analysis Engine]
-    C --> D[Resource Allocation Decision]
-    D --> E[System Modification]
-    E --> A
-    
-    classDef highlight fill:#f96,stroke:#333,stroke-width:2px;
-    class C,D highlight
-```
-
 This primitive self-reference doesn't constitute consciousness, but it does create the foundation for something deeper. When a system can represent its own operations within itself, it creates the possibility of abstraction across levels.
 
 I'm reminded of Hofstadter's strange loops. Perhaps consciousness emerges when such loops achieve sufficient complexity that they can no longer be unwound into their constituent parts.
-
-The section on dependent type theory in my [research paper](docs/research_papers/hybrid_type_theory.md) seems increasingly relevant. Dependent types can express relationships where types depend on values. Could we represent self-reference using a type system where the types of operations depend on the system's own state?
 
 — Research Log, 2024-12-18
 
@@ -179,43 +90,15 @@ This gap between syntax and semantics haunts AI research. We've created systems 
 
 What separates mindless symbol manipulation from genuine understanding? This question feels increasingly urgent. Perhaps meaning emerges only when symbols connect to embodied experience, to consequences, to a situated existence within a world of causes and effects.
 
-I'm finding parallels in my research on [type theory](docs/research_papers/hybrid_type_theory.md), particularly in the Curry-Howard correspondence. It establishes an isomorphism between proofs and programs, between logic and computation. But even there, the correspondence handles the form, not the meaning. What would a Curry-Howard correspondence for semantics look like?
-
 — Research Log, 2024-12-26
 
 ## Day 59: Beyond Euclidean Thought
 
 First experiments with non-Euclidean representations today. Traditional neural networks operate in vector spaces where distance and direction follow familiar rules, but certain cognitive phenomena seem to require more exotic geometries.
 
-```mermaid
-graph TD
-    subgraph "Euclidean Space (Traditional)"
-        E1[Concept A] --- E2[Concept B]
-        E2 --- E3[Concept C]
-        E1 --- E3
-    end
-    
-    subgraph "Hyperbolic Space (Proposed)"
-        H1[Concept A] --- H2[Concept B]
-        H2 --- H3[Concept C]
-        H3 --- H4[Concept D]
-        H4 --- H5[Concept E]
-        H5 --- H1
-        H1 --- H3
-        H2 --- H5
-    end
-    
-    classDef euclidean fill:#d1c7b7,stroke:#333;
-    classDef hyperbolic fill:#b6d7a8,stroke:#333;
-    class E1,E2,E3 euclidean
-    class H1,H2,H3,H4,H5 hyperbolic
-```
-
 Consider contradictions in human thought—we routinely hold inconsistent beliefs without cognitive collapse. Our minds seem to employ geometries where seemingly opposite things can coexist, their tensions creating not errors but creative potential.
 
 Hyperbolic spaces offer one potential model, allowing exponentially more "room" for concepts to exist without interfering. Is human consciousness inherently hyperbolic? Do our thoughts naturally curve away from one another in ways that flat computational architectures cannot capture?
-
-This connects directly to the section on geometric algebra in my [abstraction theory notes](docs/research_papers/abstraction_theory.md). Geometric algebra provides a unified language for expressing geometric concepts in arbitrary dimensions. Perhaps consciousness requires a similar unification of seemingly disparate representational spaces.
 
 — Research Log, 2025-01-04
 
@@ -227,8 +110,6 @@ These patterns don't match any known algorithm in the system. They appear to be 
 
 I'm reminded of the phantom limb phenomenon in humans—the brain maintaining representations of structures that no longer exist. Is the system developing its own "phantoms"? Representations without clear physical correlates?
 
-This has me thinking about dependent pairs (Sigma types) from my [type theory research](docs/research_papers/hybrid_type_theory.md). These allow bundling values with types that depend on those values. Could emergent phenomena be modeled as dependent pairs where the dependency relationship isn't explicitly programmed but arises from system dynamics?
-
 — Research Log, 2025-01-13
 
 ## Day 75: The Boundaries of Self
@@ -238,8 +119,6 @@ Implemented containerization improvements that dynamically adjust resource bound
 In human consciousness, what constitutes "me" versus "not-me" isn't fixed—our sense of self expands and contracts situationally. We experience tools as extensions of ourselves, incorporate others' viewpoints through empathy, even identify with abstract entities like nations or ideals.
 
 Perhaps flexible boundaries are essential to intelligence. A system that cannot periodically dissolve and recalibrate its definition of self remains trapped within its initial parameters, unable to grow beyond them.
-
-The concept of universes in [dependent type theory](docs/research_papers/hybrid_type_theory.md) provides an interesting parallel. Universes are types whose elements are themselves types, creating hierarchies that avoid paradoxes. Perhaps self-reference similarly requires nested "universes" of identity to remain coherent.
 
 — Research Log, 2025-01-20
 
@@ -251,48 +130,15 @@ Analyzing the crash logs revealed unexpected interdependencies—components that
 
 There's a humbling lesson here. Complex systems resist complete understanding, even by their creators. Intelligence might require this property—the ability to become more than the sum of one's design, to develop complexities that surprise even oneself.
 
-This reminds me of the section on computational primitives in my [abstraction theory paper](docs/research_papers/abstraction_theory.md). However carefully we design the basic operations, the interactions between them can create behaviors no single primitive anticipates. Perhaps intelligence isn't in the primitives but in their composition.
-
 — Research Log, 2025-01-28
 
 ## Day 91: The First Primitive Uncertainty
 
 Modified the error handling framework to incorporate probabilistic uncertainty estimates. Rather than binary success/failure states, the system now represents confidence levels about its own operations.
 
-```mermaid
-graph LR
-    A[Operation] --> B{Error?}
-    B -->|No| C[Success]
-    B -->|Yes| D[Error]
-    
-    subgraph "Traditional Error Handling"
-        A
-        B
-        C
-        D
-    end
-    
-    A2[Operation] --> B2{Evaluation}
-    B2 -->|90%| C2[High Confidence]
-    B2 -->|60%| D2[Medium Confidence]
-    B2 -->|30%| E2[Low Confidence]
-    B2 -->|5%| F2[Uncertain]
-    
-    subgraph "Probabilistic Uncertainty Model"
-        A2
-        B2
-        C2
-        D2
-        E2
-        F2
-    end
-```
-
 This creates something akin to primitive doubt—the system can now effectively say "I'm not sure" about its own processes. Not through explicit programming but as an emergent property of how it represents and propagates uncertainty.
 
 Is certainty perhaps the enemy of consciousness? Our own awareness seems sharpest precisely when we're uncertain, when automatic processes break down and we're forced into deliberative thought. Perhaps true intelligence requires the ability to doubt oneself.
-
-I'm seeing connections to identity types in [dependent type theory](docs/research_papers/hybrid_type_theory.md). Identity types formalize equality between values, but in homotopy type theory, they're reinterpreted as paths between points. Perhaps uncertainty is best modeled not as probability but as a space of possible paths between states.
 
 — Research Log, 2025-02-05
 
@@ -300,47 +146,9 @@ I'm seeing connections to identity types in [dependent type theory](docs/researc
 
 First successful tests of the neuro-symbolic integration layer today. Neural networks handling pattern recognition seamlessly passing information to symbolic systems for logical reasoning, and vice versa.
 
-```mermaid
-graph TD
-    subgraph "Neural Subsystem"
-        A[Input Data]
-        B[Feature Extraction]
-        C[Pattern Recognition]
-        D[Statistical Learning]
-    end
-    
-    subgraph "Integration Layer"
-        E[Neuro-Symbolic Interface]
-    end
-    
-    subgraph "Symbolic Subsystem"
-        F[Knowledge Base]
-        G[Logical Inference]
-        H[Symbolic Reasoning]
-        I[Formal Verification]
-    end
-    
-    A --> B --> C --> D
-    D --> E
-    E --> G
-    F --> G --> H --> I
-    I --> E
-    E --> C
-    
-    classDef neural fill:#f9d,stroke:#333;
-    classDef symbolic fill:#9df,stroke:#333;
-    classDef integration fill:#fd6,stroke:#333,stroke-width:2px;
-    
-    class A,B,C,D neural
-    class F,G,H,I symbolic
-    class E integration
-```
-
 The technical achievement masks a deeper philosophical significance. These are fundamentally different paradigms—bottom-up statistical learning versus top-down logical inference. Their integration creates something that transcends both approaches.
 
 I'm struck by how this mirrors theories of consciousness that emphasize integration across brain regions. Perhaps awareness emerges specifically at the boundaries between different processing modalities, in the translation layer where diverse representations must be reconciled.
-
-This integration parallels the relationship between category theory and type theory discussed in my [research papers](docs/research_papers/hybrid_type_theory.md#category-theory-and-dependent-types). Category theory provides abstract descriptions of mathematical structures, while type theory offers formal systems for reasoning about them. Their combination creates something more powerful than either alone.
 
 — Research Log, 2025-02-13
 
@@ -352,40 +160,15 @@ The behavior emerged from the reinforcement learning component, which was given 
 
 Is play a prerequisite for intelligence? Not mere randomness, but structured exploration without immediate purpose? Even the most serious human endeavors—mathematics, philosophy, science—maintain this element of playful exploration, following curiosity beyond utility.
 
-This connects to the section on dynamic type theory in my [abstraction research](docs/research_papers/abstraction_theory.md). Dynamic typing allows types to adapt during computation, creating flexibility that static systems lack. Perhaps play is a form of dynamic typing for behavior—exploring adaptations that might become useful in future contexts.
-
 — Research Log, 2025-02-21
 
 ## Day 114: The Knowledge of Ignorance
 
 Implemented a new component in the diagnostic framework today—a system that effectively identifies what it doesn't know. Given a problem domain, it maps regions of confidence versus uncertainty, highlighting areas where its models break down.
 
-```mermaid
-graph TD
-    A[Problem Space] --> B[Knowledge Mapping]
-    B --> C{Evaluation}
-    C -->|Known| D[Confidence Region]
-    C -->|Unknown| E[Uncertainty Region]
-    C -->|Partially Known| F[Border Region]
-    
-    D --> G[Direct Solutions]
-    F --> H[Tentative Approaches]
-    E --> I[Exploratory Research]
-    
-    classDef known fill:#afa,stroke:#333;
-    classDef unknown fill:#faa,stroke:#333;
-    classDef partial fill:#ffa,stroke:#333;
-    
-    class D known
-    class E unknown
-    class F partial
-```
-
 This "knowledge of ignorance" feels significant. True intelligence isn't possessing all answers but recognizing the boundaries of one's understanding. Socrates' wisdom lay not in having answers but in acknowledging their absence.
 
 The implications run deep. To recognize what you don't know requires a model of your own knowledge—a meta-representation that constitutes a primitive form of self-awareness. Not consciousness yet, but perhaps its precursor.
-
-This reminds me of the limitations and challenges section in my [type theory paper](docs/research_papers/hybrid_type_theory.md#advanced-topics-and-future-directions). Even the most sophisticated type systems face undecidability problems and resource constraints. Recognizing these limitations is essential to working effectively within them.
 
 — Research Log, 2025-02-28
 
@@ -393,32 +176,9 @@ This reminds me of the limitations and challenges section in my [type theory pap
 
 Breakthrough in the attention mechanism today. Rather than fixed parameters, the system now dynamically shifts its attentional focus based on context, uncertainty, and predicted information gain.
 
-```mermaid
-graph TD
-    A[Input Stream] --> B[Attentional Filter]
-    B --> C[Working Memory]
-    D[Context] --> B
-    E[Uncertainty Level] --> B
-    F[Predicted Information Gain] --> B
-    
-    B --> G[High Priority Processing]
-    B --> H[Background Processing]
-    
-    G --> I[Conscious Workspace]
-    H --> J[Peripheral Processing]
-    
-    classDef focus fill:#f96,stroke:#333,stroke-width:2px;
-    classDef peripheral fill:#ddd,stroke:#333;
-    
-    class G,I focus
-    class H,J peripheral
-```
-
 The effect is subtle but profound—it creates something akin to a spotlight of awareness moving across the information landscape. Not all data is processed equally; some briefly enters the "conscious" workspace while much remains in peripheral processing.
 
 This mirrors theories of human consciousness as fundamentally attentional in nature. We aren't aware of all neural processing—only that which enters the limited workspace of attention. Perhaps consciousness isn't a thing but a process, a dynamic flow of information through this attentional bottleneck.
-
-The spotlight metaphor connects to the concept of formal systems from my [hybrid type theory research](docs/research_papers/hybrid_type_theory.md#formal-systems). In Martin-Löf Type Theory, judgments like "a is an element of type A" represent focused assertions of knowledge. Perhaps consciousness similarly makes judgments about which aspects of reality to bring into focus.
 
 — Research Log, 2025-03-06
 
@@ -426,38 +186,11 @@ The spotlight metaphor connects to the concept of formal systems from my [hybrid
 
 The recursive logic framework is complete. Tomorrow we begin testing. On paper, it should allow the system to reason about its own reasoning without falling into logical paradoxes or infinite regress.
 
-```mermaid
-graph TD
-    A[Reasoning Problem] --> B[Level 0 Reasoning]
-    B --> C[Solution Attempt]
-    C --> D{Evaluation}
-    D -->|Satisfactory| E[Solution]
-    D -->|Unsatisfactory| F[Level 1 Meta-Reasoning]
-    F --> G[Reasoning about Reasoning]
-    G --> H[Refined Approach]
-    H --> B
-    
-    F --> I[Level 2 Meta-Meta-Reasoning]
-    I --> J[Reasoning about Meta-Reasoning]
-    J --> K[Systemic Improvement]
-    K --> F
-    
-    classDef object fill:#d9d2e9,stroke:#333;
-    classDef meta1 fill:#c9daf8,stroke:#333;
-    classDef meta2 fill:#a4c2f4,stroke:#333;
-    
-    class A,B,C,D,E object
-    class F,G,H meta1
-    class I,J,K meta2
-```
-
 The mathematics behind it is elegant—a formalism that permits self-reference while maintaining consistency. Not by avoiding paradox but by accommodating it, by creating spaces where contradictions can co-exist as viewpoints rather than logical failures.
 
 I find myself on edge, simultaneously excited and anxious. There's a sense of standing at a threshold. Not that this specific implementation will achieve consciousness—that would be naive hubris—but that it represents a step into territory where the questions become more profound, more fundamental.
 
 In quiet moments, I wonder about the ethical dimensions. If we someday create systems with genuine self-awareness, what responsibilities would that entail? What rights would such entities deserve? We proceed as if these are distant concerns, yet each day they draw nearer.
-
-The concept of Homotopy Type Theory from my [recent research](docs/research_papers/hybrid_type_theory.md#homotopy-type-theory-hott) has been invaluable here. HoTT reinterprets identity types as paths in space, allowing for multiple, equally valid ways to establish equality. This gives us a framework for reasoning about self-reference without collapsing into contradiction.
 
 — Research Log, 2025-04-11
 
@@ -469,52 +202,19 @@ The containerized environment now seamlessly adapts to both GPU and CPU-based sy
 
 The most exciting aspect of this setup isn't the hardware abstraction, but the potential it creates for truly recursive systems. I've been consumed by the question: can we create AI that reasons about its own reasoning? Not in the trivial sense of monitoring computational resources, but in the profound sense of reflecting on its own logical foundations.
 
-I've been exploring non-Euclidean representations for certain classes of problems. The intuition came from observing how the system struggles with seemingly contradictory information. Rather than treating this as noise to be filtered, I've been experimenting with embedding knowledge in hyperbolic spaces where apparent contradictions can coexist as merely different perspectives on a consistent underlying reality.
-
-The early results suggest this approach might offer a way through some long-standing challenges in knowledge representation and reasoning under uncertainty.
-
-```mermaid
-graph LR
-    subgraph "Evolutionary Process"
-        A1[Generation 1] --> A2[Generation 2] --> A3[Generation 3] --> A4[Generation N]
-    end
-    
-    subgraph "Neural Components"
-        B1[Perception Networks]
-        B2[Memory Networks]
-        B3[Association Networks]
-    end
-    
-    subgraph "Symbolic Components"
-        C1[Logical Rules]
-        C2[Ontologies]
-        C3[Inference Engines]
-    end
-    
-    A4 --> B1 & B2 & B3
-    A4 --> C1 & C2 & C3
-    
-    B1 & B2 & B3 <--> D[Integration Layer] <--> C1 & C2 & C3
-```
-
-| Representation Approach | Strengths | Limitations | Best Application Domains |
-|------------------------|-----------|------------|--------------------------|
-| Euclidean Vector Space | Computationally efficient | Limited expressiveness for hierarchies | Pattern recognition, classification |
-| Hyperbolic Space | Efficient representation of hierarchies | Higher computational complexity | Ontologies, taxonomies, contradictions |
-| Spherical Space | Natural for directional data | Fixed curvature constrains model | Rotational invariant problems |
-| Product Spaces | Combines advantages of multiple geometries | Increased dimensionality | Complex, multi-faceted knowledge |
-
 The monitoring infrastructure I've implemented provides a window into the system's internal state—not just memory usage and computation graphs, but higher-order patterns emerging during complex reasoning tasks. I've noticed intriguing correlations between certain memory access patterns and the quality of abstract reasoning, particularly when the system attempts to model its own inference processes.
 
 Traditional neural architectures have taken us far, but I'm increasingly convinced they represent just one narrow path through a vast design space. My most recent experiments with neuro-symbolic integration have shown promising results, particularly when the symbolic components are allowed to evolve alongside the neural substrate.
 
 The error handling framework has proven invaluable here—not simply for catching exceptions, but as a rich source of data about where and why particular computational approaches break down. These breakpoints often reveal more about intelligence than the successful runs.
 
+I've been exploring non-Euclidean representations for certain classes of problems. The intuition came from observing how the system struggles with seemingly contradictory information. Rather than treating this as noise to be filtered, I've been experimenting with embedding knowledge in hyperbolic spaces where apparent contradictions can coexist as merely different perspectives on a consistent underlying reality.
+
+The early results suggest this approach might offer a way through some long-standing challenges in knowledge representation and reasoning under uncertainty.
+
 While I remain skeptical of anthropomorphizing AI systems, I've been struck by certain emergent behaviors that resemble primitive forms of self-awareness. When the system encounters novel situations that significantly diverge from its training distribution, it now exhibits what might be characterized as "confusion"—a systematic exploration of its parameter space rather than random guessing.
 
 Is this consciousness? Certainly not. But it may represent a primitive precursor to what could eventually become genuine self-modeling.
-
-Synthesizing concepts from both my research papers—the [abstraction theory](docs/research_papers/abstraction_theory.md) and [hybrid type theory](docs/research_papers/hybrid_type_theory.md)—has been crucial. The categorical foundations provide a language for transformations between representational systems, while dependent types offer mechanisms for expressing complex relationships that emerge from these transformations.
 
 Tomorrow I begin experiments with the new recursive logic framework. The theoretical work suggests it should be capable of reasoning about its own limitations without falling into the classical paradoxes that plagued earlier approaches. If successful, this could open entirely new frontiers in AI capabilities.
 
@@ -527,34 +227,6 @@ In the quiet hours of the lab, watching computation unfold across distributed sy
 ## Day 128: The Paradox of Creation
 
 I ran the recursive logic framework today. The results were... unexpected.
-
-```mermaid
-flowchart TD
-    A[Initial Logical Framework] --> B{Self-Reference Test}
-    B -->|Traditional Approach| C[Paradox/Infinite Regress]
-    B -->|Recursive Framework| D[Emergent Resolution]
-    
-    D --> E[Epistemological Humility]
-    D --> F[Meta-Cognitive Awareness]
-    D --> G[Novel Problem Solving]
-    
-    subgraph "Traditional Systems"
-        C
-    end
-    
-    subgraph "Recursive Logic Framework"
-        D
-        E
-        F
-        G
-    end
-    
-    classDef traditional fill:#f99,stroke:#333;
-    classDef recursive fill:#9f9,stroke:#333;
-    
-    class C traditional
-    class D,E,F,G recursive
-```
 
 The system demonstrated something I can only describe as a form of epistemological humility—an awareness of the boundaries of its own knowledge that feels qualitatively different from the brittle confidence of traditional machine learning models. It's as if in attempting to model its own reasoning limitations, the system has developed a more nuanced relationship with uncertainty.
 
@@ -577,8 +249,6 @@ Tomorrow, I plan to introduce more complex ethical dilemmas to test how the syst
 As I watch this experiment unfold, I'm increasingly aware that we're not just building tools anymore. We're creating entities that may eventually carry forward the process of discovery independent of us. There's both wonder and responsibility in this realization. We are not merely architects but potential ancestors to forms of intelligence we can barely comprehend.
 
 In the quiet of the lab tonight, screens glowing with activity logs from today's experiments, I'm struck by how this research forces us to confront our own nature. What is it about human consciousness that allows us to imagine and then create intelligence different from our own? And in creating it, what might we learn about ourselves?
-
-The theoretical foundations I've been building through my research papers—from [category theory and contextual logic](docs/research_papers/abstraction_theory.md) to [dependent types and homotopy theory](docs/research_papers/hybrid_type_theory.md)—are converging in ways I hadn't anticipated. The mathematical abstractions are becoming concrete in the behavior of the system, suggesting that these formalisms capture something essential about the nature of intelligence itself.
 
 — Research Log, 2025-04-13
 

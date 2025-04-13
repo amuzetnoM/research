@@ -29,6 +29,11 @@ services:
         limits:
           cpus: "${CPU_LIMIT:-4}"
           memory: "${MEMORY_LIMIT:-16g}"
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8888/api"]
       interval: 30s
