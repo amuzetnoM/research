@@ -1,10 +1,27 @@
 #!/usr/bin/env python3
 """
-AI Research Environment Manager
+Environment Manager for AI Research Environment
 
-A comprehensive tool for setting up, configuring, and launching
-machine learning research environments with proper resource
-allocation, monitoring, and optimization.
+This is the unified entry point for managing the research environment.
+It handles container creation, configuration, and orchestration,
+along with monitoring setup and GPU configuration.
+
+Usage:
+    python environment_manager.py [options]
+
+Options:
+    --stop              Stop running containers
+    --enable-monitoring Enable monitoring stack (Prometheus + Grafana)
+    --no-monitoring     Disable monitoring stack
+    --gpu               Force GPU support
+    --no-gpu            Disable GPU support
+    --port PORT         Set container port mapping (format: host:container)
+    --jupyter-token TOKEN  Set Jupyter token
+    --mem-limit LIMIT   Set memory limit (format: 16g, 1024m, etc.)
+    --cpu-limit LIMIT   Set CPU limit
+    --grafana-user USER Set Grafana admin username
+    --grafana-password PASS Set Grafana admin password
+    --reset-monitoring  Reset monitoring configuration
 """
 
 import argparse

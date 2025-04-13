@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Make scripts executable
-chmod +x entrypoint.sh gpu_check.py
+chmod +x entrypoint.sh 
+chmod +x utils/gpu_check.py  # Updated path to gpu_check.py which moved to utils folder
 
 # Check if docker is installed
 if ! command -v docker &> /dev/null; then
@@ -21,9 +22,9 @@ if ! command -v nvidia-smi &> /dev/null; then
     echo "Consider installing NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html"
 fi
 
-# Build and run the container
-echo "Building and running container with Docker Compose..."
-docker-compose up --build
+# Build and run the container using environment_manager.py
+echo "Starting research environment..."
+python environment_manager.py "$@"
 
 # Execute this script to run the container
 # Usage: ./run.sh

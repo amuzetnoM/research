@@ -1,4 +1,4 @@
-# JupyterLab Usage Example
+# JupyterLab Tutorial
 
 This guide demonstrates how to use JupyterLab within the Docker environment with robust error handling.
 
