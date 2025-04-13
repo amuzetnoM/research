@@ -257,6 +257,17 @@ def setup_environment(skip_docker=False, gpu=False, no_gpu=False):
         logger.error(f"Error setting up environment: {e}")
         return False
 
+def install_jupyter_notebook():
+    """Install Jupyter Notebook."""
+    logger.info("Installing Jupyter Notebook")
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", "notebook"])
+        logger.info("Jupyter Notebook installed successfully")
+    except Exception as e:
+        logger.error(f"Error installing Jupyter Notebook: {e}")
+        return False
+    return True
+
 def main():
     """Main entry point for the automated setup."""
     args = parse_arguments()
@@ -285,6 +296,9 @@ def main():
     ):
         logger.error("Environment setup failed")
         return 1
+    if not install_jupyter_notebook():
+        logger.error("Jupyter Notebook installation failed")
+        return 1
     logger.info("Automated setup completed successfully")
     return 0
 
@@ -297,3 +311,26 @@ if __name__ == "__main__":
     except Exception as e:
         print(f"\nUnexpected error: {e}")
         sys.exit(1)
+
+setup(
+    name="research_environment_setup",
+    version="1.0",
+    description="Automated setup script for research environment",
+    author="Your Name",
+    author_email="your.email@example.com",
+    url="https://example.com",
+    install_requires=[
+        'numpy',
+        'pandas',
+        'matplotlib',
+        'scikit-learn',
+        'tensorflow',
+        'torch',
+        'scipy',
+        'seaborn',
+        'requests',
+        'tqdm',
+        'pillow',
+        'pytest',
+    ],
+)
