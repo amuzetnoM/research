@@ -3,27 +3,55 @@
 ## Research Journal: Advanced AI Research
 
 ```
-C:\
-_WORXPACE\RESEARCH
+/Research
 │   .gitignore
 │   automated_setup.log
+│   environment.log
 │   implementation_checklist.md
 │   install-nvidia-toolkit.sh
 │   LICENSE
 │   README.md
 │   setup.py
 │   test-nvidia-setup.sh
-│   
+│
+├───.vscode
+│       settings.json
+│
 ├───experiments
 ├───frameworks
+│   ├───emotional_dimensionality
+│   │       emotional_dimensionality.py
+│   │
+│   ├───self_awareness
+│   │       self_awareness.py
+│   │
+│   ├───_deployment
+│   │       config.py
+│   │       deploy_frameworks.py
+│   │       integration.py
+│   │       setup_frameworks.sh
+│   │       __init__.py
+│   │
+│   └───__config
+│           startup_config.json
+│           __init__.py
+│
 ├───models
 ├───monitoring
+│   │   docker-compose.yml
 │   │   environment_manager.py
+│   │   instructions.md
+│   │   run.sh
+│   │   troubleshooting_prometheus.md
 │   │
 │   ├───grafana
 │   │   └───provisioning
-│   │       └───dashboards
-│   │               research-dashboard.json
+│   │       ├───dashboards
+│   │       │       dashboard.yml
+│   │       │       research-dashboard.json
+│   │       │
+│   │       └───datasources
+│   │               prometheus.yml
 │   │
 │   └───prometheus
 │           prometheus.yml
@@ -31,10 +59,13 @@ _WORXPACE\RESEARCH
 ├───notebooks
 │   │   environment_setup.ipynb
 │   │   gpu_performance_testing.ipynb
+│   │   self_awareness_and_emotional_analysis.ipynb
+│   │   self_model_visualization.ipynb
 │   │   system_diagnostics.ipynb
 │   │
 │   └───docs
 │       │   advanced.md
+│       │   framework_documentation.md
 │       │   monitoring.md
 │       │   setup.md
 │       │   troubleshooting.md

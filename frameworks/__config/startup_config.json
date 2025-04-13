@@ -1,0 +1,14 @@
+{
+  "auto_start": true,
+  "frameworks": {
+    "self_awareness": {
+      "enabled": true,
+      "monitoring_rate": 1.0,
+      "save_model_interval": 3600
+    },
+    "emotional_dimensionality": {
+      "enabled": true,
+      "default_model": "rule_based"
+    }
+  }
+}

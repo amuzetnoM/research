@@ -312,25 +312,62 @@ if __name__ == "__main__":
         print(f"\nUnexpected error: {e}")
         sys.exit(1)
 
+from setuptools import setup, find_packages
+
 setup(
-    name="research_environment_setup",
-    version="1.0",
-    description="Automated setup script for research environment",
-    author="Your Name",
-    author_email="your.email@example.com",
-    url="https://example.com",
+    name="research-frameworks",
+    version="0.1.0",
+    description="Advanced AI Research Frameworks",
+    author="Research Team",
+    packages=find_packages(),
     install_requires=[
-        'numpy',
-        'pandas',
-        'matplotlib',
-        'scikit-learn',
-        'tensorflow',
-        'torch',
-        'scipy',
-        'seaborn',
-        'requests',
-        'tqdm',
-        'pillow',
-        'pytest',
+        # Core dependencies
+        "numpy>=1.19.0",
+        "pandas>=1.1.0",
+        "matplotlib>=3.3.0",
+        "seaborn>=0.11.0",
+        
+        # For self-awareness framework
+        "psutil>=5.8.0",      # For system monitoring
+        "networkx>=2.5",      # For knowledge graph creation
+        
+        # For emotional dimensionality framework
+        "scikit-learn>=0.24.0",  # For ML components
+        
+        # For visualization
+        "plotly>=4.14.0",
+        "ipywidgets>=7.6.0",
+        
+        # For metrics collection
+        "prometheus-client>=0.11.0",
+        
+        # For distributed operations
+        "docker>=5.0.0",      # For container management
+        
+        # Jupyter notebook support
+        "jupyterlab>=3.0.0",
+        "ipython>=7.0.0",
+    ],
+    extras_require={
+        "dev": [
+            "pytest>=6.0.0",
+            "black>=21.5b2",
+            "flake8>=3.9.0",
+            "sphinx>=4.0.0",
+            "sphinx-rtd-theme>=0.5.0",
+        ],
+        "gpu": [
+            "torch>=1.9.0",
+            "tensorflow>=2.5.0",
+        ],
+    },
+    python_requires=">=3.7",
+    classifiers=[
+        "Development Status :: 3 - Alpha",
+        "Intended Audience :: Science/Research",
+        "Programming Language :: Python :: 3",
+        "Programming Language :: Python :: 3.7",
+        "Programming Language :: Python :: 3.8",
+        "Programming Language :: Python :: 3.9",
     ],
 )

@@ -291,9 +291,67 @@ optimize_io() {
   fi
 }
 
+# Initialize AI frameworks if enabled
+initialize_frameworks() {
+  # Initialize Self-Awareness Mechanics if enabled
+  if [[ "$ENABLE_SELF_AWARENESS" == "true" ]]; then
+    echo "Initializing Self-Awareness Mechanics framework..."
+    python3 -c "
+try:
+    from system.ai_frameworks.self_awareness import SelfAwarenessFramework
+    
+    # Get configuration
+    config = {
+        'id': f'self-aware-{os.environ.get(\"CONTAINER_ID\", \"terminal_2\")}',
+        'monitoring_rate': 1.0
+    }
+    
+    # Initialize the framework
+    framework = SelfAwarenessFramework(config)
+    
+    # Start the framework
+    framework.start()
+    print('Self-Awareness Mechanics framework initialized and running')
+except Exception as e:
+    print(f'Error initializing Self-Awareness Mechanics: {e}')
+" &
+  fi
+  
+  # Initialize Emotional Dimensionality Framework if enabled
+  if [[ "$ENABLE_EMOTIONAL_FRAMEWORK" == "true" ]]; then
+    echo "Initializing Emotional Dimensionality Framework..."
+    python3 -c "
+try:
+    from system.ai_frameworks.emotional_dimensionality import EmotionalDimensionalityFramework, RuleBasedEDFModel
+    
+    # Get configuration
+    container_id = os.environ.get(\"CONTAINER_ID\", \"terminal_2\")
+    config = {
+        'id': f'edf-{container_id}'
+    }
+    
+    # Initialize the framework
+    framework = EmotionalDimensionalityFramework(config)
+    
+    # Add rule-based model
+    framework.add_model('rule_based', RuleBasedEDFModel())
+    
+    print('Emotional Dimensionality Framework initialized')
+except Exception as e:
+    print(f'Error initializing Emotional Dimensionality Framework: {e}')
+" &
+  fi
+}
+
 # Apply remaining optimizations
 setup_monitoring
 optimize_io
+
+# Initialize AI frameworks
+export CONTAINER_ID=terminal_2
+export ENABLE_SELF_AWARENESS=true
+export ENABLE_EMOTIONAL_FRAMEWORK=true
+initialize_frameworks
 
 # Print environment summary
 echo "=============================================="
@@ -310,16 +368,15 @@ echo "  - CPUs: $(nproc)"
 echo "  - Memory Limit: ${MEMORY_LIMIT:-"Not set"}"
 echo "  - Thread Limit: ${NUM_THREADS:-"Auto"}"
 echo "  - Monitoring: ${ENABLE_MONITORING:-"Disabled"}"
+echo "  - Self-Awareness Framework: ${ENABLE_SELF_AWARENESS:-"Disabled"}"
+echo "  - Emotional Dimensionality Framework: ${ENABLE_EMOTIONAL_FRAMEWORK:-"Disabled"}"
 echo "=============================================="
 
 # Start Jupyter if no command provided
 if [[ $# -eq 0 || "$1" == "jupyter" ]]; then
   echo "Starting Jupyter Lab for Terminal 2..."
-  exec jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root \
-    --NotebookApp.token="${JUPYTER_TOKEN:-researchenv2}" \
-    --ServerApp.token="${JUPYTER_TOKEN:-researchenv2}"
+  jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=${JUPYTER_TOKEN:-''}
 else
-  # Execute provided command
-  echo "Executing command: $@"
+  # Otherwise run the specified command
   exec "$@"
 fi
