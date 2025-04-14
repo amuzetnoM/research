@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  self-awareness-server:
+    build:
+      context: .
+      dockerfile: server.Dockerfile
+    ports:
+      - "8765:8765"
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+    container_name: self-awareness-server
+
+  example-ai-agent:
+    build:
+      context: .
+      dockerfile: agent.Dockerfile
+    depends_on:
+      - self-awareness-server
+    environment:
+      - SELF_AWARENESS_HOST=self-awareness-server
+      - SELF_AWARENESS_PORT=8765
+    volumes:
+      - ./:/app
+    restart: unless-stopped
+    container_name: example-ai-agent
