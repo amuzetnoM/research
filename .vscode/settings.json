@@ -3,6 +3,7 @@
         "cupy",
         "explainability",
         "Neuro",
+        "sourcery",
         "WORXPACE"
     ]
 }
