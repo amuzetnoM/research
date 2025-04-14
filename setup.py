@@ -20,7 +20,9 @@ Options:
     --no-admin            Run without admin privileges (prevents automatic elevation)
 """
 
+
 import argparse
+import contextlib
 import hashlib
 import json
 import logging
@@ -43,17 +45,15 @@ from typing import Dict, List, Optional, Tuple, Union, Set
 HAS_NUMPY = False
 HAS_MATPLOTLIB = False
 
-try:
+with contextlib.suppress(ImportError):
     import numpy as np
     HAS_NUMPY = True
-except ImportError:
-    pass
-
-try:
+with contextlib.suppress(ImportError):
     import matplotlib.pyplot as plt
     HAS_MATPLOTLIB = True
-except ImportError:
-    pass
+
+# Initialize logging early so it can be accessed globally
+logger = None
 
 # Configure logging
 def setup_logging(verbose=False):
@@ -91,10 +91,11 @@ def request_admin(no_admin=False):
         bool: True if admin check should be bypassed or admin privileges obtained, False otherwise
     """
     if no_admin:
-        logger.info("Admin check bypassed due to --no-admin flag")
-        print("Running without administrative privileges (limited functionality).")
-        return True
-        
+        return log_and_notify(
+            "Admin check bypassed due to --no-admin flag",
+            "Running without administrative privileges (limited functionality)."
+        )
+    
     if platform.system() == "Windows":
         try:
             # Check if we're running with admin privileges
@@ -110,27 +111,34 @@ def request_admin(no_admin=False):
                 print("The script will now attempt to elevate permissions.")
                 print("If you don't want this, restart with the --no-admin flag.")
                 print("="*80)
-                
+
                 # Prompt before attempting elevation
                 choice = input("\nProceed with admin elevation? (y/n): ").lower()
                 if choice in ('y', 'yes'):
                     logger.info("Attempting to restart with admin privileges...")
-                    # Re-run the program with admin rights
-                    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
-                    logger.info("Elevation process initiated. Exiting current instance.")
-                    # Exit the current instance directly instead of returning
-                    sys.exit(0)
+                    try:
+                        # Re-run the program with admin rights
+                        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, " ".join(sys.argv), None, 1)
+                        logger.info("Elevation process initiated. Exiting current instance.")
+                        # Exit the current instance directly instead of returning
+                        sys.exit(0)
+                    except Exception as e:
+                        logger.error(f"Failed to elevate privileges: {e}")
+                        print(f"Error elevating privileges: {e}")
+                        choice = input("Continue without admin privileges? (y/n): ").lower()
+                        if choice not in ('y', 'yes'):
+                            return False
                 else:
                     logger.info("User declined admin elevation")
                     choice = input("Continue with limited functionality? (y/n): ").lower()
                     if choice in ('y', 'yes'):
-                        logger.info("Continuing with limited functionality")
-                        print("Continuing with limited functionality (some features may not work properly).")
-                        return True
-                    else:
-                        print("Setup aborted by user.")
-                        print("Restart with --no-admin flag to bypass this check if needed.")
-                        return False
+                        return log_and_notify(
+                            "Continuing with limited functionality",
+                            "Continuing with limited functionality (some features may not work properly)."
+                        )
+                    print("Setup aborted by user.")
+                    print("Restart with --no-admin flag to bypass this check if needed.")
+                    return False
             else:
                 logger.info("Already running with admin privileges")
                 return True
@@ -140,8 +148,23 @@ def request_admin(no_admin=False):
             # Ask user if they want to continue anyway
             choice = input("\nContinue without verifying admin privileges? (y/n): ").lower()
             return choice in ('y', 'yes')
-    
+
     # For non-Windows platforms or if admin check passes
+    return True
+
+def log_and_notify(log_message, user_message):
+    """
+    Helper function to log a message and print a notification to the user.
+    
+    Args:
+        log_message: Message to write to the log
+        user_message: Message to display to the user
+        
+    Returns:
+        bool: Always returns True to indicate process should continue
+    """
+    logger.info(log_message)
+    print(user_message)
     return True
 
 def setup_python(force=False):
@@ -163,57 +186,62 @@ def setup_dependencies(force=False):
     """Install dependencies."""
     logger.info("Installing dependencies")
     global HAS_NUMPY, HAS_MATPLOTLIB
-    
+
     try:
-        # Upgrade pip first
-        logger.info("Upgrading pip...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True)
-        
-        # Install dependencies from requirements.txt if it exists
-        system_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "system")
-        req_file = os.path.join(system_folder, "requirements.txt")
-        
-        # Create system folder if it doesn't exist
-        if not os.path.exists(system_folder):
-            os.makedirs(system_folder, exist_ok=True)
-            logger.info(f"Created system folder at {system_folder}")
-        
-        if os.path.exists(req_file):
-            logger.info("Installing dependencies from requirements.txt...")
-            cmd = [sys.executable, "-m", "pip", "install", "-r", req_file]
-            if force:
-                cmd.append("--force-reinstall")
-            subprocess.run(cmd, check=True)
-        else:
-            # Install individual packages if no requirements file
-            logger.info("No requirements.txt found. Installing packages individually.")
-            logger.info("Installing NumPy...")
-            subprocess.run([sys.executable, "-m", "pip", "install", "numpy"], check=True)
-            
-            logger.info("Installing Matplotlib...")
-            subprocess.run([sys.executable, "-m", "pip", "install", "matplotlib"], check=True)
-        
-        # Verify installations
-        try:
-            import numpy as np
-            HAS_NUMPY = True
-            logger.info(f"NumPy {np.__version__} installed successfully")
-        except ImportError:
-            logger.warning("NumPy installation failed or is not available.")
-            
-        try:
-            import matplotlib
-            import matplotlib.pyplot as plt
-            HAS_MATPLOTLIB = True
-            logger.info(f"Matplotlib {matplotlib.__version__} installed successfully")
-        except ImportError:
-            logger.warning("Matplotlib installation failed or is not available.")
-        
-        logger.info("Dependencies installed successfully")
-        return True
+        return _extracted_from_setup_dependencies_8(force)
     except Exception as e:
         logger.error(f"Error installing dependencies: {e}")
         return False
+
+
+# TODO Rename this here and in `setup_dependencies`
+def _extracted_from_setup_dependencies_8(force):
+    # Upgrade pip first
+    logger.info("Upgrading pip...")
+    subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True)
+
+    # Install dependencies from requirements.txt if it exists
+    system_folder = os.path.join(os.path.dirname(os.path.abspath(__file__)), "system")
+    req_file = os.path.join(system_folder, "requirements.txt")
+
+    # Create system folder if it doesn't exist
+    if not os.path.exists(system_folder):
+        os.makedirs(system_folder, exist_ok=True)
+        logger.info(f"Created system folder at {system_folder}")
+
+    if os.path.exists(req_file):
+        logger.info("Installing dependencies from requirements.txt...")
+        cmd = [sys.executable, "-m", "pip", "install", "-r", req_file]
+        if force:
+            cmd.append("--force-reinstall")
+        subprocess.run(cmd, check=True)
+    else:
+        # Install individual packages if no requirements file
+        logger.info("No requirements.txt found. Installing packages individually.")
+        logger.info("Installing NumPy...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "numpy"], check=True)
+
+        logger.info("Installing Matplotlib...")
+        subprocess.run([sys.executable, "-m", "pip", "install", "matplotlib"], check=True)
+
+    # Verify installations
+    try:
+        import numpy as np
+        HAS_NUMPY = True
+        logger.info(f"NumPy {np.__version__} installed successfully")
+    except ImportError:
+        logger.warning("NumPy installation failed or is not available.")
+
+    try:
+        import matplotlib
+        import matplotlib.pyplot as plt
+        HAS_MATPLOTLIB = True
+        logger.info(f"Matplotlib {matplotlib.__version__} installed successfully")
+    except ImportError:
+        logger.warning("Matplotlib installation failed or is not available.")
+
+    logger.info("Dependencies installed successfully")
+    return True
 
 def check_docker():
     """Check if Docker is installed and working."""
@@ -274,17 +302,27 @@ def main():
     global logger
     logger = setup_logging(args.verbose)
     logger.info("Starting automated setup")
-    
+
     # Request admin privileges if needed
     if not request_admin(args.no_admin):
         logger.error("Setup aborted: administrative privileges required but not obtained")
         return 1
-    
+
     # If we get here, we either have admin rights or the user accepted to proceed without them
     if platform.system() == "Windows" and ctypes.windll.shell32.IsUserAnAdmin():
         logger.info("Running with administrative privileges")
         print("Running with administrative privileges")
-    
+
+    try:
+        return _extracted_from_main_19(args, logger)
+    except Exception as e:
+        logger.error(f"Unhandled error in setup: {e}")
+        print(f"Setup failed with error: {e}")
+        return 1
+
+
+# TODO Rename this here and in `main`
+def _extracted_from_main_19(args, logger):
     if not args.skip_python and not setup_python(force=args.force):
         logger.error("Python setup failed")
         return 1

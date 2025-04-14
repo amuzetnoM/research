@@ -2,8 +2,15 @@
     "cSpell.words": [
         "cupy",
         "explainability",
+        "levelname",
         "Neuro",
+        "runas",
         "sourcery",
+        "uuidv",
         "WORXPACE"
-    ]
+    ],
+    "docwriter.progress.trackClasses": true,
+    "docwriter.progress.trackTypes": true,
+    "docwriter.progress.trackMethods": true,
+    "docwriter.progress.trackFunctions": true
 }
