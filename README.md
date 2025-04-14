@@ -1,6 +1,6 @@
 # What you pay attention to, becomes you
 
-## Research Journal: Advanced AI Research
+## Research Journal: Advanced Computation & AI
 
 ```
 /Research
