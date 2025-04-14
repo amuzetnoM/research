@@ -172,3 +172,11 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+# Ignore all logs
+*.log
+*.log.*
+
+# But keep the directory
+!.gitignore

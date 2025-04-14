@@ -12,7 +12,7 @@ This document provides comprehensive documentation for the Self-Awareness Mechan
 3. [Emotional Dimensionality Framework](#emotional-dimensionality-framework)
    - [Core Concepts](#core-concepts)
    - [Available Models](#available-models)
-   - [Usage Examples](#usage-examples-1)
+   - [Usage Examples](#usage-examples)
 4. [Framework Integration](#framework-integration)
    - [Using the Bridge](#using-the-bridge)
    - [Advanced Applications](#advanced-applications)
@@ -50,7 +50,7 @@ The framework also includes a metrics tracking system that measures performance 
 - Temporal Awareness
 - Social Awareness
 
-### Usage Examples
+### Usage Examples for Emotional Dimensionality Framework
 
 #### Basic Initialization and Usage
 
@@ -147,6 +147,7 @@ The Emotional Dimensionality Framework (EDF) implements advanced sentiment analy
 The framework represents emotions across multiple dimensions:
 
 **Core Dimensions:**
+
 - **Valence**: Positive-negative spectrum (-1.0 to 1.0)
 - **Arousal**: Intensity or energy level (-1.0 to 1.0)
 - **Dominance**: Degree of control or power (-1.0 to 1.0)
@@ -156,6 +157,7 @@ The framework represents emotions across multiple dimensions:
 - **Intentionality**: Direction toward specific target (-1.0 to 1.0)
 
 **Contextual Dimensions:**
+
 - **Cultural Context**: Cultural norms and references (0.0 to 1.0)
 - **Relational Dynamics**: Relationship between communicating parties (0.0 to 1.0)
 - **Historical Context**: Prior interactions and shared knowledge (0.0 to 1.0)
