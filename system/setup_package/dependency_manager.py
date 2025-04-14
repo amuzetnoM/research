@@ -59,7 +59,7 @@ def is_package_installed(package_name):
     except pkg_resources.DistributionNotFound:
         return False
 
-def check_dependencies():
+def check_dependencies():  # sourcery skip: simplify-len-comparison
     """
     Check if all required dependencies are installed.
     
@@ -67,7 +67,7 @@ def check_dependencies():
         tuple: (bool, list) - Success flag and list of missing packages
     """
     logger.info("Checking dependencies...")
-    
+
     missing_packages = []
     for package in ESSENTIAL_PACKAGES:
         # Strip version specifiers if any
@@ -75,7 +75,7 @@ def check_dependencies():
         if not is_package_installed(package_name):
             missing_packages.append(package)
             logger.debug(f"Missing package: {package}")
-    
+
     return len(missing_packages) == 0, missing_packages
 
 def install_dependencies(dependencies=None, upgrade=False):
@@ -172,8 +172,4 @@ def check_and_install_dependencies():
     
     # Then check for any missing essential packages
     deps_ok, missing_deps = check_dependencies()
-    if not deps_ok:
-        if not install_dependencies(missing_deps):
-            return False
-    
-    return True
+    return bool(deps_ok or install_dependencies(missing_deps))
