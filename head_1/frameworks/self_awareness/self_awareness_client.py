@@ -24,7 +24,8 @@ class SelfAwarenessClient:
                  host: Optional[str] = None, 
                  port: Optional[int] = None,
                  auto_reconnect: bool = True,
-                 max_reconnect_attempts: int = 10):
+                 max_reconnect_attempts: int = 10,
+                 use_https: Optional[bool] = None):
         """
         Initialize the Self-Awareness Client.
         
@@ -33,6 +34,7 @@ class SelfAwarenessClient:
             port: The server port (defaults to environment variable or 8765)
             auto_reconnect: Whether to automatically attempt reconnection
             max_reconnect_attempts: Maximum number of reconnection attempts
+            use_https: Whether to use HTTPS (defaults to environment variable or False)
         """
         # Server connection settings
         self.host = host or os.environ.get("SELF_AWARENESS_HOST", "localhost")
@@ -41,6 +43,12 @@ class SelfAwarenessClient:
         self.max_reconnect_attempts = max_reconnect_attempts
         self.reconnect_attempts = 0
         self.reconnect_delay = 1  # Initial delay in seconds, will increase with backoff
+        
+        # Determine whether to use HTTPS
+        if use_https is None:
+            self.use_https = os.environ.get("SELF_AWARENESS_USE_HTTPS", "").lower() in ("true", "1", "yes")
+        else:
+            self.use_https = use_https
         
         # Client state
         self.client_id = None
@@ -74,10 +82,19 @@ class SelfAwarenessClient:
         self.message_queue = []
         
         # Server base URL
-        self.base_url = f"http://{self.host}:{self.port}"
+        protocol = "https" if self.use_https else "http"
+        self.base_url = f"{protocol}://{self.host}:{self.port}"
         
         # Session for HTTP requests
         self.session = requests.Session()
+        if self.use_https:
+            # Optionally disable SSL verification for self-signed certificates in development
+            self.verify_ssl = os.environ.get("SELF_AWARENESS_VERIFY_SSL", "true").lower() in ("true", "1", "yes")
+            if not self.verify_ssl:
+                self.session.verify = False
+                import urllib3
+                urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+                logger.warning("SSL verification is disabled. This is insecure and should only be used for development.")
     
     def connect(self):
         """Connect to the self-awareness server"""

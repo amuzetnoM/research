@@ -3,11 +3,14 @@ import logging
 import uuid
 import time
 import threading
+import os
+import sys
+import traceback
 from datetime import datetime
-from typing import Dict, Any, Optional, List
+from typing import Dict, Any, Optional, List, Tuple
 from queue import Queue
 from flask import Flask, request, Response, jsonify
-import os
+import ssl
 
 # Configure logging
 logging.basicConfig(
@@ -17,9 +20,23 @@ logging.basicConfig(
 logger = logging.getLogger("self-awareness-server")
 
 class SelfAwarenessServer:
-    def __init__(self, host: str = "0.0.0.0", port: int = 8765):
+    def __init__(self, host: str = "0.0.0.0", port: int = 8765, use_https: bool = False, 
+                 ssl_cert: Optional[str] = None, ssl_key: Optional[str] = None):
+        """
+        Initialize the Self-Awareness Server.
+        
+        Args:
+            host: Host to bind the server to
+            port: Port to listen on
+            use_https: Whether to use HTTPS
+            ssl_cert: Path to SSL certificate file
+            ssl_key: Path to SSL key file
+        """
         self.host = host
         self.port = port
+        self.use_https = use_https
+        self.ssl_cert = ssl_cert
+        self.ssl_key = ssl_key
         self.clients: Dict[str, Queue] = {}
         self.client_data: Dict[str, Dict[str, Any]] = {}
         self.running = False
@@ -258,8 +275,18 @@ class SelfAwarenessServer:
     def start(self):
         """Start the self-awareness server"""
         self.running = True
-        logger.info(f"Self-Awareness Server running on {self.host}:{self.port}")
-        self.app.run(host=self.host, port=self.port, threaded=True)
+        logger.info(f"Self-Awareness Server running on {'HTTPS' if self.use_https else 'HTTP'} {self.host}:{self.port}")
+        
+        if self.use_https and self.ssl_cert and self.ssl_key:
+            if os.path.exists(self.ssl_cert) and os.path.exists(self.ssl_key):
+                ssl_context = (self.ssl_cert, self.ssl_key)
+                self.app.run(host=self.host, port=self.port, threaded=True, ssl_context=ssl_context)
+            else:
+                logger.error(f"SSL certificate or key file not found. Certificate: {self.ssl_cert}, Key: {self.ssl_key}")
+                logger.info("Falling back to HTTP")
+                self.app.run(host=self.host, port=self.port, threaded=True)
+        else:
+            self.app.run(host=self.host, port=self.port, threaded=True)
     
     def stop(self):
         """Stop the self-awareness server"""
@@ -269,10 +296,40 @@ class SelfAwarenessServer:
         # This is simplified for demonstration
 
 def main():
-    port = int(os.environ.get('SELF_AWARENESS_PORT', 8765))
+    """Main function to start the Self-Awareness Server"""
     host = os.environ.get('SELF_AWARENESS_HOST', '0.0.0.0')
-    server = SelfAwarenessServer(host=host, port=port)
-    server.start()
+    port = int(os.environ.get('SELF_AWARENESS_PORT', 8765))
+    
+    # SSL/HTTPS configuration
+    use_https = os.environ.get('SELF_AWARENESS_USE_HTTPS', '').lower() in ('true', '1', 'yes')
+    ssl_cert = os.environ.get('SSL_CERT', '/etc/letsencrypt/live/yourdomain.com/fullchain.pem')
+    ssl_key = os.environ.get('SSL_KEY', '/etc/letsencrypt/live/yourdomain.com/privkey.pem')
+    
+    if use_https:
+        logger.info(f"Starting server with HTTPS using certificates: {ssl_cert}, {ssl_key}")
+        if not os.path.exists(ssl_cert) or not os.path.exists(ssl_key):
+            logger.warning("SSL certificate files not found. Will attempt to start in HTTP mode.")
+            use_https = False
+    
+    server = SelfAwarenessServer(
+        host=host, 
+        port=port, 
+        use_https=use_https,
+        ssl_cert=ssl_cert,
+        ssl_key=ssl_key
+    )
+    
+    try:
+        server.start()
+    except KeyboardInterrupt:
+        logger.info("Server shutdown initiated by user")
+        server.stop()
+    except Exception as e:
+        logger.error(f"Server error: {str(e)}")
+        logger.debug(traceback.format_exc())
+        server.stop()
+        sys.exit(1)
+
 
 if __name__ == "__main__":
     main()

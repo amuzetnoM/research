@@ -4,9 +4,9 @@ If Prometheus isn't collecting metrics, follow these troubleshooting steps:
 
 ## 1. Check Prometheus Status
 
-1. Open Prometheus UI at http://localhost:9090/
-2. Go to Status > Targets to see if targets are up or down
-3. Check Status > Configuration to verify your configuration was loaded properly
+1.  Open Prometheus UI at http://localhost:9090/
+2.  Go to Status > Targets to see if targets are up or down
+3.  Check Status > Configuration to verify your configuration was loaded properly
 
 ## 2. Verify Node Exporters are Running
 
@@ -38,17 +38,29 @@ docker logs prometheus
 
 ## 5. Network Issues
 
-If running on Windows, ensure 'host.docker.internal' resolves correctly within Docker. 
+If running on Windows, ensure 'host.docker.internal' resolves correctly within Docker.
 If not, use container names instead (as updated in the prometheus.yml file).
 
-## 6. Restart Services
+## 6. DNS Resolution Issues
+
+If container names are not resolving, check your Docker network configuration. Ensure that containers are on the same network.
+
+## 7. Firewall Issues
+
+Ensure that no firewalls are blocking communication between Prometheus and the exporters.
+
+## 8. Target Discovery
+
+Double-check that the targets defined in `prometheus.yml` are correct and reachable.
+
+## 9. Restart Services
 
 ```bash
 docker compose down
 docker compose up -d
 ```
 
-## 7. Check Volumes
+## 10. Check Volumes
 
 Ensure Prometheus has proper permissions to write to its data volume:
 
