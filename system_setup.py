@@ -30,6 +30,8 @@ from typing import Dict, List, Optional, Tuple, Union, Set, Any
 HAS_NUMPY = False
 HAS_MATPLOTLIB = False
 HAS_PSUTIL = False
+HAS_PYTORCH = False
+HAS_TENSORFLOW = False
 
 with contextlib.suppress(ImportError):
     import numpy as np
@@ -40,6 +42,12 @@ with contextlib.suppress(ImportError):
 with contextlib.suppress(ImportError):
     import psutil
     HAS_PSUTIL = True
+with contextlib.suppress(ImportError):
+    import torch
+    HAS_PYTORCH = True
+with contextlib.suppress(ImportError):
+    import tensorflow as tf
+    HAS_TENSORFLOW = True
 
 # Configure logging
 logging.basicConfig(
@@ -624,12 +632,65 @@ REM Usage: run.cmd
         return False
 
 
+def setup_frameworks() -> bool:
+    """Set up and install all research frameworks.
+    
+    Returns:
+        True if successful, False otherwise
+    """
+    logger.info("Setting up research frameworks")
+    
+    frameworks = [
+        # Path relative to PROJECT_ROOT
+        "head_1/frameworks/emotional_dimensionality",
+        "head_1/frameworks/self_awareness",
+        "head_1/frameworks/probabalistic_uncertainty_principle",
+        # Add other frameworks here
+    ]
+    
+    successes = []
+    
+    for framework_path in frameworks:
+        full_path = PROJECT_ROOT / framework_path
+        if not full_path.exists():
+            logger.warning(f"Framework path does not exist: {framework_path}")
+            continue
+            
+        setup_path = full_path / "setup.py"
+        if not setup_path.exists():
+            logger.warning(f"No setup.py found for framework: {framework_path}")
+            continue
+            
+        logger.info(f"Installing framework: {framework_path}")
+        try:
+            # Install in development mode
+            result = subprocess.run(
+                [sys.executable, "-m", "pip", "install", "-e", str(full_path)],
+                check=True,
+                capture_output=True,
+                text=True
+            )
+            logger.debug(result.stdout)
+            successes.append(framework_path)
+        except subprocess.CalledProcessError as e:
+            logger.error(f"Failed to install framework {framework_path}: {e}")
+            logger.error(e.stderr)
+    
+    if not successes:
+        logger.warning("No frameworks were successfully installed")
+        return False
+        
+    logger.info(f"Successfully installed {len(successes)} frameworks")
+    return True
+
+
 def setup_environment(
         install_deps: bool = True,
         force_deps: bool = False,
         setup_docker: bool = True,
         force_gpu: bool = False,
-        disable_gpu: bool = False
+        disable_gpu: bool = False,
+        install_frameworks: bool = True
     ) -> bool:
     """Set up the complete research environment.
     
@@ -639,6 +700,7 @@ def setup_environment(
         setup_docker: Set up Docker environment
         force_gpu: Force GPU configuration
         disable_gpu: Disable GPU configuration
+        install_frameworks: Install research frameworks
         
     Returns:
         True if successful, False otherwise
@@ -667,6 +729,12 @@ def setup_environment(
         if not prepare_docker_environment(use_gpu=use_gpu):
             logger.warning("Docker environment setup failed")
             # Continue anyway, as Docker is optional
+    
+    # Set up research frameworks if requested
+    if install_frameworks:
+        if not setup_frameworks():
+            logger.warning("Framework setup failed")
+            # Continue anyway, as frameworks are optional
     
     logger.info("Environment setup completed successfully")
     return True
@@ -726,6 +794,8 @@ def parse_arguments() -> argparse.Namespace:
                        help="Force reinstallation of dependencies")
     parser.add_argument("--skip-docker", action="store_true",
                        help="Skip Docker environment setup")
+    parser.add_argument("--skip-frameworks", action="store_true",
+                       help="Skip research frameworks installation")
     
     # GPU options
     parser.add_argument("--gpu", action="store_true",
@@ -771,7 +841,8 @@ def main() -> int:
             force_deps=args.force_deps,
             setup_docker=not args.skip_docker,
             force_gpu=args.gpu,
-            disable_gpu=args.no_gpu
+            disable_gpu=args.no_gpu,
+            install_frameworks=not args.skip_frameworks
         )
         
         if success:
