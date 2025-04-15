@@ -1,0 +1,365 @@
+{
+  "timestamp": "2025-04-15T14:14:10.023475",
+  "uptime_seconds": 1e-05,
+  "system": {
+    "platform": "Windows-11-10.0.26100-SP0",
+    "python_version": "3.13.2",
+    "hostname": "Victus",
+    "cpu": {
+      "count_logical": 12,
+      "count_physical": 6,
+      "current_freq": 2024.0,
+      "architecture": "AMD64",
+      "processor": "AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD",
+      "utilization": 17.9,
+      "min_freq": 0.0,
+      "max_freq": 3301.0
+    },
+    "memory": {
+      "total_mib": 15573,
+      "available_mib": 2390,
+      "percent_used": 84.6
+    },
+    "disk": {
+      "C:\\": {
+        "total_gb": 475.93163681030273,
+        "used_gb": 427.04841232299805,
+        "free_gb": 48.88322448730469,
+        "percent_used": 89.7,
+        "filesystem": "NTFS"
+      }
+    },
+    "container": {
+      "is_container": false,
+      "type": null,
+      "runtime": null
+    }
+  },
+  "environment": {
+    "PATH": "C:\\windows\\system32;C:\\windows;C:\\windows\\System32\\Wbem;C:\\windows\\System32\\WindowsPowerShell\\v1.0\\;C:\\windows\\System32\\OpenSSH\\;C:\\Program Files (x86)\\NVIDIA Corporation\\PhysX\\Common;C:\\Program Files\\NVIDIA Corporation\\NVIDIA NvDLISR;C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Program Files\\HP\\OMEN-Broadcast\\Common;C:\\Program Files\\HP\\HP One Agent;C:\\WINDOWS\\system32;C:\\WINDOWS;C:\\WINDOWS\\System32\\Wbem;C:\\WINDOWS\\System32\\WindowsPowerShell\\v1.0\\;C:\\WINDOWS\\System32\\OpenSSH\\;C:\\Program Files\\dotnet\\;C:\\Program Files\\Git\\cmd;C:\\Program Files\\Microsoft SQL Server\\150\\Tools\\Binn\\;C:\\Program Files\\Microsoft SQL Server\\Client SDK\\ODBC\\170\\Tools\\Binn\\;C:\\Program Files\\Docker\\Docker\\resources\\bin;C:\\Users\\alish.VICTUS\\AppData\\Local\\Microsoft\\WindowsApps;C:\\Users\\alish.VICTUS\\AppData\\Local\\Muse Hub\\lib;C:\\Users\\alish.VICTUS\\.dotnet\\tools;C:\\Users\\alish.VICTUS\\AppData\\Local\\Programs\\Microsoft VS Code\\bin;c:\\Users\\alish.VICTUS\\.vscode\\extensions\\ms-python.debugpy-2025.6.0-win32-x64\\bundled\\scripts\\noConfigScripts;c:\\Users\\alish.VICTUS\\AppData\\Roaming\\Code\\User\\globalStorage\\github.copilot-chat\\debugCommand",
+    "LANG": "en_US.UTF-8"
+  },
+  "docker": {
+    "available": true,
+    "docker_info": {
+      "ID": "47555980-67b1-4e63-9fd1-f888b6a90663",
+      "Containers": 10,
+      "ContainersRunning": 9,
+      "ContainersPaused": 0,
+      "ContainersStopped": 1,
+      "Images": 13,
+      "Driver": "overlayfs",
+      "DriverStatus": [
+        [
+          "driver-type",
+          "io.containerd.snapshotter.v1"
+        ]
+      ],
+      "Plugins": {
+        "Volume": [
+          "local"
+        ],
+        "Network": [
+          "bridge",
+          "host",
+          "ipvlan",
+          "macvlan",
+          "null",
+          "overlay"
+        ],
+        "Authorization": null,
+        "Log": [
+          "awslogs",
+          "fluentd",
+          "gcplogs",
+          "gelf",
+          "journald",
+          "json-file",
+          "local",
+          "splunk",
+          "syslog"
+        ]
+      },
+      "MemoryLimit": true,
+      "SwapLimit": true,
+      "KernelMemoryTCP": true,
+      "CpuCfsPeriod": true,
+      "CpuCfsQuota": true,
+      "CPUShares": true,
+      "CPUSet": true,
+      "PidsLimit": true,
+      "IPv4Forwarding": true,
+      "BridgeNfIptables": false,
+      "BridgeNfIp6tables": false,
+      "Debug": false,
+      "NFd": 144,
+      "OomKillDisable": true,
+      "NGoroutines": 143,
+      "SystemTime": "2025-04-15T09:14:11.757549259Z",
+      "LoggingDriver": "json-file",
+      "CgroupDriver": "cgroupfs",
+      "CgroupVersion": "1",
+      "NEventsListener": 15,
+      "KernelVersion": "5.15.167.4-microsoft-standard-WSL2",
+      "OperatingSystem": "Docker Desktop",
+      "OSVersion": "",
+      "OSType": "linux",
+      "Architecture": "x86_64",
+      "IndexServerAddress": "https://index.docker.io/v1/",
+      "RegistryConfig": {
+        "IndexConfigs": {
+          "docker.io": {
+            "Name": "docker.io",
+            "Mirrors": [],
+            "Secure": true,
+            "Official": true
+          },
+          "hubproxy.docker.internal:5555": {
+            "Name": "hubproxy.docker.internal:5555",
+            "Mirrors": [],
+            "Secure": false,
+            "Official": false
+          }
+        },
+        "InsecureRegistryCIDRs": [
+          "::1/128",
+          "127.0.0.0/8"
+        ],
+        "Mirrors": null
+      },
+      "NCPU": 12,
+      "MemTotal": 7911690240,
+      "GenericResources": null,
+      "DockerRootDir": "/var/lib/docker",
+      "HttpProxy": "http.docker.internal:3128",
+      "HttpsProxy": "http.docker.internal:3128",
+      "NoProxy": "hubproxy.docker.internal",
+      "Name": "docker-desktop",
+      "Labels": [
+        "com.docker.desktop.address=npipe://\\\\.\\pipe\\docker_cli"
+      ],
+      "ExperimentalBuild": false,
+      "ServerVersion": "28.0.4",
+      "Runtimes": {
+        "io.containerd.runc.v2": {
+          "path": "runc",
+          "status": {
+            "org.opencontainers.runtime-spec.features": "{\"ociVersionMin\":\"1.0.0\",\"ociVersionMax\":\"1.2.0\",\"hooks\":[\"prestart\",\"createRuntime\",\"createContainer\",\"startContainer\",\"poststart\",\"poststop\"],\"mountOptions\":[\"async\",\"atime\",\"bind\",\"defaults\",\"dev\",\"diratime\",\"dirsync\",\"exec\",\"iversion\",\"lazytime\",\"loud\",\"mand\",\"noatime\",\"nodev\",\"nodiratime\",\"noexec\",\"noiversion\",\"nolazytime\",\"nomand\",\"norelatime\",\"nostrictatime\",\"nosuid\",\"nosymfollow\",\"private\",\"ratime\",\"rbind\",\"rdev\",\"rdiratime\",\"relatime\",\"remount\",\"rexec\",\"rnoatime\",\"rnodev\",\"rnodiratime\",\"rnoexec\",\"rnorelatime\",\"rnostrictatime\",\"rnosuid\",\"rnosymfollow\",\"ro\",\"rprivate\",\"rrelatime\",\"rro\",\"rrw\",\"rshared\",\"rslave\",\"rstrictatime\",\"rsuid\",\"rsymfollow\",\"runbindable\",\"rw\",\"shared\",\"silent\",\"slave\",\"strictatime\",\"suid\",\"symfollow\",\"sync\",\"tmpcopyup\",\"unbindable\"],\"linux\":{\"namespaces\":[\"cgroup\",\"ipc\",\"mount\",\"network\",\"pid\",\"time\",\"user\",\"uts\"],\"capabilities\":[\"CAP_CHOWN\",\"CAP_DAC_OVERRIDE\",\"CAP_DAC_READ_SEARCH\",\"CAP_FOWNER\",\"CAP_FSETID\",\"CAP_KILL\",\"CAP_SETGID\",\"CAP_SETUID\",\"CAP_SETPCAP\",\"CAP_LINUX_IMMUTABLE\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_BROADCAST\",\"CAP_NET_ADMIN\",\"CAP_NET_RAW\",\"CAP_IPC_LOCK\",\"CAP_IPC_OWNER\",\"CAP_SYS_MODULE\",\"CAP_SYS_RAWIO\",\"CAP_SYS_CHROOT\",\"CAP_SYS_PTRACE\",\"CAP_SYS_PACCT\",\"CAP_SYS_ADMIN\",\"CAP_SYS_BOOT\",\"CAP_SYS_NICE\",\"CAP_SYS_RESOURCE\",\"CAP_SYS_TIME\",\"CAP_SYS_TTY_CONFIG\",\"CAP_MKNOD\",\"CAP_LEASE\",\"CAP_AUDIT_WRITE\",\"CAP_AUDIT_CONTROL\",\"CAP_SETFCAP\",\"CAP_MAC_OVERRIDE\",\"CAP_MAC_ADMIN\",\"CAP_SYSLOG\",\"CAP_WAKE_ALARM\",\"CAP_BLOCK_SUSPEND\",\"CAP_AUDIT_READ\",\"CAP_PERFMON\",\"CAP_BPF\",\"CAP_CHECKPOINT_RESTORE\"],\"cgroup\":{\"v1\":true,\"v2\":true,\"systemd\":true,\"systemdUser\":true,\"rdma\":true},\"seccomp\":{\"enabled\":true,\"actions\":[\"SCMP_ACT_ALLOW\",\"SCMP_ACT_ERRNO\",\"SCMP_ACT_KILL\",\"SCMP_ACT_KILL_PROCESS\",\"SCMP_ACT_KILL_THREAD\",\"SCMP_ACT_LOG\",\"SCMP_ACT_NOTIFY\",\"SCMP_ACT_TRACE\",\"SCMP_ACT_TRAP\"],\"operators\":[\"SCMP_CMP_EQ\",\"SCMP_CMP_GE\",\"SCMP_CMP_GT\",\"SCMP_CMP_LE\",\"SCMP_CMP_LT\",\"SCMP_CMP_MASKED_EQ\",\"SCMP_CMP_NE\"],\"archs\":[\"SCMP_ARCH_AARCH64\",\"SCMP_ARCH_ARM\",\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\",\"SCMP_ARCH_MIPS64N32\",\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\",\"SCMP_ARCH_MIPSEL64N32\",\"SCMP_ARCH_PPC\",\"SCMP_ARCH_PPC64\",\"SCMP_ARCH_PPC64LE\",\"SCMP_ARCH_RISCV64\",\"SCMP_ARCH_S390\",\"SCMP_ARCH_S390X\",\"SCMP_ARCH_X32\",\"SCMP_ARCH_X86\",\"SCMP_ARCH_X86_64\"],\"knownFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"],\"supportedFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"]},\"apparmor\":{\"enabled\":true},\"selinux\":{\"enabled\":true},\"intelRdt\":{\"enabled\":true},\"mountExtensions\":{\"idmap\":{\"enabled\":true}}},\"annotations\":{\"io.github.seccomp.libseccomp.version\":\"2.5.4\",\"org.opencontainers.runc.checkpoint.enabled\":\"true\",\"org.opencontainers.runc.commit\":\"v1.2.5-0-g59923ef\",\"org.opencontainers.runc.version\":\"1.2.5\"},\"potentiallyUnsafeConfigAnnotations\":[\"bundle\",\"org.systemd.property.\",\"org.criu.config\"]}"
+          }
+        },
+        "nvidia": {
+          "path": "nvidia-container-runtime",
+          "status": {
+            "org.opencontainers.runtime-spec.features": "{\"ociVersionMin\":\"1.0.0\",\"ociVersionMax\":\"1.2.0\",\"hooks\":[\"prestart\",\"createRuntime\",\"createContainer\",\"startContainer\",\"poststart\",\"poststop\"],\"mountOptions\":[\"async\",\"atime\",\"bind\",\"defaults\",\"dev\",\"diratime\",\"dirsync\",\"exec\",\"iversion\",\"lazytime\",\"loud\",\"mand\",\"noatime\",\"nodev\",\"nodiratime\",\"noexec\",\"noiversion\",\"nolazytime\",\"nomand\",\"norelatime\",\"nostrictatime\",\"nosuid\",\"nosymfollow\",\"private\",\"ratime\",\"rbind\",\"rdev\",\"rdiratime\",\"relatime\",\"remount\",\"rexec\",\"rnoatime\",\"rnodev\",\"rnodiratime\",\"rnoexec\",\"rnorelatime\",\"rnostrictatime\",\"rnosuid\",\"rnosymfollow\",\"ro\",\"rprivate\",\"rrelatime\",\"rro\",\"rrw\",\"rshared\",\"rslave\",\"rstrictatime\",\"rsuid\",\"rsymfollow\",\"runbindable\",\"rw\",\"shared\",\"silent\",\"slave\",\"strictatime\",\"suid\",\"symfollow\",\"sync\",\"tmpcopyup\",\"unbindable\"],\"linux\":{\"namespaces\":[\"cgroup\",\"ipc\",\"mount\",\"network\",\"pid\",\"time\",\"user\",\"uts\"],\"capabilities\":[\"CAP_CHOWN\",\"CAP_DAC_OVERRIDE\",\"CAP_DAC_READ_SEARCH\",\"CAP_FOWNER\",\"CAP_FSETID\",\"CAP_KILL\",\"CAP_SETGID\",\"CAP_SETUID\",\"CAP_SETPCAP\",\"CAP_LINUX_IMMUTABLE\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_BROADCAST\",\"CAP_NET_ADMIN\",\"CAP_NET_RAW\",\"CAP_IPC_LOCK\",\"CAP_IPC_OWNER\",\"CAP_SYS_MODULE\",\"CAP_SYS_RAWIO\",\"CAP_SYS_CHROOT\",\"CAP_SYS_PTRACE\",\"CAP_SYS_PACCT\",\"CAP_SYS_ADMIN\",\"CAP_SYS_BOOT\",\"CAP_SYS_NICE\",\"CAP_SYS_RESOURCE\",\"CAP_SYS_TIME\",\"CAP_SYS_TTY_CONFIG\",\"CAP_MKNOD\",\"CAP_LEASE\",\"CAP_AUDIT_WRITE\",\"CAP_AUDIT_CONTROL\",\"CAP_SETFCAP\",\"CAP_MAC_OVERRIDE\",\"CAP_MAC_ADMIN\",\"CAP_SYSLOG\",\"CAP_WAKE_ALARM\",\"CAP_BLOCK_SUSPEND\",\"CAP_AUDIT_READ\",\"CAP_PERFMON\",\"CAP_BPF\",\"CAP_CHECKPOINT_RESTORE\"],\"cgroup\":{\"v1\":true,\"v2\":true,\"systemd\":true,\"systemdUser\":true,\"rdma\":true},\"seccomp\":{\"enabled\":true,\"actions\":[\"SCMP_ACT_ALLOW\",\"SCMP_ACT_ERRNO\",\"SCMP_ACT_KILL\",\"SCMP_ACT_KILL_PROCESS\",\"SCMP_ACT_KILL_THREAD\",\"SCMP_ACT_LOG\",\"SCMP_ACT_NOTIFY\",\"SCMP_ACT_TRACE\",\"SCMP_ACT_TRAP\"],\"operators\":[\"SCMP_CMP_EQ\",\"SCMP_CMP_GE\",\"SCMP_CMP_GT\",\"SCMP_CMP_LE\",\"SCMP_CMP_LT\",\"SCMP_CMP_MASKED_EQ\",\"SCMP_CMP_NE\"],\"archs\":[\"SCMP_ARCH_AARCH64\",\"SCMP_ARCH_ARM\",\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\",\"SCMP_ARCH_MIPS64N32\",\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\",\"SCMP_ARCH_MIPSEL64N32\",\"SCMP_ARCH_PPC\",\"SCMP_ARCH_PPC64\",\"SCMP_ARCH_PPC64LE\",\"SCMP_ARCH_RISCV64\",\"SCMP_ARCH_S390\",\"SCMP_ARCH_S390X\",\"SCMP_ARCH_X32\",\"SCMP_ARCH_X86\",\"SCMP_ARCH_X86_64\"],\"knownFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"],\"supportedFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"]},\"apparmor\":{\"enabled\":true},\"selinux\":{\"enabled\":true},\"intelRdt\":{\"enabled\":true},\"mountExtensions\":{\"idmap\":{\"enabled\":true}}},\"annotations\":{\"io.github.seccomp.libseccomp.version\":\"2.5.4\",\"org.opencontainers.runc.checkpoint.enabled\":\"true\",\"org.opencontainers.runc.commit\":\"v1.2.5-0-g59923ef\",\"org.opencontainers.runc.version\":\"1.2.5\"},\"potentiallyUnsafeConfigAnnotations\":[\"bundle\",\"org.systemd.property.\",\"org.criu.config\"]}"
+          }
+        },
+        "runc": {
+          "path": "runc",
+          "status": {
+            "org.opencontainers.runtime-spec.features": "{\"ociVersionMin\":\"1.0.0\",\"ociVersionMax\":\"1.2.0\",\"hooks\":[\"prestart\",\"createRuntime\",\"createContainer\",\"startContainer\",\"poststart\",\"poststop\"],\"mountOptions\":[\"async\",\"atime\",\"bind\",\"defaults\",\"dev\",\"diratime\",\"dirsync\",\"exec\",\"iversion\",\"lazytime\",\"loud\",\"mand\",\"noatime\",\"nodev\",\"nodiratime\",\"noexec\",\"noiversion\",\"nolazytime\",\"nomand\",\"norelatime\",\"nostrictatime\",\"nosuid\",\"nosymfollow\",\"private\",\"ratime\",\"rbind\",\"rdev\",\"rdiratime\",\"relatime\",\"remount\",\"rexec\",\"rnoatime\",\"rnodev\",\"rnodiratime\",\"rnoexec\",\"rnorelatime\",\"rnostrictatime\",\"rnosuid\",\"rnosymfollow\",\"ro\",\"rprivate\",\"rrelatime\",\"rro\",\"rrw\",\"rshared\",\"rslave\",\"rstrictatime\",\"rsuid\",\"rsymfollow\",\"runbindable\",\"rw\",\"shared\",\"silent\",\"slave\",\"strictatime\",\"suid\",\"symfollow\",\"sync\",\"tmpcopyup\",\"unbindable\"],\"linux\":{\"namespaces\":[\"cgroup\",\"ipc\",\"mount\",\"network\",\"pid\",\"time\",\"user\",\"uts\"],\"capabilities\":[\"CAP_CHOWN\",\"CAP_DAC_OVERRIDE\",\"CAP_DAC_READ_SEARCH\",\"CAP_FOWNER\",\"CAP_FSETID\",\"CAP_KILL\",\"CAP_SETGID\",\"CAP_SETUID\",\"CAP_SETPCAP\",\"CAP_LINUX_IMMUTABLE\",\"CAP_NET_BIND_SERVICE\",\"CAP_NET_BROADCAST\",\"CAP_NET_ADMIN\",\"CAP_NET_RAW\",\"CAP_IPC_LOCK\",\"CAP_IPC_OWNER\",\"CAP_SYS_MODULE\",\"CAP_SYS_RAWIO\",\"CAP_SYS_CHROOT\",\"CAP_SYS_PTRACE\",\"CAP_SYS_PACCT\",\"CAP_SYS_ADMIN\",\"CAP_SYS_BOOT\",\"CAP_SYS_NICE\",\"CAP_SYS_RESOURCE\",\"CAP_SYS_TIME\",\"CAP_SYS_TTY_CONFIG\",\"CAP_MKNOD\",\"CAP_LEASE\",\"CAP_AUDIT_WRITE\",\"CAP_AUDIT_CONTROL\",\"CAP_SETFCAP\",\"CAP_MAC_OVERRIDE\",\"CAP_MAC_ADMIN\",\"CAP_SYSLOG\",\"CAP_WAKE_ALARM\",\"CAP_BLOCK_SUSPEND\",\"CAP_AUDIT_READ\",\"CAP_PERFMON\",\"CAP_BPF\",\"CAP_CHECKPOINT_RESTORE\"],\"cgroup\":{\"v1\":true,\"v2\":true,\"systemd\":true,\"systemdUser\":true,\"rdma\":true},\"seccomp\":{\"enabled\":true,\"actions\":[\"SCMP_ACT_ALLOW\",\"SCMP_ACT_ERRNO\",\"SCMP_ACT_KILL\",\"SCMP_ACT_KILL_PROCESS\",\"SCMP_ACT_KILL_THREAD\",\"SCMP_ACT_LOG\",\"SCMP_ACT_NOTIFY\",\"SCMP_ACT_TRACE\",\"SCMP_ACT_TRAP\"],\"operators\":[\"SCMP_CMP_EQ\",\"SCMP_CMP_GE\",\"SCMP_CMP_GT\",\"SCMP_CMP_LE\",\"SCMP_CMP_LT\",\"SCMP_CMP_MASKED_EQ\",\"SCMP_CMP_NE\"],\"archs\":[\"SCMP_ARCH_AARCH64\",\"SCMP_ARCH_ARM\",\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\",\"SCMP_ARCH_MIPS64N32\",\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\",\"SCMP_ARCH_MIPSEL64N32\",\"SCMP_ARCH_PPC\",\"SCMP_ARCH_PPC64\",\"SCMP_ARCH_PPC64LE\",\"SCMP_ARCH_RISCV64\",\"SCMP_ARCH_S390\",\"SCMP_ARCH_S390X\",\"SCMP_ARCH_X32\",\"SCMP_ARCH_X86\",\"SCMP_ARCH_X86_64\"],\"knownFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"],\"supportedFlags\":[\"SECCOMP_FILTER_FLAG_TSYNC\",\"SECCOMP_FILTER_FLAG_SPEC_ALLOW\",\"SECCOMP_FILTER_FLAG_LOG\"]},\"apparmor\":{\"enabled\":true},\"selinux\":{\"enabled\":true},\"intelRdt\":{\"enabled\":true},\"mountExtensions\":{\"idmap\":{\"enabled\":true}}},\"annotations\":{\"io.github.seccomp.libseccomp.version\":\"2.5.4\",\"org.opencontainers.runc.checkpoint.enabled\":\"true\",\"org.opencontainers.runc.commit\":\"v1.2.5-0-g59923ef\",\"org.opencontainers.runc.version\":\"1.2.5\"},\"potentiallyUnsafeConfigAnnotations\":[\"bundle\",\"org.systemd.property.\",\"org.criu.config\"]}"
+          }
+        }
+      },
+      "DefaultRuntime": "runc",
+      "Swarm": {
+        "NodeID": "",
+        "NodeAddr": "",
+        "LocalNodeState": "inactive",
+        "ControlAvailable": false,
+        "Error": "",
+        "RemoteManagers": null
+      },
+      "LiveRestoreEnabled": false,
+      "Isolation": "",
+      "InitBinary": "docker-init",
+      "ContainerdCommit": {
+        "ID": "753481ec61c7c8955a23d6ff7bc8e4daed455734",
+        "Expected": "753481ec61c7c8955a23d6ff7bc8e4daed455734"
+      },
+      "RuncCommit": {
+        "ID": "v1.2.5-0-g59923ef",
+        "Expected": "v1.2.5-0-g59923ef"
+      },
+      "InitCommit": {
+        "ID": "de40ad0",
+        "Expected": "de40ad0"
+      },
+      "SecurityOptions": [
+        "name=seccomp,profile=unconfined"
+      ],
+      "CDISpecDirs": [
+        "/etc/cdi",
+        "/var/run/cdi"
+      ],
+      "Containerd": {
+        "Address": "/run/containerd/containerd.sock",
+        "Namespaces": {
+          "Containers": "moby",
+          "Plugins": "plugins.moby"
+        }
+      },
+      "Warnings": [
+        "WARNING: No blkio throttle.read_bps_device support",
+        "WARNING: No blkio throttle.write_bps_device support",
+        "WARNING: No blkio throttle.read_iops_device support",
+        "WARNING: No blkio throttle.write_iops_device support",
+        "WARNING: DOCKER_INSECURE_NO_IPTABLES_RAW is set",
+        "WARNING: daemon is not using the default seccomp profile"
+      ],
+      "ClientInfo": {
+        "Debug": false,
+        "Version": "28.0.4",
+        "DefaultAPIVersion": "1.48",
+        "GitCommit": "b8034c0",
+        "GoVersion": "go1.23.7",
+        "Os": "windows",
+        "Arch": "amd64",
+        "BuildTime": "Tue Mar 25 15:07:48 2025",
+        "Context": "desktop-linux",
+        "Plugins": [
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v1.1.3",
+            "ShortDescription": "Docker AI Agent - Ask Gordon",
+            "Name": "ai",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-ai.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v0.22.0-desktop.1",
+            "ShortDescription": "Docker Buildx",
+            "Name": "buildx",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-buildx.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "0.2.20",
+            "ShortDescription": "Docker Cloud",
+            "Name": "cloud",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-cloud.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v2.34.0-desktop.1",
+            "ShortDescription": "Docker Compose",
+            "Name": "compose",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-compose.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "0.0.38",
+            "ShortDescription": "Get a shell into any image or container",
+            "Name": "debug",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-debug.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v0.1.6",
+            "ShortDescription": "Docker Desktop commands (Beta)",
+            "Name": "desktop",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-desktop.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v0.1.2",
+            "ShortDescription": "Docker Dev Environments",
+            "Name": "dev",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-dev.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v0.2.27",
+            "ShortDescription": "Manages Docker extensions",
+            "Name": "extension",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-extension.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v1.4.0",
+            "ShortDescription": "Creates Docker-related starter files for your project",
+            "Name": "init",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-init.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Anchore Inc.",
+            "Version": "0.6.0",
+            "ShortDescription": "View the packaged-based Software Bill Of Materials (SBOM) for an image",
+            "URL": "https://github.com/docker/sbom-cli-plugin",
+            "Name": "sbom",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-sbom.exe"
+          },
+          {
+            "SchemaVersion": "0.1.0",
+            "Vendor": "Docker Inc.",
+            "Version": "v1.17.0",
+            "ShortDescription": "Docker Scout",
+            "Name": "scout",
+            "Path": "C:\\Program Files\\Docker\\cli-plugins\\docker-scout.exe"
+          }
+        ],
+        "Warnings": null
+      }
+    },
+    "containers": [
+      {
+        "Command": "\"/bin/prometheus --c\u00e2\u20ac\u00a6\"",
+        "CreatedAt": "2025-04-13 20:11:43 +0500 PKT",
+        "ID": "2a7f9387580a",
+        "Image": "prom/prometheus:v2.35.0",
+        "Labels": "maintainer=The Prometheus Authors <prometheus-developers@googlegroups.com>",
+        "LocalVolumes": "1",
+        "Mounts": "fe7cb4e52723af\u00e2\u20ac\u00a6",
+        "Names": "zealous_wiles",
+        "Networks": "bridge",
+        "Ports": "9090/tcp",
+        "RunningFor": "42 hours ago",
+        "Size": "4.1kB (virtual 208MB)",
+        "State": "running",
+        "Status": "Up 42 hours"
+      },
+      {
+        "Command": "\"/run.sh\"",
+        "CreatedAt": "2025-04-13 19:56:43 +0500 PKT",
+        "ID": "f4fe1c92a022",
+        "Image": "grafana/grafana:8.5.0",
+        "Labels": "com.docker.compose.image=sha256:42d3e6bc186572245aded5a0be381012adba6d89355fa9486dd81b0c634695b5,com.docker.compose.project=monitoring,com.docker.compose.project.config_files=C:\\_worxpace\\research\\monitoring\\docker-compose.yml,com.docker.compose.version=2.34.0,com.docker.compose.config-hash=a2b49cf1f12f1dfde045366c9e10da0b030194845c625faee1a25fd543ccb1aa,com.docker.compose.container-number=1,com.docker.compose.depends_on=prometheus:service_started:false,desktop.docker.io/binds/0/Source=C:\\_worxpace\\research\\monitoring\\grafana\\provisioning,desktop.docker.io/binds/0/SourceKind=hostFile,desktop.docker.io/binds/0/Target=/etc/grafana/provisioning,com.docker.compose.oneoff=False,com.docker.compose.project.working_dir=C:\\_worxpace\\research\\monitoring,com.docker.compose.service=grafana",
+        "LocalVolumes": "1",
+        "Mounts": "/run/desktop/m\u00e2\u20ac\u00a6,monitoring_gra\u00e2\u20ac\u00a6",
+        "Names": "grafana",
+        "Networks": "monitoring_monitoring",
+        "Ports": "0.0.0.0:3000->3000/tcp",
+        "RunningFor": "42 hours ago",
+        "Size": "4.1kB (virtual 310MB)",
+        "State": "running",
+        "Status": "Up 42 hours"
+      },
+      {
+        "Command": "\"/bin/prometheus --c\u00e2\u20ac\u00a6\"",
+        "CreatedAt": "2025-04-13 19:56:42 +0500 PKT",
+        "ID": "b78d17fb1b0e",
+        "Image": "prom/prometheus:v2.35.0",
+        "Labels": "com.docker.compose.version=2.34.0,desktop.docker.io/binds/0/Source=C:\\_worxpace\\research\\monitoring\\prometheus\\prometheus.yml,com.docker.compose.depends_on=,com.docker.compose.project.config_files=C:\\_worxpace\\research\\monitoring\\docker-compose.yml,com.docker.compose.project.working_dir=C:\\_worxpace\\research\\monitoring,com.docker.compose.project=monitoring,com.docker.compose.container-number=1,com.docker.compose.image=sha256:2acfab1966f0dbecc6afbead13eca7f47062cfe8726bb9db25e39e0c0b88e9c3,com.docker.compose.oneoff=False,com.docker.compose.service=prometheus,desktop.docker.io/binds/0/SourceKind=hostFile,maintainer=The Prometheus Authors <prometheus-developers@googlegroups.com>,com.docker.compose.config-hash=4560e6e47d50e37cd672a88d21d74a6f4436e302f1c93af517b6e745973a8687,desktop.docker.io/binds/0/Target=/etc/prometheus/prometheus.yml",
+        "LocalVolumes": "1",
+        "Mounts": "/run/desktop/m\u00e2\u20ac\u00a6,monitoring_pro\u00e2\u20ac\u00a6",
+        "Names": "prometheus",
+        "Networks": "monitoring_monitoring",
+        "Ports": "0.0.0.0:9090->9090/tcp",
+        "RunningFor": "42 hours ago",
+        "Size": "4.1kB (virtual 208MB)",
+        "State": "running",
+        "Status": "Up 42 hours"
+      }
+    ]
+  },
+  "issues": []
+}

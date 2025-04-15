@@ -1,6 +1,6 @@
-# MIT License
+MIT License
 
-Copyright (c) 2023 AI Research Environment Team
+Copyright (c) 2025 Research Team
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -19,11 +19,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
-## Contributor Attribution
-
-While not legally required by the MIT license, we kindly request that any substantial use of this research environment in academic or commercial work include an attribution to the original contributors. This can be done through a citation, acknowledgment, or reference to the project repository.
-
-## Research Data and Models
-
-Please note that while the code and infrastructure are provided under the MIT license, specific research data, trained models, and experimental results may be subject to different terms or restrictions as specified in their respective documentation.
