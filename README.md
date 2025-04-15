@@ -7,165 +7,184 @@ C:.
 │   .gitignore                      # Git ignore file
 │   LICENSE                         # Project license
 │   README.md                       # This file
+│   requirements.txt                # Master requirements file
 │   setup.py                        # Main setup script
 │
+├───.vscode                         # VS Code configuration
+│       settings.json
+│
 ├───head_1                          # Primary research environment
-│   │   implementation_checklist.md # Implementation tracking
-│   │   Self_Improvement_Framework_Paper.md # Research paper on self-improvement
+│   │   setup.py
 │   │
 │   ├───.vscode                     # VS Code configuration
-│   │       settings.json           # Editor settings
+│   │       settings.json
 │   │
 │   ├───documets                    # Documentation directory
-│   │   │   advanced.md             # Advanced usage documentation
-│   │   │   framework_documentation.md # Framework documentation
-│   │   │   methodology.md          # Research methodology
-│   │   │   monitoring.md           # System monitoring guide
-│   │   │   setup.md                # Setup instructions
-│   │   │   troubleshooting.md      # Troubleshooting guide
+│   │   │   advanced.md
+│   │   │   framework_documentation.md
+│   │   │   methodology.md
+│   │   │   monitoring.md
+│   │   │   setup.md
+│   │   │   troubleshooting.md
 │   │   │
 │   │   └───tutorials               # Tutorial documents
-│   │           docker_configuration.md # Docker setup tutorial
-│   │           grafana.md          # Grafana configuration
-│   │           jupyter_tutorial.md # Jupyter notebooks tutorial
-│   │           NCT_guide.md        # NCT usage guide
-│   │           prometheus.md       # Prometheus configuration
+│   │           docker_configuration.md
+│   │           grafana.md
+│   │           jupyter_tutorial.md
+│   │           NCT_guide.md
+│   │           prometheus.md
 │   │
 │   ├───experiments                 # Experimental code and data
 │   ├───frameworks                  # Core framework components
-│   │   │   frameworking.md         # Framework documentation
-│   │   │
-│   │   ├───emotional_dimensionality # Emotional analysis framework
-│   │   │   │   emotional_dimensionality.py # Emotional analysis implementation
-│   │   │   │   README.md           # Module documentation
-│   │   │   │
-│   │   │   └───lexicons            # Emotion lexicon data
-│   │   ├───self_awareness          # Self-awareness framework
-│   │   │       agent.Dockerfile    # Dockerfile for agent container
-│   │   │       ARCHITECTURE.md     # Architecture documentation
-│   │   │       docker-compose.yml  # Docker composition for self-awareness
-│   │   │       example_ai_agent.py # Example agent implementation
-│   │   │       README.md           # Module documentation
-│   │   │       requirements.txt    # Module dependencies
-│   │   │       self_awareness.py   # Core self-awareness implementation
-│   │   │       self_awareness_client.py # Client interface
-│   │   │       server.Dockerfile   # Dockerfile for server container
-│   │   │       server.py           # Server implementation
-│   │   │
-│   │   ├───system                  # System-level framework components
-│   │   ├───_deployment             # Deployment utilities
-│   │   │       config.py           # Deployment configuration
-│   │   │       deploy_frameworks.py # Deployment script
-│   │   │       integration.py      # Integration utilities
-│   │   │       setup_frameworks.sh # Framework setup script
-│   │   │       __init__.py         # Package initialization
-│   │   │
-│   │   └───__config                # Configuration directory
-│   │           startup_config.json # Startup configuration
-│   │           __init__.py         # Package initialization
+│   │   ├───emotional_dimensionality
+│   │   │   │   emotional_dimensionality.py
+│   │   │   │   README.md
+│   │   │   └───lexicons
+│   │   ├───self_awareness
+│   │   │       agent.Dockerfile
+│   │   │       ARCHITECTURE.md
+│   │   │       docker-compose.yml
+│   │   │       README.md
+│   │   │       requirements.txt
+│   │   │       self_awareness.py
+│   │   │       self_awareness_client.py
+│   │   │       server.Dockerfile
+│   │   │       server.py
+│   │   │       test_client_server.py
+│   │   ├───system
+│   │   ├───_deployment
+│   │   │       config.py
+│   │   │       deploy_frameworks.py
+│   │   │       integration.py
+│   │   │       setup_frameworks.sh
+│   │   │       __init__.py
+│   │   └───__config
+│   │           startup_config.json
+│   │           __init__.py
 │   │
 │   ├───models                      # ML model storage
+│   │   ├───cognitive_simulation
+│   │   │       agent.Dockerfile
+│   │   │       ARCHITECTURE.md
+│   │   │       cognitive_analysis.py
+│   │   │       cognitive_simulation.py
+│   │   │       config.json
+│   │   │       docker-compose.yml
+│   │   │       README.md
+│   │   │       requirements.txt
+│   │   │       simulation_visualizer.py
+│   │   └───example-ai-agent
+│   │           example_ai_agent.py
+│   │
 │   ├───monitoring                  # System monitoring
-│   │   │   docker-compose.yml      # Docker composition for monitoring
-│   │   │   environment_manager.py  # Environment management
-│   │   │   instructions.md         # Monitoring instructions
-│   │   │   run.sh                  # Startup script
-│   │   │   troubleshooting_prometheus.md # Prometheus troubleshooting
-│   │   │
-│   │   ├───grafana                 # Grafana monitoring
-│   │   │   └───provisioning        # Grafana provisioning
-│   │   │       ├───dashboards      # Dashboard configurations
-│   │   │       │       dashboard.yml # Dashboard definition
-│   │   │       │       research-dashboard.json # Research dashboard
-│   │   │       │
-│   │   │       └───datasources     # Data source configurations
-│   │   │               prometheus.yml # Prometheus data source
-│   │   │
-│   │   └───prometheus              # Prometheus monitoring
-│   │           prometheus.yml      # Prometheus configuration
+│   │   │   docker-compose.yml
+│   │   │   environment_manager.py
+│   │   │   instructions.md
+│   │   │   run.sh
+│   │   │   troubleshooting_prometheus.md
+│   │   ├───grafana
+│   │   │   └───provisioning
+│   │   │       ├───dashboards
+│   │   │       │       dashboard.yml
+│   │   │       │       research-dashboard.json
+│   │   │       └───datasources
+│   │   │               prometheus.yml
+│   │   └───prometheus
+│   │           prometheus.yml
 │   │
 │   ├───notebooks                   # Jupyter notebooks
-│   │       environment_setup.ipynb # Environment setup notebook
-│   │       gpu_performance_testing.ipynb # GPU performance tests
-│   │       self_awareness_and_emotional_analysis.ipynb # Analysis notebook
-│   │       self_model_visualization.ipynb # Visualization notebook
-│   │       system_diagnostics.ipynb # System diagnostics
+│   │       environment_setup.ipynb
+│   │       gpu_performance_testing.ipynb
+│   │       self_awareness_and_emotional_analysis.ipynb
+│   │       self_model_visualization.ipynb
+│   │       system_diagnostics.ipynb
 │   │
 │   ├───scripts                     # Utility scripts
-│   │   │   install-nvidia-toolkit.sh # NVIDIA toolkit installation
-│   │   │   install_yaml.ps1        # YAML installation (PowerShell)
-│   │   │   install_yaml.sh         # YAML installation (Bash)
-│   │   │
-│   │   └───startup_scripts         # System startup scripts
-│   │           gpu_setup.sh        # GPU configuration
-│   │           run.sh              # Main run script
-│   │           setup_environment.sh # Environment setup
-│   │           test-nvidia-setup.sh # NVIDIA setup test
+│   │   │   install-nvidia-toolkit.sh
+│   │   │   install_yaml.ps1
+│   │   │   install_yaml.sh
+│   │   └───startup_scripts
+│   │           gpu_setup.sh
+│   │           run.sh
+│   │           setup_environment.sh
+│   │           test-nvidia-setup.sh
 │   │
 │   ├───system                      # System components
-│   │   │   requirements.txt        # System dependencies
-│   │   │   setup.py                # System setup
-│   │   │   setup_environment.ps1   # PowerShell setup
-│   │   │   __init__.py             # Package initialization
-│   │   │
-│   │   ├───error_handler           # Error handling
-│   │   │       documentationErrorHandler.js # Documentation errors
-│   │   │       errorHandler.js     # General error handling
-│   │   │
-│   │   ├───logs                    # System logs
-│   │   │       automated_setup.log # Setup logs
-│   │   │       environment.log     # Environment logs
-│   │   │       python_install.log  # Python installation logs
-│   │   │
-│   │   ├───setup_package           # Setup utilities
-│   │   │   │   dependency_manager.py # Dependency management
-│   │   │   │   docker_prep.py      # Docker preparation
-│   │   │   │   environment_manager.py # Environment management
-│   │   │   │   setup_manager.py    # Setup coordination
-│   │   │   │   __init__.py         # Package initialization
-│   │   │   │
-│   │   │   └───utils               # Setup utilities
-│   │   │           logging_utils.py # Logging utilities
-│   │   │           system_utils.py # System utilities
-│   │   │           __init__.py     # Package initialization
-│   │   │
-│   │   └───utils                   # System utilities
-│   │           create_index.py     # Index creation
-│   │           diagnostics.py      # System diagnostics
-│   │           gpu_utils.py        # GPU utilities
-│   │           memory_optimizer.py # Memory optimization
-│   │           system_utils.py     # System utilities
+│   │   │   requirements.txt
+│   │   │   setup.py
+│   │   │   setup_environment.ps1
+│   │   │   __init__.py
+│   │   ├───setup_package
+│   │   │   │   dependency_manager.py
+│   │   │   │   docker_prep.py
+│   │   │   │   environment_manager.py
+│   │   │   │   setup_manager.py
+│   │   │   │   __init__.py
+│   │   │   └───utils
+│   │   │           logging_utils.py
+│   │   │           system_utils.py
+│   │   │           __init__.py
+│   │   └───utils
+│   │       │   create_index.py
+│   │       │   diagnostics.py
+│   │       │   gpu_utils.py
+│   │       │   memory_optimizer.py
+│   │       │   system_utils.py
+│   │       ├───error_handler
+│   │       │       documentationErrorHandler.js
+│   │       │       errorHandler.js
+│   │       │       error_handling.md
+│   │       │       error_metrics_dashboard.json
+│   │       │       error_testing.py
+│   │       └───logs
+│   │               automated_setup.log
+│   │               environment.log
+│   │               python_install.log
 │   │
 │   ├───terminal_1                  # First terminal environment
-│   │       .env                    # Environment variables
-│   │       docker-compose.yml      # Docker composition
-│   │       Dockerfile              # Docker configuration
-│   │       run.ps1                 # PowerShell run script
-│   │       runtime_optimization.sh # Runtime optimization
+│   │       .env
+│   │       docker-compose.yml
+│   │       Dockerfile
+│   │       run.ps1
+│   │       runtime_optimization.sh
 │   │
 │   ├───terminal_2                  # Second terminal environment
-│   │       .env                    # Environment variables
-│   │       docker-compose.yml      # Docker composition
-│   │       run.ps1                 # PowerShell run script
-│   │       runtime_optimization.sh # Runtime optimization
+│   │       .env
+│   │       docker-compose.yml
+│   │       run.ps1
+│   │       runtime_optimization.sh
 │   │
 │   ├───utils                       # Utility functions
 │   └───__pycache__                 # Python cache files
-│           install_dependencies.cpython-313.pyc # Compiled Python
+│           install_dependencies.cpython-313.pyc
 │
-├───Publishments                    # Published materials
-└───research_papers                 # Research papers
-        abstraction_theory.md       # Abstraction theory paper
-        ai_in_medicine.md           # AI in medicine paper
-        consciousness_theory.md     # Consciousness theory paper
-        exotic_frontiers.md         # Exotic frontiers paper
-        hybrid_type_theory.md       # Hybrid type theory paper
-        non_euclidean_representations.md # Non-Euclidean representations paper
-        quantum_spacetime.md        # Quantum spacetime paper
-        retail_ai.md                # Retail AI paper
-        self_awareness_mechanics.md # Self-awareness mechanics paper
-        sentiment_analysis_in_machines.md # Sentiment analysis paper
-        wormhol_math.md             # Wormhole mathematics paper
+├───head_2
+│   └───w_i_p
+│
+├───Publications
+│       Self_Improvement_Framework_Paper.md
+│
+├───reports
+│       error_metrics.md
+│       implementation_checklist.md
+│       managers_report.md
+│
+├───Research_Papers
+│       abstraction_theory.md
+│       ai_in_medicine.md
+│       consciousness_theory.md
+│       exotic_frontiers.md
+│       hybrid_type_theory.md
+│       non_euclidean_representations.md
+│       quantum_spacetime.md
+│       retail_ai.md
+│       self_awareness_mechanics.md
+│       sentiment_analysis_in_machines.md
+│       unified_self_improvement_framework.md
+│       wormhol_math.md
+│
+├───tools
+
 ```
 
 ## Day 1: The Question of Mind
