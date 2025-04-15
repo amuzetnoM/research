@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  self-awareness-server:
+    build:
+      context: ../../frameworks/self_awareness
+      dockerfile: server.Dockerfile
+    ports:
+      - "8765:8765"
+    networks:
+      - awareness-network
+    volumes:
+      - ../../data:/app/data
+
+  cognitive-simulation:
+    build:
+      context: .
+      dockerfile: agent.Dockerfile
+    depends_on:
+      - self-awareness-server
+    environment:
+      - SELF_AWARENESS_HOST=self-awareness-server
+      - SELF_AWARENESS_PORT=8765
+    networks:
+      - awareness-network
+
+networks:
+  awareness-network:
+    driver: bridge

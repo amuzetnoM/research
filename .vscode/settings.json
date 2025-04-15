@@ -1,0 +1,31 @@
+{
+    "cSpell.words": [
+        "AAMAS",
+        "centroids",
+        "contiguous",
+        "coreferences",
+        "datapoint",
+        "datapoints",
+        "frameworking",
+        "jsonify",
+        "jupyterlab",
+        "keepalive",
+        "kmeans",
+        "levelname",
+        "lifeform",
+        "linregress",
+        "plateaus",
+        "psutil",
+        "scikit",
+        "seaborn",
+        "sourcery",
+        "specializing",
+        "sseclient",
+        "subdict",
+        "visualizer",
+        "worxpace"
+    ],
+    "python.analysis.extraPaths": [
+        "./head_1/frameworks/self_awareness"
+    ]
+}

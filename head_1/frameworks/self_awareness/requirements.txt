@@ -1,2 +1,5 @@
 websockets==10.4
-psutil==5.9.4
+psutil>=5.8.0
+flask>=2.0.0
+requests>=2.25.1
+sseclient-py>=1.7.2

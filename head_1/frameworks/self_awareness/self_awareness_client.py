@@ -1,4 +1,3 @@
-import asyncio
 import json
 import logging
 import os
@@ -7,7 +6,9 @@ import psutil
 import sys
 import time
 import traceback
-import websockets
+import threading
+import requests
+import sseclient # type: ignore
 from datetime import datetime
 from typing import Dict, Any, Optional, List, Callable
 
@@ -42,14 +43,16 @@ class SelfAwarenessClient:
         self.reconnect_delay = 1  # Initial delay in seconds, will increase with backoff
         
         # Client state
-        self.websocket = None
         self.client_id = None
         self.connected = False
         self.running = False
         self.process = psutil.Process()
         
         # Monitoring tasks
-        self.tasks = []
+        self.threads = []
+        
+        # Event listeners
+        self.sse_thread = None
         
         # Insight and alert handlers
         self.insight_handlers: List[Callable[[Dict[str, Any]], None]] = []
@@ -69,26 +72,32 @@ class SelfAwarenessClient:
         
         # Message queue for when disconnected
         self.message_queue = []
-
-    async def connect(self):
+        
+        # Server base URL
+        self.base_url = f"http://{self.host}:{self.port}"
+        
+        # Session for HTTP requests
+        self.session = requests.Session()
+    
+    def connect(self):
         """Connect to the self-awareness server"""
         if self.connected:
             logger.warning("Already connected to self-awareness server")
             return
         
         self.running = True
-        await self._connect()
+        self._connect()
     
-    async def _connect(self):
+    def _connect(self):
         """Internal connection method with retry logic"""
         while self.running and not self.connected:
             try:
-                logger.info(f"Connecting to self-awareness server at ws://{self.host}:{self.port}")
-                self.websocket = await websockets.connect(f"ws://{self.host}:{self.port}")
+                logger.info(f"Connecting to self-awareness server at {self.base_url}")
                 
-                # Process the welcome message to get client_id
-                welcome = await self.websocket.recv()
-                welcome_data = json.loads(welcome)
+                # Register with the server
+                response = self.session.post(f"{self.base_url}/register")
+                response.raise_for_status()
+                welcome_data = response.json()
                 
                 if welcome_data.get("type") == "welcome":
                     self.client_id = welcome_data.get("client_id")
@@ -99,7 +108,7 @@ class SelfAwarenessClient:
                     logger.info(f"Connected to self-awareness server with ID: {self.client_id}")
                     
                     # Send initial system information
-                    await self._send_message({
+                    self._send_message({
                         "type": "metadata",
                         "data": self.system_info
                     })
@@ -110,20 +119,16 @@ class SelfAwarenessClient:
                     # Process any queued messages
                     if self.message_queue:
                         for message in self.message_queue:
-                            await self._send_message(message)
+                            self._send_message(message)
                         self.message_queue = []
                     
-                    # Start the message receiver loop
-                    await self._message_receiver()
+                    # Start the event listener
+                    self._start_event_listener()
                 else:
                     logger.error(f"Unexpected welcome message: {welcome_data}")
-                    await self.websocket.close()
             
-            except (websockets.exceptions.ConnectionClosed, 
-                    websockets.exceptions.WebSocketException,
-                    ConnectionRefusedError) as e:
+            except (requests.exceptions.RequestException, ConnectionError) as e:
                 self.connected = False
-                self.websocket = None
                 
                 if not self.auto_reconnect or self.reconnect_attempts >= self.max_reconnect_attempts:
                     logger.error(f"Failed to connect to self-awareness server: {str(e)}")
@@ -131,7 +136,7 @@ class SelfAwarenessClient:
                 
                 self.reconnect_attempts += 1
                 logger.warning(f"Connection attempt {self.reconnect_attempts} failed, retrying in {self.reconnect_delay}s")
-                await asyncio.sleep(self.reconnect_delay)
+                time.sleep(self.reconnect_delay)
                 
                 # Exponential backoff with maximum of 60 seconds
                 self.reconnect_delay = min(self.reconnect_delay * 2, 60)
@@ -141,82 +146,117 @@ class SelfAwarenessClient:
                 logger.debug(traceback.format_exc())
                 break
     
-    async def disconnect(self):
+    def disconnect(self):
         """Disconnect from the self-awareness server"""
         self.running = False
         
-        # Cancel all background tasks
-        for task in self.tasks:
-            if not task.done():
-                task.cancel()
+        # Stop all background threads
+        self._stop_background_tasks()
         
-        # Close websocket connection
-        if self.websocket:
-            await self.websocket.close()
+        # Notify server if connected
+        if self.connected and self.client_id:
+            try:
+                self.session.post(f"{self.base_url}/client/{self.client_id}/disconnect")
+            except Exception as e:
+                logger.error(f"Error during disconnection: {str(e)}")
         
         self.connected = False
         logger.info("Disconnected from self-awareness server")
     
-    async def _message_receiver(self):
-        """Process incoming messages from the server"""
+    def _start_event_listener(self):
+        """Start the SSE event listener thread"""
+        self.sse_thread = threading.Thread(
+            target=self._event_listener,
+            daemon=True
+        )
+        self.sse_thread.start()
+    
+    def _event_listener(self):  # sourcery skip: low-code-quality
+        """Listen for server-sent events"""
         try:
-            async for message in self.websocket:
+            headers = {'Accept': 'text/event-stream'}
+            url = f"{self.base_url}/client/{self.client_id}/events"
+
+            while self.connected and self.running:
                 try:
-                    data = json.loads(message)
-                    message_type = data.get("type")
-                    
-                    if message_type == "insights":
-                        for handler in self.insight_handlers:
-                            try:
-                                handler(data.get("data", {}))
-                            except Exception as e:
-                                logger.error(f"Error in insight handler: {str(e)}")
-                    
-                    elif message_type == "alert":
-                        for handler in self.alert_handlers:
-                            try:
-                                handler(data)
-                            except Exception as e:
-                                logger.error(f"Error in alert handler: {str(e)}")
-                    
-                    elif message_type == "query_response":
-                        # This would be handled by specific query methods
-                        pass
-                    
-                    else:
-                        logger.debug(f"Received message of type {message_type}: {data}")
-                
-                except json.JSONDecodeError:
-                    logger.error("Received invalid JSON message")
-                
+                    response = self.session.get(url, headers=headers, stream=True)
+                    client = sseclient.SSEClient(response)
+
+                    for event in client.events():
+                        if not self.connected or not self.running:
+                            break
+
+                        try:
+                            data = json.loads(event.data)
+                            message_type = data.get("type")
+
+                            if message_type == "insights":
+                                for handler in self.insight_handlers:
+                                    try:
+                                        handler(data.get("data", {}))
+                                    except Exception as e:
+                                        logger.error(f"Error in insight handler: {str(e)}")
+
+                            elif message_type == "alert":
+                                for handler in self.alert_handlers:
+                                    try:
+                                        handler(data)
+                                    except Exception as e:
+                                        logger.error(f"Error in alert handler: {str(e)}")
+
+                            elif message_type != "keepalive":
+                                logger.debug(f"Received message of type {message_type}: {data}")
+
+                        except json.JSONDecodeError:
+                            logger.error("Received invalid JSON message")
+
+                        except Exception as e:
+                            logger.error(f"Error processing message: {str(e)}")
+
+                except (requests.exceptions.RequestException, ConnectionError):
+                    logger.warning("Connection to self-awareness server closed")
+                    self.connected = False
+
+                    # Attempt reconnection if enabled
+                    if self.auto_reconnect and self.running:
+                        self._connect()
+                    break
+
                 except Exception as e:
-                    logger.error(f"Error processing message: {str(e)}")
-        
-        except websockets.exceptions.ConnectionClosed:
-            logger.warning("Connection to self-awareness server closed")
-            self.connected = False
-            
-            # Attempt reconnection if enabled
-            if self.auto_reconnect and self.running:
-                asyncio.create_task(self._connect())
-        
+                    logger.error(f"Error in event listener: {str(e)}")
+                    self.connected = False
+                    time.sleep(5)  # Wait before retrying
+
         except Exception as e:
-            logger.error(f"Error in message receiver: {str(e)}")
+            logger.error(f"Fatal error in event listener: {str(e)}")
             self.connected = False
     
     def _start_background_tasks(self):
         """Start background monitoring tasks"""
         # Cancel any existing tasks
-        for task in self.tasks:
-            if not task.done():
-                task.cancel()
+        self._stop_background_tasks()
         
-        self.tasks = [
-            asyncio.create_task(self._monitor_system_resources()),
-            asyncio.create_task(self._monitor_memory_patterns()),
-        ]
+        # Create and start new threads
+        system_resources_thread = threading.Thread(
+            target=self._monitor_system_resources,
+            daemon=True
+        )
+        
+        memory_patterns_thread = threading.Thread(
+            target=self._monitor_memory_patterns,
+            daemon=True
+        )
+        
+        self.threads = [system_resources_thread, memory_patterns_thread]
+        
+        for thread in self.threads:
+            thread.start()
     
-    async def _monitor_system_resources(self):
+    def _stop_background_tasks(self):
+        """Stop background tasks - threads will exit on their own since they check self.running"""
+        self.threads = []
+    
+    def _monitor_system_resources(self):
         """Periodically monitor and report system resource usage"""
         try:
             while self.connected and self.running:
@@ -239,7 +279,7 @@ class SelfAwarenessClient:
                     self.metrics.update(metrics)
                     
                     # Send to server
-                    await self._send_message({
+                    self._send_message({
                         "type": "metrics",
                         "data": metrics
                     })
@@ -248,20 +288,16 @@ class SelfAwarenessClient:
                     logger.error(f"Error collecting system metrics: {str(e)}")
                 
                 # Adaptive monitoring frequency based on resource usage
-                # Monitor more frequently when load is high
                 sleep_time = 10
                 if cpu_percent > 70 or memory_percent > 70:
                     sleep_time = 5
                 
-                await asyncio.sleep(sleep_time)
-        
-        except asyncio.CancelledError:
-            logger.debug("System resource monitoring task cancelled")
+                time.sleep(sleep_time)
         
         except Exception as e:
             logger.error(f"Unexpected error in system monitoring: {str(e)}")
     
-    async def _monitor_memory_patterns(self):
+    def _monitor_memory_patterns(self):
         """Monitor memory allocation and deallocations patterns"""
         try:
             memory_samples = []
@@ -300,51 +336,66 @@ class SelfAwarenessClient:
                 except Exception as e:
                     logger.error(f"Error analyzing memory patterns: {str(e)}")
                 
-                await asyncio.sleep(sample_interval)
-        
-        except asyncio.CancelledError:
-            logger.debug("Memory pattern monitoring task cancelled")
+                time.sleep(sample_interval)
         
         except Exception as e:
             logger.error(f"Unexpected error in memory monitoring: {str(e)}")
     
-    async def _send_message(self, message: Dict[str, Any]):
+    def _send_message(self, message: Dict[str, Any]):
         """Send a message to the self-awareness server"""
         # Add timestamp if not already present
         if "timestamp" not in message:
             message["timestamp"] = datetime.now().isoformat()
         
-        if not self.connected:
+        if not self.connected or not self.client_id:
             # Queue message for when connection is established
             self.message_queue.append(message)
             return
         
         try:
-            await self.websocket.send(json.dumps(message))
+            # Determine endpoint based on message type
+            if message["type"] == "metadata":
+                endpoint = f"{self.base_url}/client/{self.client_id}/metadata"
+            elif message["type"] == "metrics":
+                endpoint = f"{self.base_url}/client/{self.client_id}/metrics"
+            elif message["type"] == "query":
+                endpoint = f"{self.base_url}/client/{self.client_id}/query"
+            else:
+                logger.warning(f"Unknown message type: {message['type']}")
+                return
+            
+            # Send the request
+            response = self.session.post(endpoint, json=message)
+            response.raise_for_status()
+        
         except Exception as e:
             logger.error(f"Error sending message: {str(e)}")
             self.message_queue.append(message)
+            
+            # Check if connection is lost
+            if isinstance(e, requests.exceptions.ConnectionError):
+                self.connected = False
+                if self.auto_reconnect and self.running:
+                    self._connect()
     
-    async def query_system_status(self) -> Dict[str, Any]:
+    def query_system_status(self) -> Dict[str, Any]:
         """Query the server for system status information"""
         if not self.connected:
             return {"error": "Not connected to self-awareness server"}
         
         try:
-            await self._send_message({
+            query_message = {
                 "type": "query",
                 "query": {
                     "type": "system_status"
                 }
-            })
+            }
             
-            # Wait for response (in a real implementation, we would use a future or callback)
-            # This is simplified for demonstration
-            response = await asyncio.wait_for(self.websocket.recv(), timeout=5.0)
-            return json.loads(response)
-        
-        except asyncio.TimeoutError:
-            return {"error": "Timeout waiting for system status response"}
+            endpoint = f"{self.base_url}/client/{self.client_id}/query"
+            response = self.session.post(endpoint, json=query_message)
+            response.raise_for_status()
+            
+            return response.json()
         
         except Exception as e:
             return {"error": f"Error querying system status: {str(e)}"}
@@ -361,7 +412,7 @@ class SelfAwarenessClient:
         """Get the current set of self-metrics"""
         return self.metrics.copy()
 
-    async def update_decision_metrics(self, confidence: float, complexity: float, execution_time: float):
+    def update_decision_metrics(self, confidence: float, complexity: float, execution_time: float):
         """Update metrics related to decision-making processes"""
         metrics = {
             "decision_confidence": confidence,
@@ -372,15 +423,15 @@ class SelfAwarenessClient:
         
         self.metrics.update(metrics)
         
-        await self._send_message({
+        self._send_message({
             "type": "metrics",
             "data": metrics
         })
-
+    
     # Context manager support
-    async def __aenter__(self):
-        await self.connect()
+    def __enter__(self):
+        self.connect()
         return self
     
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.disconnect()
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()

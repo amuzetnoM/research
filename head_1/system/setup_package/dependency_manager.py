@@ -59,7 +59,7 @@ def is_package_installed(package_name):
     except pkg_resources.DistributionNotFound:
         return False
 
-def check_dependencies():  # sourcery skip: simplify-len-comparison
+def check_dependencies():
     """
     Check if all required dependencies are installed.
     
@@ -76,7 +76,7 @@ def check_dependencies():  # sourcery skip: simplify-len-comparison
             missing_packages.append(package)
             logger.debug(f"Missing package: {package}")
 
-    return len(missing_packages) == 0, missing_packages
+    return not missing_packages, missing_packages
 
 def install_dependencies(dependencies=None, upgrade=False):
     """

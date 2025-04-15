@@ -1,4 +1,4 @@
-FROM python:3.9-slim
+FROM python:3.13-slim-bookworm
 
 WORKDIR /app
 
@@ -9,7 +9,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy server code
 COPY server.py .
 
-# Expose the WebSocket port
+# Expose the HTTP port
 EXPOSE 8765
 
 # Run the server

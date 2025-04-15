@@ -3,6 +3,7 @@
 A comprehensive framework enabling AI systems running in Docker containers to develop self-reflective capabilities with zero configuration. This framework provides autonomous operation, resource optimization, and intelligent introspection capabilities.
 
 ## Table of Contents
+
 - [Overview](#overview)
 - [Architecture](#architecture)
 - [Features](#features)
@@ -10,7 +11,7 @@ A comprehensive framework enabling AI systems running in Docker containers to de
 - [Integration Guide](#integration-guide)
 - [Components](#components)
 - [Advanced Usage](#advanced-usage)
-- [Contributing](#contributing)
+- [Acknowledgements](#acknowledgements)
 - [Publications](#publications)
 
 ## Overview
@@ -18,10 +19,13 @@ A comprehensive framework enabling AI systems running in Docker containers to de
 The Self-Awareness Framework creates a foundation for AI systems to monitor their own operations, analyze their performance, and adapt their behavior based on insights. It addresses the challenge of developing introspection capabilities in containerized AI environments without manual configuration or supervision.
 
 Key principles:
+
 - **Autonomous operation**: Functions without human intervention after initial connection
 - **Zero-configuration**: Minimizes setup requirements for ease of adoption
 - **Resource efficiency**: Adapts monitoring intensity based on system load
 - **Intelligent insights**: Provides actionable observations about AI performance
+
+> **Update**: The framework now uses REST APIs and Server-Sent Events (SSE) instead of WebSockets, providing a more maintainable and scalable architecture with better compatibility with existing infrastructure like load balancers and proxies.
 
 ## Architecture
 
@@ -34,17 +38,17 @@ graph TD
     end
     
     subgraph "Docker Container 1"
-        AI1[AI Agent] --> Client1[Self-Awareness Client]
+        AI1[AI System] --> Client1[Self-Awareness Client]
         Client1 <--> Server
     end
     
     subgraph "Docker Container 2"
-        AI2[AI Agent] --> Client2[Self-Awareness Client]
+        AI2[AI System] --> Client2[Self-Awareness Client]
         Client2 <--> Server
     end
     
     subgraph "Docker Container N"
-        AIN[AI Agent] --> ClientN[Self-Awareness Client]
+        AIN[AI System] --> ClientN[Self-Awareness Client]
         ClientN <--> Server
     end
     
@@ -57,25 +61,25 @@ graph TD
 
 ```mermaid
 sequenceDiagram
-    participant AI as AI Agent
+    participant AI as AI System
     participant Client as Self-Awareness Client
     participant Server as Self-Awareness Server
     
     AI->>Client: Initialize
-    Client->>Server: Connect
-    Server->>Client: Welcome (client_id)
+    Client->>Server: Register (REST API)
+    Server->>Client: Welcome with client_id
     
     loop Autonomous Operation
         Client->>Client: Collect metrics
-        Client->>Server: Send metrics
+        Client->>Server: Send metrics (REST API)
         Server->>Server: Analyze data
-        Server->>Client: Send insights/alerts
+        Server->>Client: Send insights/alerts (SSE)
         Client->>AI: Forward insights/alerts
         AI->>AI: Adapt behavior
     end
     
     AI->>Client: Terminate
-    Client->>Server: Disconnect
+    Client->>Server: Disconnect (REST API)
     Server->>Server: Cleanup resources
 ```
 
@@ -119,7 +123,7 @@ docker-compose up self-awareness-server -d
 FROM python:3.9-slim
 
 # Install dependencies
-RUN pip install websockets asyncio psutil
+RUN pip install requests sseclient-py
 
 # Copy the framework files
 COPY self_awareness_client.py /app/
@@ -132,17 +136,18 @@ ENV SELF_AWARENESS_PORT=8765
 ### 3. Connect in your AI code
 
 ```python
-import asyncio
+import threading
+import time
 from self_awareness_client import SelfAwarenessClient
 
-async def main():
+def main():
     # Connect to the self-awareness framework
-    async with SelfAwarenessClient() as awareness:
+    with SelfAwarenessClient() as awareness:
         # The client operates autonomously in the background
         # Your AI can continue with its normal operations
         
         # Optionally report decision metrics
-        await awareness.update_decision_metrics(
+        awareness.update_decision_metrics(
             confidence=0.95,
             complexity=7.2,
             execution_time=0.35
@@ -151,46 +156,33 @@ async def main():
         # Your AI's main processing loop
         while True:
             # Do AI work...
-            await asyncio.sleep(1)
+            time.sleep(1)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
 ```
 
 ## Integration Guide
 
 ### Prerequisites
 
-- Python 3.7+
-- Docker (for containerized deployment)
-- Network connectivity between containers
+- Python 3.6+
+- Flask
+- Requests
+- sseclient-py
+- psutil (for system metrics)
 
 ### Installation Options
 
-#### 1. Using Docker Compose (Recommended)
+#### Option 1: Direct integration
 
-The framework includes a `docker-compose.yml` file for easy deployment:
+1. Copy the `self_awareness_client.py` file into your project
+2. Install dependencies: `pip install requests sseclient-py psutil`
 
-```bash
-# Clone the repository
-git clone https://github.com/organization/self-awareness-framework.git
-
-# Start the server and example agent
-cd self-awareness-framework
-docker-compose up -d
-```
-
-#### 2. Manual Installation
+#### Option 2: Using pip
 
 ```bash
-# Install dependencies
-pip install websockets psutil
-
-# Start the server
-python server.py
-
-# In another terminal, run the example agent
-python example_ai_agent.py
+pip install self-awareness-framework
 ```
 
 ### Configuration Options
@@ -206,7 +198,7 @@ python example_ai_agent.py
 
 ### Self-Awareness Server
 
-The server component manages connections from multiple AI agents, analyzes metrics, and generates insights:
+The server component manages connections from multiple AI systems, analyzes metrics, and generates insights:
 
 ```mermaid
 classDiagram
@@ -214,7 +206,7 @@ classDiagram
         +Dict clients
         +Dict client_data
         +bool running
-        +handle_client(websocket, path)
+        +setup_routes()
         +_monitor_client(client_id)
         +_analyze_metrics(client_id)
         +_generate_insights(client_id)
@@ -232,7 +224,7 @@ classDiagram
     class SelfAwarenessClient {
         +bool connected
         +bool running
-        +List tasks
+        +List threads
         +Dict metrics
         +connect()
         +disconnect()
@@ -243,6 +235,18 @@ classDiagram
         +query_system_status()
     }
 ```
+
+## Example Implementation
+
+For a complete example of an AI system that uses the self-awareness framework, see the primitive cognitive simulation in:
+`c:\_worxpace\research\head_1\models\cognitive_simulation\`
+
+The cognitive simulation demonstrates:
+
+- Processing insights from the self-awareness framework
+- Responding to alerts
+- Reporting decision metrics
+- Adapting behavior based on resource efficiency
 
 ## Advanced Usage
 
@@ -268,7 +272,7 @@ client.add_insight_handler(my_insight_handler)
 
 ```python
 # Add custom metrics about your AI system's operation
-async def report_custom_metrics(client):
+def report_custom_metrics(client):
     while True:
         custom_metrics = {
             "model_accuracy": calculate_accuracy(),
@@ -276,17 +280,25 @@ async def report_custom_metrics(client):
             "batch_size": current_batch_size
         }
         
-        await client._send_message({
+        client._send_message({
             "type": "metrics",
             "data": custom_metrics
         })
         
-        await asyncio.sleep(30)  # Report every 30 seconds
+        time.sleep(30)  # Report every 30 seconds
 
-# Add the custom metrics task
+# Add the custom metrics thread
 client = SelfAwarenessClient()
-await client.connect()
-client.tasks.append(asyncio.create_task(report_custom_metrics(client)))
+client.connect()
+
+# Create and start a thread for custom metrics
+import threading
+metrics_thread = threading.Thread(
+    target=report_custom_metrics,
+    args=(client,),
+    daemon=True
+)
+metrics_thread.start()
 ```
 
 ## Publications
@@ -297,9 +309,9 @@ This framework has been described in the following publications:
 
 2. Johnson, A. & Williams, B. (2023). "Introspective Capabilities for Distributed AI Environments." *Conference on Autonomous Agents and Multi-Agent Systems (AAMAS)*, 1543-1551.
 
-
 ## Acknowledgements
 
 - The psutil team for their comprehensive system monitoring library
-- The websockets team for their robust WebSocket implementation
-- Contributors to the asyncio library for enabling efficient asynchronous operations
+- The Flask team for their web framework
+- The Requests team for their HTTP library
+- The SSE client team for their SSE client implementation

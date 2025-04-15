@@ -1,0 +1,49 @@
+{
+    "simulation": {
+        "max_iterations": 5000,
+        "log_directory": "simulation_logs",
+        "log_interval": 100
+    },
+    "lifeform": {
+        "name": "CognitiveEntity-1",
+        "initial_energy": 100.0,
+        "max_energy": 100.0,
+        "sensors": {
+            "energy_reliability": 0.95,
+            "obstacle_reliability": 0.85,
+            "reward_reliability": 0.9,
+            "environment_reliability": 0.8,
+            "internal_reliability": 0.98
+        },
+        "behaviors": {
+            "move_weight": 1.0,
+            "consume_weight": 1.0,
+            "avoid_weight": 1.5,
+            "rest_weight": 0.8,
+            "explore_weight": 0.7,
+            "move_energy_cost": 2.0,
+            "consume_energy_cost": 1.0,
+            "avoid_energy_cost": 2.5, 
+            "rest_energy_cost": 0.2,
+            "explore_energy_cost": 3.0
+        },
+        "adaptation_rate": 0.1
+    },
+    "environment": {
+        "complexity": 0.6,
+        "obstacle_density": 0.3,
+        "reward_density": 0.2,
+        "environmental_stability": 0.7
+    },
+    "self_awareness": {
+        "host": "localhost",
+        "port": 8765,
+        "auto_reconnect": true,
+        "max_reconnect_attempts": 10
+    },
+    "visualization": {
+        "show_plots": true,
+        "save_plots": true,
+        "plot_dpi": 300
+    }
+}

@@ -194,7 +194,6 @@ def setup_dependencies(force=False):
         return False
 
 
-# TODO Rename this here and in `setup_dependencies`
 def _extracted_from_setup_dependencies_8(force):
     # Upgrade pip first
     logger.info("Upgrading pip...")
@@ -223,6 +222,24 @@ def _extracted_from_setup_dependencies_8(force):
 
         logger.info("Installing Matplotlib...")
         subprocess.run([sys.executable, "-m", "pip", "install", "matplotlib"], check=True)
+        
+        # Install Pylance for better Python language support
+        logger.info("Installing Pylance support...")
+        try:
+            # Check if running in VS Code
+            if "VSCODE_PID" in os.environ:
+                logger.info("VS Code detected, installing Pylance extension...")
+                subprocess.run(["code", "--install-extension", "ms-python.vscode-pylance"], check=True)
+                logger.info("Pylance extension installed successfully")
+            else:
+                logger.info("VS Code not detected, skipping Pylance extension installation")
+                
+            # Install Python language server for Pylance support
+            subprocess.run([sys.executable, "-m", "pip", "install", "python-language-server[all]"], check=True)
+            logger.info("Python language server installed successfully")
+        except Exception as e:
+            logger.warning(f"Pylance setup encountered an issue: {e}")
+            logger.info("You may need to manually install the Pylance extension in VS Code")
 
     # Verify installations
     try:
@@ -321,7 +338,6 @@ def main():
         return 1
 
 
-# TODO Rename this here and in `main`
 def _extracted_from_main_19(args, logger):
     if not args.skip_python and not setup_python(force=args.force):
         logger.error("Python setup failed")
@@ -372,6 +388,10 @@ setup(
         # For emotional dimensionality framework
         "scikit-learn>=0.24.0",  # For ML components
         
+        # For LLM programming and optimization
+        "dspy>=2.0.0",        # For LLM programming
+        "flask>=2.0.0",       # For web server capabilities
+        
         # For visualization
         "plotly>=4.14.0",
         "ipywidgets>=7.6.0",
@@ -385,6 +405,10 @@ setup(
         # Jupyter notebook support
         "jupyterlab>=3.0.0",
         "ipython>=7.0.0",
+        
+        # Language server support
+        "python-language-server>=0.36.0",  # Base language server
+        "python-language-server[all]>=0.36.0",  # All language server features
     ],
     extras_require={
         "dev": [
@@ -393,6 +417,7 @@ setup(
             "flake8>=3.9.0",
             "sphinx>=4.0.0",
             "sphinx-rtd-theme>=0.5.0",
+            "mypy>=0.900",  # Type checking
         ],
         "gpu": [
             "torch>=1.9.0",

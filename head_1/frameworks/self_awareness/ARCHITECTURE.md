@@ -26,14 +26,10 @@ A lightweight client library that AI systems can integrate to:
 - Receive insights and alerts
 - Query system status
 
-### 3. Example AI Agent
+### 3. Example Implementation
 
-A demonstration AI agent that shows how to:
-
-- Integrate with the self-awareness client
-- Handle insights and alerts
-- Report decision-making metrics
-- Adjust behavior based on self-awareness information
+For an example implementation using the self-awareness framework, see the primitive cognitive simulation in:
+`c:\_worxpace\research\head_1\models\cognitive_simulation\`
 
 ## Data Flow
 
@@ -87,7 +83,8 @@ The framework can be extended in several ways:
 
 ## Implementation Notes
 
-- **Websockets**: Used for bidirectional communication
-- **Asynchronous Design**: All components use async/await for efficient operation
+- **REST API**: Used for client-server communication for data submission
+- **Server-Sent Events (SSE)**: Used for real-time updates from server to client
+- **Asynchronous Design**: Thread-based architecture for efficient operation
 - **Task-based Architecture**: Separate tasks for different monitoring functions
 - **Adaptive Behavior**: Components adjust behavior based on runtime conditions
