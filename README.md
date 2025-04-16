@@ -2,189 +2,56 @@
 
 ## Research Journal: Advanced Computation & AI
 
-```
-C:.
-│   .gitignore                      # Git ignore file
-│   LICENSE                         # Project license
-│   README.md                       # This file
-│   requirements.txt                # Master requirements file
-│   setup.py                        # Main setup script
-│
-├───.vscode                         # VS Code configuration
-│       settings.json
-│
-├───head_1                          # Primary research environment
-│   │   setup.py
-│   │
-│   ├───.vscode                     # VS Code configuration
-│   │       settings.json
-│   │
-│   ├───documets                    # Documentation directory
-│   │   │   advanced.md
-│   │   │   framework_documentation.md
-│   │   │   methodology.md
-│   │   │   monitoring.md
-│   │   │   setup.md
-│   │   │   troubleshooting.md
-│   │   │
-│   │   └───tutorials               # Tutorial documents
-│   │           docker_configuration.md
-│   │           grafana.md
-│   │           jupyter_tutorial.md
-│   │           NCT_guide.md
-│   │           prometheus.md
-│   │
-│   ├───experiments                 # Experimental code and data
-│   ├───frameworks                  # Core framework components
-│   │   ├───emotional_dimensionality
-│   │   │   │   emotional_dimensionality.py
-│   │   │   │   README.md
-│   │   │   └───lexicons
-│   │   ├───self_awareness
-│   │   │       agent.Dockerfile
-│   │   │       ARCHITECTURE.md
-│   │   │       docker-compose.yml
-│   │   │       README.md
-│   │   │       requirements.txt
-│   │   │       self_awareness.py
-│   │   │       self_awareness_client.py
-│   │   │       server.Dockerfile
-│   │   │       server.py
-│   │   │       test_client_server.py
-│   │   ├───system
-│   │   ├───_deployment
-│   │   │       config.py
-│   │   │       deploy_frameworks.py
-│   │   │       integration.py
-│   │   │       setup_frameworks.sh
-│   │   │       __init__.py
-│   │   └───__config
-│   │           startup_config.json
-│   │           __init__.py
-│   │
-│   ├───models                      # ML model storage
-│   │   ├───cognitive_simulation
-│   │   │       agent.Dockerfile
-│   │   │       ARCHITECTURE.md
-│   │   │       cognitive_analysis.py
-│   │   │       cognitive_simulation.py
-│   │   │       config.json
-│   │   │       docker-compose.yml
-│   │   │       README.md
-│   │   │       requirements.txt
-│   │   │       simulation_visualizer.py
-│   │   └───example-ai-agent
-│   │           example_ai_agent.py
-│   │
-│   ├───monitoring                  # System monitoring
-│   │   │   docker-compose.yml
-│   │   │   environment_manager.py
-│   │   │   instructions.md
-│   │   │   run.sh
-│   │   │   troubleshooting_prometheus.md
-│   │   ├───grafana
-│   │   │   └───provisioning
-│   │   │       ├───dashboards
-│   │   │       │       dashboard.yml
-│   │   │       │       research-dashboard.json
-│   │   │       └───datasources
-│   │   │               prometheus.yml
-│   │   └───prometheus
-│   │           prometheus.yml
-│   │
-│   ├───notebooks                   # Jupyter notebooks
-│   │       environment_setup.ipynb
-│   │       gpu_performance_testing.ipynb
-│   │       self_awareness_and_emotional_analysis.ipynb
-│   │       self_model_visualization.ipynb
-│   │       system_diagnostics.ipynb
-│   │
-│   ├───scripts                     # Utility scripts
-│   │   │   install-nvidia-toolkit.sh
-│   │   │   install_yaml.ps1
-│   │   │   install_yaml.sh
-│   │   └───startup_scripts
-│   │           gpu_setup.sh
-│   │           run.sh
-│   │           setup_environment.sh
-│   │           test-nvidia-setup.sh
-│   │
-│   ├───system                      # System components
-│   │   │   requirements.txt
-│   │   │   setup.py
-│   │   │   setup_environment.ps1
-│   │   │   __init__.py
-│   │   ├───setup_package
-│   │   │   │   dependency_manager.py
-│   │   │   │   docker_prep.py
-│   │   │   │   environment_manager.py
-│   │   │   │   setup_manager.py
-│   │   │   │   __init__.py
-│   │   │   └───utils
-│   │   │           logging_utils.py
-│   │   │           system_utils.py
-│   │   │           __init__.py
-│   │   └───utils
-│   │       │   create_index.py
-│   │       │   diagnostics.py
-│   │       │   gpu_utils.py
-│   │       │   memory_optimizer.py
-│   │       │   system_utils.py
-│   │       ├───error_handler
-│   │       │       documentationErrorHandler.js
-│   │       │       errorHandler.js
-│   │       │       error_handling.md
-│   │       │       error_metrics_dashboard.json
-│   │       │       error_testing.py
-│   │       └───logs
-│   │               automated_setup.log
-│   │               environment.log
-│   │               python_install.log
-│   │
-│   ├───terminal_1                  # First terminal environment
-│   │       .env
-│   │       docker-compose.yml
-│   │       Dockerfile
-│   │       run.ps1
-│   │       runtime_optimization.sh
-│   │
-│   ├───terminal_2                  # Second terminal environment
-│   │       .env
-│   │       docker-compose.yml
-│   │       run.ps1
-│   │       runtime_optimization.sh
-│   │
-│   ├───utils                       # Utility functions
-│   └───__pycache__                 # Python cache files
-│           install_dependencies.cpython-313.pyc
-│
-├───head_2
-│   └───w_i_p
-│
-├───Publications
-│       Self_Improvement_Framework_Paper.md
-│
-├───reports
-│       error_metrics.md
-│       implementation_checklist.md
-│       managers_report.md
-│
-├───Research_Papers
-│       abstraction_theory.md
-│       ai_in_medicine.md
-│       consciousness_theory.md
-│       exotic_frontiers.md
-│       hybrid_type_theory.md
-│       non_euclidean_representations.md
-│       quantum_spacetime.md
-│       retail_ai.md
-│       self_awareness_mechanics.md
-│       sentiment_analysis_in_machines.md
-│       unified_self_improvement_framework.md
-│       wormhol_math.md
-│
-├───tools
-
+```mermaid
+graph TD
+    Research["Research Project"] --> Head1["head_1/"]
+    Research --> Frontend["frontend/"]
+    Research --> Setup["setup/"]
+    Research --> Data["data/"]
+    Research --> ResearchPapers["Research_Papers/"]
+    Research --> Control["control/"]
+    Research --> Utils["utils/"]
+    Research --> Config["config files"]
+    
+    Head1 --> Models["models/"]
+    Head1 --> Frameworks["frameworks/"]
+    Head1 --> Documents["documets/"]
+    Head1 --> System["system/"]
+    Head1 --> Terminal1["terminal_1/"]
+    Head1 --> Terminal2["terminal_2/"]
+    
+    Models --> CogSim["cognitive_simulation/"]
+    
+    Frameworks --> SelfAware["self_awareness/"]
+    Frameworks --> EmotionalDim["emotional_dimensionality/"]
+    Frameworks --> ProbUnc["probabalistic_uncertainty_principle/"]
+    Frameworks --> SystemDeploy["_system/_deployment/"]
+    
+    Documents --> Tutorials["tutorials/"]
+    Documents --> Setup["setup.md"]
+    Documents --> Framework["framework_documentation.md"]
+    Documents --> Methods["methodology.md"]
+    Documents --> Advanced["advanced.md"]
+    
+    System --> SetupPkg["setup_package/"]
+    System --> Utils2["utils/"]
+    System --> MCP["mcp/"]
+    
+    Frontend --> Src["src/"]
+    Frontend --> Plan["plan/"]
+    
+    Src --> Components["components/"]
+    Src --> Services["services/"]
+    Src --> Utils3["utils/"]
+    Src --> Store["store/"]
+    Src --> Pages["pages/"]
+    
+    Plan --> DataInt["data_integration_strategy.md"]
+    Plan --> UIDesign["ui_design_strategy.md"]
+    Plan --> TechArch["technical_architecture.md"]
+    Plan --> Implementation["implementation_plan.md"]
+    
+    style Research fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
 ## Day 1: The Question of Mind
