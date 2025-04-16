@@ -25,6 +25,7 @@ import sys
 import time
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Union, Set, Any
+from datetime import datetime
 
 # Try to import optional modules, but don't fail if they're not available
 HAS_NUMPY = False
@@ -55,18 +56,28 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     handlers=[
         logging.StreamHandler(),
-        logging.FileHandler('system_setup.log')
+        logging.FileHandler(str(Path(__file__).parent.parent / 'logs' / 'system_setup.log'))
     ]
 )
 logger = logging.getLogger("system-setup")
 
 # Set default paths
-PROJECT_ROOT = Path(__file__).parent.absolute()
+PROJECT_ROOT = Path(__file__).parent.parent.absolute()
 DOCKER_DIR = PROJECT_ROOT / "docker"
 DATA_DIR = PROJECT_ROOT / "data"
 LOGS_DIR = PROJECT_ROOT / "logs"
 CONFIGS_DIR = PROJECT_ROOT / "configs"
 
+# Setup steps for progress tracking
+SETUP_STEPS = [
+    "Checking Python version and dependencies",
+    "Creating directory structure",
+    "Installing dependencies",
+    "Detecting GPU",
+    "Setting up Docker environment",
+    "Installing research frameworks",
+    "Finalizing setup"
+]
 
 def setup_logging(verbose: bool = False) -> logging.Logger:
     """Configure logging with appropriate verbosity.
@@ -369,14 +380,47 @@ def create_directory_structure() -> bool:
     """
     logger.info("Creating directory structure")
     
+    # Base directories
     directories = [
-        DOCKER_DIR,
-        DATA_DIR,
-        DATA_DIR / "models",
-        DATA_DIR / "logs",
-        DATA_DIR / "configs",
-        LOGS_DIR,
-        CONFIGS_DIR,
+        PROJECT_ROOT / "head_1",
+        PROJECT_ROOT / "head_1" / "documets",
+        PROJECT_ROOT / "head_1" / "documets" / "tutorials",
+        PROJECT_ROOT / "head_1" / "frameworks",
+        PROJECT_ROOT / "head_1" / "frameworks" / "self_awareness",
+        PROJECT_ROOT / "head_1" / "frameworks" / "probabalistic_uncertainty_principle",
+        PROJECT_ROOT / "head_1" / "frameworks" / "probabalistic_uncertainty_principle" / "docs",
+        PROJECT_ROOT / "head_1" / "frameworks" / "emotional_dimensionality",
+        PROJECT_ROOT / "head_1" / "frameworks" / "_system",
+        PROJECT_ROOT / "head_1" / "frameworks" / "_system" / "_deployment",
+        PROJECT_ROOT / "head_1" / "frameworks" / "_system" / "__config",
+        PROJECT_ROOT / "head_1" / "scripts",
+        PROJECT_ROOT / "head_1" / "scripts" / "startup_scripts",
+        PROJECT_ROOT / "head_1" / "system",
+        PROJECT_ROOT / "head_1" / "system" / "setup_package",
+        PROJECT_ROOT / "head_1" / "system" / "setup_package" / "utils",
+        PROJECT_ROOT / "head_1" / "system" / "utils",
+        PROJECT_ROOT / "head_1" / "system" / "utils" / "error_handler",
+        PROJECT_ROOT / "head_1" / "system" / "utils" / "create_index",
+        PROJECT_ROOT / "head_1" / "terminal_1",
+        PROJECT_ROOT / "head_1" / "terminal_2",
+        PROJECT_ROOT / "head_1" / "monitoring",
+        
+        # Infrastructure directories
+        PROJECT_ROOT / "docker",
+        PROJECT_ROOT / "inference_api",
+        PROJECT_ROOT / "logs",
+        PROJECT_ROOT / "CONTROLS",
+        PROJECT_ROOT / "setup",
+        
+        # Data directories
+        PROJECT_ROOT / "data",
+        PROJECT_ROOT / "data" / "models",
+        PROJECT_ROOT / "data" / "configs",
+        PROJECT_ROOT / "data" / "self_models",
+        PROJECT_ROOT / "data" / "emotional_analysis",
+        PROJECT_ROOT / "data" / "lexicons",
+        
+        # Utility directories
         PROJECT_ROOT / "utils",
         PROJECT_ROOT / "notebooks"
     ]
@@ -705,36 +749,50 @@ def setup_environment(
     Returns:
         True if successful, False otherwise
     """
-    # Check Python version
+    print("\n" + "="*80)
+    print("Starting environment setup - This process may take some time.")
+    print("Please be patient as we prepare your research environment.")
+    print("="*80 + "\n")
+    
+    # Step 1: Check Python version
     if not check_python_version():
         logger.error("Incompatible Python version")
         return False
     
-    # Create directory structure
+    # Step 2: Create directory structure
+    print("\nCreating directory structure...")
     if not create_directory_structure():
         logger.error("Failed to create directory structure")
         return False
     
-    # Install dependencies if requested
+    # Step 3: Install dependencies if requested
     if install_deps:
+        print("\nInstalling dependencies - This may take several minutes depending on your internet connection...")
         if not install_dependencies(force=force_deps):
             logger.error("Failed to install dependencies")
             return False
     
-    # Detect GPU
+    # Step 4: Detect GPU
+    print("\nDetecting GPU capabilities...")
     use_gpu = detect_gpu(force_gpu=force_gpu, disable_gpu=disable_gpu)
     
-    # Set up Docker environment if requested
+    # Step 5: Set up Docker environment if requested
     if setup_docker:
+        print("\nSetting up Docker environment - This might take a few minutes...")
         if not prepare_docker_environment(use_gpu=use_gpu):
             logger.warning("Docker environment setup failed")
             # Continue anyway, as Docker is optional
     
-    # Set up research frameworks if requested
+    # Step 6: Set up research frameworks if requested
     if install_frameworks:
+        print("\nInstalling research frameworks...")
         if not setup_frameworks():
             logger.warning("Framework setup failed")
             # Continue anyway, as frameworks are optional
+    
+    print("\n" + "="*80)
+    print("Environment setup completed successfully!")
+    print("="*80 + "\n")
     
     logger.info("Environment setup completed successfully")
     return True
@@ -806,6 +864,10 @@ def parse_arguments() -> argparse.Namespace:
     # Special actions
     parser.add_argument("--summary", action="store_true",
                        help="Show environment summary and exit")
+    parser.add_argument("--dry-run", action="store_true",
+                       help="Simulate setup without making actual changes")
+    parser.add_argument("--cleanup", action="store_true",
+                       help="Clean up unnecessary files after setup")
     
     return parser.parse_args()
 
@@ -821,13 +883,24 @@ def main() -> int:
     # Configure logging
     setup_logging(args.verbose)
     
+    # Create logs directory if it doesn't exist
+    logs_dir = PROJECT_ROOT / "logs"
+    if not args.dry_run:
+        logs_dir.mkdir(parents=True, exist_ok=True)
+    
     # Print environment summary if requested
     if args.summary:
         summary = get_environment_summary()
         print(json.dumps(summary, indent=2))
         return 0
     
-    logger.info("Starting system setup")
+    if args.dry_run:
+        print("\n" + "="*80)
+        print("DRY RUN MODE - No files will be created or modified")
+        print("="*80 + "\n")
+        logger.info("Starting system setup in dry run mode")
+    else:
+        logger.info("Starting system setup")
     
     # Check for admin privileges if needed
     if not request_admin(args.no_admin):
@@ -835,36 +908,102 @@ def main() -> int:
         return 1
     
     try:
-        # Run environment setup
-        success = setup_environment(
-            install_deps=not args.skip_deps,
-            force_deps=args.force_deps,
-            setup_docker=not args.skip_docker,
-            force_gpu=args.gpu,
-            disable_gpu=args.no_gpu,
-            install_frameworks=not args.skip_frameworks
-        )
+        start_time = time.time()
+        
+        if args.dry_run:
+            # Only run checks without making changes
+            success = True
+            
+            # Check Python version
+            if not check_python_version():
+                logger.error("Incompatible Python version")
+                success = False
+            
+            # Check dependencies
+            installed, missing = check_dependencies()
+            if missing and not args.skip_deps:
+                print(f"Would install missing dependencies: {', '.join(missing)}")
+            
+            # Check Docker
+            has_docker = check_docker()
+            if not has_docker and not args.skip_docker:
+                print("Docker not available, would skip Docker environment setup")
+            
+            # Check GPU
+            use_gpu = detect_gpu(force_gpu=args.gpu, disable_gpu=args.no_gpu)
+            print(f"{'Would enable' if use_gpu else 'Would not enable'} GPU support")
+            
+            print("\nDirectories that would be created:")
+            for directory in [
+                PROJECT_ROOT / "head_1",
+                PROJECT_ROOT / "docker",
+                PROJECT_ROOT / "logs",
+                PROJECT_ROOT / "data",
+                # Add a few more important directories for visualization
+                PROJECT_ROOT / "head_1/frameworks",
+                PROJECT_ROOT / "head_1/system",
+                PROJECT_ROOT / "data/models"
+            ]:
+                print(f"  {directory}")
+            print("  ... and many more (use --verbose for full list)")
+            
+            # Check for PyTorch and TensorFlow
+            print(f"\nPyTorch available: {HAS_PYTORCH}")
+            print(f"TensorFlow available: {HAS_TENSORFLOW}")
+            
+            if not HAS_PYTORCH or not HAS_TENSORFLOW:
+                print("\nWould attempt to install machine learning frameworks:")
+                if not HAS_PYTORCH:
+                    print("  - PyTorch")
+                if not HAS_TENSORFLOW:
+                    print("  - TensorFlow")
+            
+        else:
+            # Run actual environment setup
+            success = setup_environment(
+                install_deps=not args.skip_deps,
+                force_deps=args.force_deps,
+                setup_docker=not args.skip_docker,
+                force_gpu=args.gpu,
+                disable_gpu=args.no_gpu,
+                install_frameworks=not args.skip_frameworks
+            )
+        
+        end_time = time.time()
+        duration = end_time - start_time
+        minutes, seconds = divmod(int(duration), 60)
         
         if success:
-            logger.info("System setup completed successfully")
-            
-            # Print next steps
-            print("\n=== Next Steps ===")
-            print("1. Start the environment using:")
-            if platform.system() == "Windows":
-                print("   > run.cmd")
+            if args.dry_run:
+                logger.info("Dry run completed successfully")
+                print(f"\nDry run completed successfully in {minutes} minutes and {seconds} seconds.")
+                print("\nTo perform the actual setup, run the script without the --dry-run flag.")
             else:
-                print("   $ ./run.sh")
-            print("2. Open your browser to access JupyterLab: http://localhost:8888")
-            print("3. Use deployment.py to manage Self-Awareness Framework instances")
+                logger.info("System setup completed successfully")
+                print(f"Setup completed successfully in {minutes} minutes and {seconds} seconds.")
+                
+                # Print next steps
+                print("\n=== Next Steps ===")
+                print("1. Start the environment using:")
+                if platform.system() == "Windows":
+                    print("   > run.cmd")
+                else:
+                    print("   $ ./run.sh")
+                print("2. Open your browser to access JupyterLab: http://localhost:8888")
+                print("3. Use deployment.py to manage Self-Awareness Framework instances")
             
             return 0
         else:
-            logger.error("System setup failed")
+            if args.dry_run:
+                logger.error("Dry run checks failed")
+                print("\nSome checks failed during the dry run. Please fix the issues before running the actual setup.")
+            else:
+                logger.error("System setup failed")
             return 1
             
     except KeyboardInterrupt:
         logger.info("Setup interrupted by user")
+        print("\nSetup interrupted by user. The environment may be partially configured.")
         return 130
     except Exception as e:
         logger.error(f"Unhandled error in setup: {e}")

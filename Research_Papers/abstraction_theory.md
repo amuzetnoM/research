@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This paper explores abstraction as a fundamental cognitive operation through the lens of category theory, offering a mathematical framework for understanding how mind emerges from formal operations on structured information.
+This paper explores abstraction as a fundamental cognitive operation through the lens of category theory, offering a mathematical framework for understanding how the mind emerges from formal operations on structured information.
 
 ```mermaid
 graph TD
