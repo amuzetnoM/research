@@ -7,24 +7,16 @@ It allows the frontend to use DSPy capabilities without directly interfacing wit
 
 import os
 import json
-import logging
 from typing import Dict, Any, List
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 
 # Import our DSPy setup
-import dspy_setup
+from inference_api.utils import dspy_setup
+from inference_api.utils.logger import create_logger
 
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.StreamHandler(),
-        logging.FileHandler(os.path.join(os.path.dirname(__file__), 'logs', 'dspy_api.log'), 'a')
-    ]
-)
-logger = logging.getLogger("dspy-api")
+# Configure logger
+logger = create_logger("dspy-api")
 
 # Create Flask app
 app = Flask(__name__)

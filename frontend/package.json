@@ -4,11 +4,16 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host --port 5173",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "format": "prettier --write \"src/**/*.{ts,tsx}\""
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "start": "powershell -ExecutionPolicy Bypass -File .\\setup-dev.ps1",
+    "setup": "powershell -ExecutionPolicy Bypass -File .\\setup-dev.ps1 --setup-only",
+    "clean": "rimraf node_modules .vite dist"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",

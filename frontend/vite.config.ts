@@ -8,25 +8,45 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@hooks': path.resolve(__dirname, './src/hooks'),
-      '@pages': path.resolve(__dirname, './src/pages'),
-      '@services': path.resolve(__dirname, './src/services'),
-      '@store': path.resolve(__dirname, './src/store'),
-      '@types': path.resolve(__dirname, './src/types'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@assets': path.resolve(__dirname, './src/assets'),
-      '@layouts': path.resolve(__dirname, './src/layouts'),
     },
   },
   server: {
-    port: 3000,
+    port: 5173,
     proxy: {
-      '/api': {
-        target: 'http://localhost:5000',
+      '/api/metrics': {
+        target: 'http://localhost:9090',
         changeOrigin: true,
         secure: false,
       },
+      '/api/container1': {
+        target: 'http://localhost:8888',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/container1/, '/api'),
+        secure: false,
+      },
+      '/api/container2': {
+        target: 'http://localhost:8889',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/container2/, '/api'),
+        secure: false,
+      },
+      '/api/grafana1': {
+        target: 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/grafana1/, ''),
+        secure: false,
+      },
+      '/api/grafana2': {
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/grafana2/, ''),
+        secure: false,
+      },
+      '/prometheus': {
+        target: 'http://localhost:9090',
+        changeOrigin: true,
+        secure: false,
+      }
     },
   },
 });

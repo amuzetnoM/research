@@ -9,6 +9,7 @@ This script handles all aspects of system setup, including:
 - GPU detection and configuration
 - Directory structure creation
 - Framework deployment
+- Frontend setup (Node.js environment)
 
 It consolidates functionality from various setup scripts.
 """
@@ -76,6 +77,7 @@ SETUP_STEPS = [
     "Detecting GPU",
     "Setting up Docker environment",
     "Installing research frameworks",
+    "Setting up Node.js environment",
     "Finalizing setup"
 ]
 
@@ -422,7 +424,10 @@ def create_directory_structure() -> bool:
         
         # Utility directories
         PROJECT_ROOT / "utils",
-        PROJECT_ROOT / "notebooks"
+        PROJECT_ROOT / "notebooks",
+        
+        # Frontend directory
+        PROJECT_ROOT / "frontend"
     ]
     
     try:
@@ -458,6 +463,58 @@ def make_executable(file_path: Union[str, Path]) -> bool:
         return True
     except Exception as e:
         logger.error(f"Failed to make file executable: {e}")
+        return False
+
+
+def setup_node_environment() -> bool:
+    """Set up Node.js environment for frontend development.
+    
+    Returns:
+        True if successful, False otherwise
+    """
+    logger.info("Setting up Node.js environment")
+    
+    try:
+        # Check if Node.js is installed
+        try:
+            result = subprocess.run(["node", "--version"], check=True, capture_output=True, text=True)
+            logger.info(f"Node.js is already installed: {result.stdout.strip()}")
+        except (subprocess.SubprocessError, FileNotFoundError):
+            logger.warning("Node.js not found. Running install_tools.bat...")
+            
+            # Use the provided install script
+            install_script = PROJECT_ROOT / "frontend" / "install_tools.bat"
+            if not install_script.exists():
+                logger.error("Node.js installation script not found")
+                return False
+            
+            logger.info("Running Node.js installation script...")
+            subprocess.run([str(install_script)], check=True)
+        
+        # Check if frontend directory exists, if not create it
+        frontend_dir = PROJECT_ROOT / "frontend"
+        if not frontend_dir.exists():
+            logger.info("Creating frontend directory...")
+            frontend_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Install frontend dependencies if package.json exists
+        package_json = frontend_dir / "package.json"
+        if package_json.exists():
+            logger.info("Installing frontend dependencies...")
+            subprocess.run(
+                ["npm", "install"],
+                cwd=str(frontend_dir),
+                check=True
+            )
+        else:
+            logger.info("package.json not found. Skipping dependency installation.")
+        
+        return True
+    except subprocess.CalledProcessError as e:
+        logger.error(f"Error setting up Node.js environment: {e}")
+        return False
+    except Exception as e:
+        logger.error(f"Unexpected error setting up Node.js environment: {e}")
         return False
 
 
@@ -734,7 +791,8 @@ def setup_environment(
         setup_docker: bool = True,
         force_gpu: bool = False,
         disable_gpu: bool = False,
-        install_frameworks: bool = True
+        install_frameworks: bool = True,
+        setup_frontend: bool = True
     ) -> bool:
     """Set up the complete research environment.
     
@@ -745,6 +803,7 @@ def setup_environment(
         force_gpu: Force GPU configuration
         disable_gpu: Disable GPU configuration
         install_frameworks: Install research frameworks
+        setup_frontend: Set up Node.js environment for frontend development
         
     Returns:
         True if successful, False otherwise
@@ -789,6 +848,13 @@ def setup_environment(
         if not setup_frameworks():
             logger.warning("Framework setup failed")
             # Continue anyway, as frameworks are optional
+    
+    # Step 7: Set up Node.js environment for frontend if requested
+    if setup_frontend:
+        print("\nSetting up Node.js environment for frontend development...")
+        if not setup_node_environment():
+            logger.warning("Node.js environment setup failed")
+            # Continue anyway, as frontend is optional
     
     print("\n" + "="*80)
     print("Environment setup completed successfully!")
@@ -854,6 +920,8 @@ def parse_arguments() -> argparse.Namespace:
                        help="Skip Docker environment setup")
     parser.add_argument("--skip-frameworks", action="store_true",
                        help="Skip research frameworks installation")
+    parser.add_argument("--skip-frontend", action="store_true",
+                       help="Skip Node.js and frontend setup")
     
     # GPU options
     parser.add_argument("--gpu", action="store_true",
@@ -966,7 +1034,8 @@ def main() -> int:
                 setup_docker=not args.skip_docker,
                 force_gpu=args.gpu,
                 disable_gpu=args.no_gpu,
-                install_frameworks=not args.skip_frameworks
+                install_frameworks=not args.skip_frameworks,
+                setup_frontend=not args.skip_frontend
             )
         
         end_time = time.time()

@@ -6,67 +6,14 @@ import TimeRangeSelector from '@/components/dashboard/TimeRangeSelector';
 import LineChart from '@/components/charts/LineChart';
 import BarChart from '@/components/charts/BarChart';
 import useAppStore from '@/store/appStore';
+import visualizationService from '@/services/visualizationService';
 
-// Generate sample time-series data
-const generateTimeSeriesData = (points = 24, interval = 3600000) => {
-  const now = Date.now();
-  const result = [];
-  
-  for (let i = points - 1; i >= 0; i--) {
-    const timestamp = now - i * interval;
-    result.push({
-      timestamp,
-      cpu: Math.round(Math.random() * 30 + 20), // CPU: 20-50%
-      memory: Math.round(Math.random() * 25 + 50), // Memory: 50-75%
-      network: parseFloat((Math.random() * 1.5 + 0.5).toFixed(2)), // Network: 0.5-2.0 MB/s
-      requests: Math.round(Math.random() * 150 + 150), // Requests: 150-300 req/min
-    });
-  }
-  
-  return result;
-};
+// Remove mock data generation functions
+// const generateTimeSeriesData = ...
+// const generateComparisonData = ...
 
-// Generate sample comparison data
-const generateComparisonData = () => [
-  {
-    name: 'CPU Usage',
-    container1: 42,
-    container2: 35,
-  },
-  {
-    name: 'Memory Usage',
-    container1: 65,
-    container2: 58,
-  },
-  {
-    name: 'Network I/O',
-    container1: 1.2,
-    container2: 0.9,
-  },
-  {
-    name: 'Disk I/O',
-    container1: 5.8,
-    container2: 4.3,
-  },
-  {
-    name: 'Request Rate',
-    container1: 256,
-    container2: 187,
-  },
-  {
-    name: 'Response Time',
-    container1: 120,
-    container2: 145,
-  },
-];
-
-// Placeholder data for demo metrics
-const MOCK_METRICS = {
-  cpu: { current: 42, previous: 38, change: 10.5 },
-  memory: { current: 65, previous: 72, change: -9.7 },
-  network: { current: 1.2, previous: 0.8, change: 50.0 },
-  requests: { current: 256, previous: 212, change: 20.8 },
-};
+// Remove Placeholder data for demo metrics
+// const MOCK_METRICS = ...
 
 const Dashboard: React.FC = () => {
   const { selectedTimeRange } = useAppStore();
@@ -74,77 +21,37 @@ const Dashboard: React.FC = () => {
   const [timeSeriesData, setTimeSeriesData] = useState<any[]>([]);
   const [comparisonData, setComparisonData] = useState<any[]>([]);
 
-  // Generate initial data
   useEffect(() => {
-    // Generate different amounts of data based on selected time range
-    const getPointsForTimeRange = (range: string): number => {
-      switch (range) {
-        case '1h': return 60; // 1 point per minute
-        case '6h': return 72; // 1 point per 5 minutes
-        case '12h': return 72; // 1 point per 10 minutes
-        case '24h': return 96; // 1 point per 15 minutes
-        case '7d': return 84; // 1 point per 2 hours
-        case '30d': return 90; // 1 point per 8 hours
-        default: return 24;
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        // Fetch time series data from the API
+        const timeSeriesParams = {
+          metrics: ['cpu', 'memory', 'network', 'requests'],
+          startDate: 'now-' + selectedTimeRange,
+          endDate: 'now',
+        };
+        const timeSeriesResponse = await visualizationService.fetchTimeSeriesData(timeSeriesParams);
+        setTimeSeriesData(timeSeriesResponse);
+
+        // Fetch comparison data (replace with actual API call when available)
+        // const comparisonParams = { ... };
+        // const comparisonDataResponse = await visualizationService.fetchComparisonData(comparisonParams);
+        // setComparisonData(comparisonDataResponse);
+        setComparisonData([]); // Set to empty array for now
+
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    // Generate different intervals based on selected time range
-    const getIntervalForTimeRange = (range: string): number => {
-      switch (range) {
-        case '1h': return 60 * 1000; // 1 minute
-        case '6h': return 5 * 60 * 1000; // 5 minutes
-        case '12h': return 10 * 60 * 1000; // 10 minutes
-        case '24h': return 15 * 60 * 1000; // 15 minutes
-        case '7d': return 2 * 60 * 60 * 1000; // 2 hours
-        case '30d': return 8 * 60 * 60 * 1000; // 8 hours
-        default: return 60 * 60 * 1000; // 1 hour
-      }
-    };
-
-    const points = getPointsForTimeRange(selectedTimeRange);
-    const interval = getIntervalForTimeRange(selectedTimeRange);
-    
-    setTimeSeriesData(generateTimeSeriesData(points, interval));
-    setComparisonData(generateComparisonData());
+    fetchData();
   }, [selectedTimeRange]);
 
   const handleRefresh = () => {
-    setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      // Generate new data with the same parameters
-      const getPointsForTimeRange = (range: string): number => {
-        switch (range) {
-          case '1h': return 60;
-          case '6h': return 72;
-          case '12h': return 72;
-          case '24h': return 96;
-          case '7d': return 84;
-          case '30d': return 90;
-          default: return 24;
-        }
-      };
-
-      const getIntervalForTimeRange = (range: string): number => {
-        switch (range) {
-          case '1h': return 60 * 1000;
-          case '6h': return 5 * 60 * 1000;
-          case '12h': return 10 * 60 * 1000;
-          case '24h': return 15 * 60 * 1000;
-          case '7d': return 2 * 60 * 60 * 1000;
-          case '30d': return 8 * 60 * 60 * 1000;
-          default: return 60 * 60 * 1000;
-        }
-      };
-
-      const points = getPointsForTimeRange(selectedTimeRange);
-      const interval = getIntervalForTimeRange(selectedTimeRange);
-      
-      setTimeSeriesData(generateTimeSeriesData(points, interval));
-      setComparisonData(generateComparisonData());
-      setLoading(false);
-    }, 1500);
+    // ...existing code...
   };
 
   return (
@@ -158,7 +65,7 @@ const Dashboard: React.FC = () => {
         </div>
         <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3 items-center">
           <TimeRangeSelector />
-          <Button 
+          <Button
             onClick={handleRefresh}
             icon={<span className="material-icons-outlined">refresh</span>}
             loading={loading}
@@ -171,46 +78,9 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <MetricCard 
-          title="CPU Usage"
-          value={MOCK_METRICS.cpu.current}
-          previousValue={MOCK_METRICS.cpu.previous}
-          unit="%"
-          icon="memory"
-          change={MOCK_METRICS.cpu.change}
-          changeTimeframe={`vs previous ${selectedTimeRange}`}
-          loading={loading}
-        />
-        <MetricCard 
-          title="Memory Usage"
-          value={MOCK_METRICS.memory.current}
-          previousValue={MOCK_METRICS.memory.previous}
-          unit="%"
-          icon="storage"
-          change={MOCK_METRICS.memory.change}
-          changeTimeframe={`vs previous ${selectedTimeRange}`}
-          loading={loading}
-        />
-        <MetricCard 
-          title="Network Traffic"
-          value={MOCK_METRICS.network.current}
-          previousValue={MOCK_METRICS.network.previous}
-          unit="MB/s"
-          icon="lan"
-          change={MOCK_METRICS.network.change}
-          changeTimeframe={`vs previous ${selectedTimeRange}`}
-          loading={loading}
-        />
-        <MetricCard 
-          title="Requests"
-          value={MOCK_METRICS.requests.current}
-          previousValue={MOCK_METRICS.requests.previous}
-          unit="req/min"
-          icon="swap_calls"
-          change={MOCK_METRICS.requests.change}
-          changeTimeframe={`vs previous ${selectedTimeRange}`}
-          loading={loading}
-        />
+        {/* Remove MetricCard components using MOCK_METRICS */}
+        {/* Example: */}
+        {/* <MetricCard ... /> */}
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -251,8 +121,8 @@ const Dashboard: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 gap-6">
-        <Card 
-          title="DSPy Analysis Insights" 
+        <Card
+          title="DSPy Analysis Insights"
           subtitle="AI-powered analysis of container metrics"
           loading={loading}
         >

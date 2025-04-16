@@ -1,4 +1,4 @@
-import apiClient from './apiClient';
+import apiClient from './api';
 
 /**
  * Types for DSPy API requests and responses
