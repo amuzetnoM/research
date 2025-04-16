@@ -23,27 +23,27 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   // Define style variants
   const variantStyles = {
-    primary: 'bg-primary-600 hover:bg-primary-700 text-white focus:ring-primary-500',
-    secondary: 'bg-secondary-600 hover:bg-secondary-700 text-white focus:ring-secondary-500',
-    success: 'bg-success-600 hover:bg-success-700 text-white focus:ring-success-500',
-    danger: 'bg-danger-600 hover:bg-danger-700 text-white focus:ring-danger-500',
-    warning: 'bg-warning-600 hover:bg-warning-700 text-white focus:ring-warning-500',
-    info: 'bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500',
-    ghost: 'bg-transparent hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300',
+    primary: 'glass neumorph gradient-bg accent shadow-glass border border-white/30 text-white hover:bg-primary-600/80 focus:ring-primary-400',
+    secondary: 'glass neumorph border border-white/30 text-primary-600 bg-white/60 hover:bg-white/80 focus:ring-primary-200',
+    success: 'glass neumorph border border-white/30 text-success-600 bg-success-100/60 hover:bg-success-200/80 focus:ring-success-200',
+    danger: 'glass neumorph border border-white/30 text-danger-600 bg-danger-100/60 hover:bg-danger-200/80 focus:ring-danger-200',
+    warning: 'glass neumorph border border-white/30 text-warning-600 bg-warning-100/60 hover:bg-warning-200/80 focus:ring-warning-200',
+    info: 'glass neumorph border border-white/30 text-primary-500 bg-primary-100/60 hover:bg-primary-200/80 focus:ring-primary-200',
+    ghost: 'bg-transparent text-primary-600 hover:bg-primary-50/40',
   };
 
   // Define size variants
   const sizeStyles = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-5 py-2.5 text-lg',
+    sm: 'px-4 py-1.5 text-sm rounded-xl',
+    md: 'px-6 py-2 text-base rounded-2xl',
+    lg: 'px-8 py-3 text-lg rounded-3xl',
   };
 
   const baseStyles = `
-    inline-flex items-center justify-center rounded-md
-    font-medium transition-colors duration-200
+    inline-flex items-center justify-center font-medium transition-colors duration-200
     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white dark:focus:ring-offset-gray-900
     disabled:opacity-50 disabled:pointer-events-none
+    backdrop-blur-md
   `;
 
   return (

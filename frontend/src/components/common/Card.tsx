@@ -20,19 +20,19 @@ const Card: React.FC<CardProps> = ({
   error = null,
 }) => {
   return (
-    <div className={`bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden ${className}`}>
+    <div className={`glass neumorph gradient-bg shadow-glass p-0 rounded-3xl border border-white/30 backdrop-blur-md ${className}`}>
       {(title || subtitle || action) && (
-        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+        <div className="px-6 py-4 border-b border-white/20 flex justify-between items-center bg-white/10 backdrop-blur-sm rounded-t-3xl">
           <div>
-            {title && <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">{title}</h3>}
-            {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
+            {title && <h3 className="text-xl font-semibold accent drop-shadow-sm">{title}</h3>}
+            {subtitle && <p className="text-sm text-gray-500 dark:text-gray-300">{subtitle}</p>}
           </div>
           {action && <div>{action}</div>}
         </div>
       )}
-      <div className="p-4 relative">
+      <div className="p-6 relative">
         {loading && (
-          <div className="absolute inset-0 bg-white/50 dark:bg-gray-800/50 flex items-center justify-center z-10">
+          <div className="absolute inset-0 bg-white/40 dark:bg-gray-900/40 flex items-center justify-center z-10 rounded-3xl">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
           </div>
         )}

@@ -28,11 +28,11 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     return (
       <div className={`${fullWidth ? 'w-full' : ''} ${containerClassName}`}>
         {label && (
-          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label className="block text-sm font-medium accent mb-1">
             {label}
           </label>
         )}
-        <div className="relative rounded-md">
+        <div className="relative rounded-2xl">
           {leftIcon && (
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
               {leftIcon}
@@ -41,15 +41,16 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             className={`
-              block rounded-md shadow-sm bg-white dark:bg-gray-800
-              border ${error ? 'border-danger-500' : 'border-gray-300 dark:border-gray-600'} 
-              focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-600 dark:focus:border-primary-600 
-              sm:text-sm 
+              glass neumorph gradient-bg shadow-glass border border-white/30 backdrop-blur-md
+              focus:ring-2 focus:ring-primary-400 focus:border-primary-400
+              block rounded-2xl text-gray-900 dark:text-white
+              sm:text-sm
               disabled:opacity-60 disabled:bg-gray-100 dark:disabled:bg-gray-700
-              ${leftIcon ? 'pl-10' : 'pl-3'}
-              ${rightIcon ? 'pr-10' : 'pr-3'}
+              ${leftIcon ? 'pl-10' : 'pl-4'}
+              ${rightIcon ? 'pr-10' : 'pr-4'}
               py-2
               ${fullWidth ? 'w-full' : ''}
+              ${error ? 'border-danger-500 focus:ring-danger-400' : ''}
               ${className}
             `}
             {...props}

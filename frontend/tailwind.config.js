@@ -4,6 +4,7 @@ export default {
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
@@ -98,6 +99,18 @@ export default {
       },
       boxShadow: {
         'intense': '0 0 15px -3px rgba(0, 0, 0, 0.1), 0 0 6px -2px rgba(0, 0, 0, 0.05)',
+        neumorph: '8px 8px 24px #d1d9e6, -8px -8px 24px #ffffff',
+        glass: '0 8px 32px 0 rgba(31,38,135,0.18)',
+      },
+      dropShadow: {
+        'glass': '0 8px 32px 0 rgba(31,38,135,0.18)',
+        'neumorph': '8px 8px 24px #d1d9e6, -8px -8px 24px #ffffff',
+      },
+      blur: {
+        xs: '2px',
+        sm: '4px',
+        md: '8px',
+        lg: '12px',
       },
       animation: {
         'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',

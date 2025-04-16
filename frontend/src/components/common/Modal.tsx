@@ -44,21 +44,21 @@ const Modal: React.FC<ModalProps> = ({
     <Fragment>
       {/* Backdrop */}
       <div
-        className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4"
+        className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4"
         onClick={handleBackdropClick}
       >
         {/* Modal Content */}
         <div
-          className={`bg-white dark:bg-gray-800 rounded-lg shadow-xl w-full ${sizeClasses[size]} max-h-[90vh] flex flex-col`}
+          className={`glass neumorph gradient-bg shadow-glass border border-white/30 backdrop-blur-md w-full ${sizeClasses[size]} max-h-[90vh] flex flex-col rounded-3xl`}
           onClick={handleContentClick}
         >
           {/* Header */}
           {title && (
-            <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white">{title}</h3>
+            <div className="p-6 border-b border-white/20 flex justify-between items-center bg-white/10 backdrop-blur-sm rounded-t-3xl">
+              <h3 className="text-xl font-semibold accent drop-shadow-sm">{title}</h3>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 focus:outline-none"
+                className="text-gray-400 hover:text-primary-500 focus:outline-none"
               >
                 <span className="material-icons-outlined">close</span>
               </button>
@@ -66,11 +66,11 @@ const Modal: React.FC<ModalProps> = ({
           )}
 
           {/* Body */}
-          <div className="flex-1 p-4 overflow-y-auto">{children}</div>
+          <div className="flex-1 p-6 overflow-y-auto">{children}</div>
 
           {/* Footer */}
           {footer && (
-            <div className="p-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2">
+            <div className="p-6 border-t border-white/20 flex justify-end gap-2 bg-white/10 backdrop-blur-sm rounded-b-3xl">
               {footer}
             </div>
           )}
