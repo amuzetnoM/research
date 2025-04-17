@@ -7,7 +7,7 @@ import {
   analyzeContainerMetrics,
   generateTimeSeriesData,
   generateComparisonData
-} from '@services/monitoringService';
+} from '@/services/monitoringService';
 
 // State types
 export interface ContainerMetadata {
