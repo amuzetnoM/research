@@ -13,6 +13,7 @@ import Experiments from './pages/Experiments';
 import Results from './pages/Results';
 import ResearchPublications from './pages/ResearchPublications';
 import Settings from './pages/Settings';
+import { CNU } from './pages';
 
 function App() {
   const { getBackgroundStyle, isDarkMode } = useTheme();
@@ -29,6 +30,7 @@ function App() {
           <Route path="/results" element={<Results />} />
           <Route path="/research" element={<ResearchPublications />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/cnu" element={<CNU />} />
         </Route>
       </Routes>
     </div>
