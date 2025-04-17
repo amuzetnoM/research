@@ -1,0 +1,12 @@
+web3>=6.0.0
+eth-account>=0.8.0
+requests
+fastapi
+uvicorn
+pydantic
+sqlalchemy
+aiohttp
+python-dotenv
+ipfshttpclient
+cryptography
+bip-utils
