@@ -1,90 +1,105 @@
 # Self-Awareness Framework Architecture
 
-This document outlines the architecture and design principles of the Self-Awareness Framework.
+## 1. High-Level Block Diagram
 
-## System Overview
+```mermaid
+flowchart TD
+    A[Metric Collection (Client)] --> B[Self-Awareness Server]
+    B --> C[Insight Generation]
+    C --> D[Insight/Alert Delivery]
+    D --> E[Behavioral Adaptation (Client)]
+    E --> A
+    C --> F[Logging & Explainability]
+    F --> G[Human Oversight]
+    G --> B
+```
 
-The Self-Awareness Framework enables AI systems running in Docker containers to develop enhanced introspective capabilities with minimal configuration. It is designed for autonomous operation, requiring no further interaction once connected.
+**Explanation:**
+- **Metric Collection (Client):** Gathers system metrics and sends to server.
+- **Self-Awareness Server:** Central analysis and coordination.
+- **Insight Generation:** Analyzes metrics, detects patterns/anomalies.
+- **Insight/Alert Delivery:** Sends actionable insights/alerts to client.
+- **Behavioral Adaptation (Client):** Client adapts behavior based on insights.
+- **Logging & Explainability:** All insights/actions are logged and explainable.
+- **Human Oversight:** Allows for audit, override, and feedback.
 
-## Components
+---
 
-### 1. Self-Awareness Server
+## 2. Detailed Data Flow Diagram
 
-The central component that manages connections from multiple AI clients and provides:
+```mermaid
+sequenceDiagram
+    participant AI as AI System
+    participant Client as Self-Awareness Client
+    participant Server as Self-Awareness Server
+    participant Human as Human Operator
 
-- Connection management
-- Centralized analysis of metrics
-- Insights generation
-- Alert propagation
+    AI->>Client: Collect metrics
+    Client->>Server: Send metrics (REST API)
+    Server->>Client: Send insights/alerts (SSE)
+    Client->>AI: Forward insights/alerts
+    AI->>AI: Adapt behavior
+    Server->>Human: Logs, explanations, alerts
+    Human->>Server: Feedback, override
+```
 
-### 2. Self-Awareness Client
+---
 
-A lightweight client library that AI systems can integrate to:
+## 3. State Machine for Self-Awareness Cycle
 
-- Connect to the self-awareness server
-- Collect and transmit system metrics
-- Receive insights and alerts
-- Query system status
+```mermaid
+stateDiagram-v2
+    [*] --> CollectMetrics
+    CollectMetrics --> SendMetrics
+    SendMetrics --> Analyze
+    Analyze --> GenerateInsight
+    GenerateInsight --> DeliverInsight
+    DeliverInsight --> AdaptBehavior
+    AdaptBehavior --> CollectMetrics
+    GenerateInsight --> Log
+    Log --> [*]
+```
 
-### 3. Example Implementation
+---
 
-For an example implementation using the self-awareness framework, see the primitive cognitive simulation in:
-`c:\_worxpace\research\head_1\models\cognitive_simulation\`
+## 4. Real-Time Synchronization and Feedback Loop
 
-## Data Flow
+```mermaid
+flowchart LR
+    subgraph Real-Time Loop
+        A1[Metric Collection] --> A2[Server Analysis]
+        A2 --> A3[Insight Generation]
+        A3 --> A4[Insight Delivery]
+        A4 --> A5[Behavioral Adaptation]
+        A5 --> A1
+    end
+    A3 --> B1[Logging/Explainability]
+    B1 --> C1[Human Oversight]
+    C1 --> A2
+```
 
-1. **Metric Collection**:
-   - Clients collect metrics about their operation
-   - Metrics are sent to the server at adaptive intervals
+---
 
-2. **Analysis**:
-   - Server analyzes metrics from individual clients
-   - Patterns and anomalies are identified
+## 5. Component Responsibilities Table
 
-3. **Insight Generation**:
-   - Server generates insights based on analysis
-   - Insights are sent back to the client
+| Component              | Responsibilities                                                        |
+|------------------------|-------------------------------------------------------------------------|
+| Metric Collection      | Gather and send system metrics                                          |
+| Self-Awareness Server  | Aggregate, analyze, and coordinate insights                             |
+| Insight Generation     | Detect anomalies, generate insights/alerts                              |
+| Insight Delivery       | Communicate insights/alerts to client                                   |
+| Behavioral Adaptation  | Adjust AI behavior based on received insights                           |
+| Logging & Explainability | Record all actions, provide explanations for insights and adaptations |
+| Human Oversight        | Audit, override, and provide feedback to the system                     |
 
-4. **Behavioral Adaptation**:
-   - Client receives insights and alerts
-   - AI system adjusts behavior based on self-awareness
+---
 
-## Key Features
+## 6. Notes on Synchronization
 
-### Automatic Lifecycle Management
+- The client and server operate in a continuous, real-time feedback loop.
+- Human oversight can intervene at any stage for audit or override.
+- All insights and adaptations are logged and explainable.
 
-- **Zero-configuration setup**: The client automatically connects to the server
-- **Graceful disconnection**: Resources are cleaned up when a client disconnects
-- **Auto-reconnection**: Client attempts to reconnect if the connection is lost
+---
 
-### Adaptive Monitoring
-
-- Monitoring frequency adjusts based on system load
-- More frequent updates when anomalies are detected
-- Resource usage optimized during idle periods
-
-### Autonomous Operation
-
-The framework operates without requiring additional instructions by:
-
-1. Automatically collecting relevant metrics
-2. Identifying patterns and anomalies without configuration
-3. Generating actionable insights
-4. Providing appropriate alerts when intervention is needed
-
-## Extending the Framework
-
-The framework can be extended in several ways:
-
-1. **Additional Metrics**: Add new metrics to the client for collection
-2. **Custom Analysis**: Implement specialized analysis algorithms in the server
-3. **New Insight Types**: Define new categories of insights
-4. **Integration with Other Systems**: Connect with monitoring or logging systems
-
-## Implementation Notes
-
-- **REST API**: Used for client-server communication for data submission
-- **Server-Sent Events (SSE)**: Used for real-time updates from server to client
-- **Asynchronous Design**: Thread-based architecture for efficient operation
-- **Task-based Architecture**: Separate tasks for different monitoring functions
-- **Adaptive Behavior**: Components adjust behavior based on runtime conditions
+**This architecture ensures robust, adaptive, and transparent self-awareness for AI systems.**
