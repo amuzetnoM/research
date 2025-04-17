@@ -7,8 +7,8 @@ import apiClient, {
   buildQueryParams,
   ApiError,
   ApiErrorType
-} from './api';
-import { logger } from '@utils/logger';
+} from "./api";
+import { logger } from "@/utils/logger";
 
 // Types for container metrics
 export interface ContainerMetrics {
