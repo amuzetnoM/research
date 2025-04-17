@@ -3,6 +3,7 @@
  */
 import apiClient from './apiClient';
 import websocketService from './websocketService';
+import { dataService } from '../../../dataService/dataService';
 
 // API endpoints
 const ENDPOINTS = {
