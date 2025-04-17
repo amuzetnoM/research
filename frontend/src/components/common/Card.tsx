@@ -91,3 +91,5 @@ const Card: React.FC<CardProps> = ({
 };
 
 export default Card;
+// Add named export to support both import styles
+export { Card };

@@ -75,3 +75,5 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 export default Button;
+// Add named export to support both import styles
+export { Button };
