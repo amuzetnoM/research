@@ -27,5 +27,6 @@
     ],
     "python.analysis.extraPaths": [
         "./head_1/frameworks/self_awareness"
-    ]
+    ],
+    "git.ignoreLimitWarning": true
 }

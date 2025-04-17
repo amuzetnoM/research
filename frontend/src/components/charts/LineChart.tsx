@@ -11,7 +11,7 @@ import {
   TooltipProps,
 } from 'recharts';
 import { format } from 'date-fns';
-import Card from '@/components/common/Card';
+import Card from '../common/Card';
 
 interface DataPoint {
   timestamp: number;
@@ -25,6 +25,9 @@ interface LineChartProps {
     name: string;
     color?: string;
     strokeWidth?: number;
+    type?: 'monotone' | 'linear' | 'step' | 'stepBefore' | 'stepAfter' | 'basis' | 'basisOpen' | 'basisClosed' | 'natural';
+    activeDotSize?: number;
+    dotSize?: number;
   }[];
   title?: string;
   subtitle?: string;
@@ -36,17 +39,18 @@ interface LineChartProps {
   yAxisUnit?: string;
   showGrid?: boolean;
   timeFormat?: string;
+  variant?: 'glass' | 'neumorph' | 'glass-gradient';
 }
 
 const DEFAULT_COLORS = [
-  '#0ea5e9', // primary-500
-  '#8b5cf6', // secondary-500
-  '#10b981', // success-500
-  '#f59e0b', // warning-500
-  '#ef4444', // danger-500
-  '#6366f1', // indigo-500
-  '#ec4899', // pink-500
-  '#14b8a6', // teal-500
+  'hsl(var(--primary-500))', // primary
+  'hsl(var(--secondary))',   // secondary
+  '#10b981',                // success-500
+  '#f59e0b',                // warning-500
+  '#ef4444',                // danger-500
+  '#6366f1',                // indigo-500
+  '#ec4899',                // pink-500
+  '#14b8a6',                // teal-500
 ];
 
 const LineChart: React.FC<LineChartProps> = ({
@@ -62,13 +66,14 @@ const LineChart: React.FC<LineChartProps> = ({
   yAxisUnit = '',
   showGrid = true,
   timeFormat = 'HH:mm',
+  variant = 'glass',
 }) => {
   // Custom tooltip formatter
   const CustomTooltip = ({ active, payload, label }: TooltipProps<number, string>) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-700 shadow-md rounded-md">
-          <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">
+        <div className="glass-sm border-thin border-white/20 p-2 backdrop-blur-md rounded-lg shadow-glass-sm">
+          <p className="text-xs text-foreground/70 mb-1">
             {xAxisDataKey === 'timestamp'
               ? format(new Date(label), 'MMM dd, yyyy HH:mm:ss')
               : label}
@@ -77,11 +82,11 @@ const LineChart: React.FC<LineChartProps> = ({
             {payload.map((entry, index) => (
               <div key={`tooltip-item-${index}`} className="flex items-center">
                 <div
-                  className="w-3 h-3 rounded-full mr-2"
+                  className="w-2 h-2 rounded-full mr-1.5"
                   style={{ backgroundColor: entry.color }}
                 />
-                <span className="text-xs font-medium">
-                  {entry.name}: {entry.value}
+                <span className="text-xs font-medium text-foreground">
+                  {entry.name}: <span className="font-semibold">{entry.value}</span>
                   {yAxisUnit}
                 </span>
               </div>
@@ -108,44 +113,69 @@ const LineChart: React.FC<LineChartProps> = ({
       className={className}
       loading={loading}
       error={error}
+      variant={variant}
     >
-      <div style={{ width: '100%', height }}>
+      <div style={{ width: '100%', height }} className="pt-2">
         {data.length > 0 ? (
           <ResponsiveContainer width="100%" height="100%">
             <RechartsLineChart
               data={data}
-              margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
+              margin={{ top: 5, right: 5, left: 5, bottom: 5 }}
             >
-              {showGrid && <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />}
+              {showGrid && (
+                <CartesianGrid 
+                  strokeDasharray="3 3" 
+                  stroke="rgba(148, 163, 184, 0.15)"
+                  vertical={false} 
+                />
+              )}
               <XAxis
                 dataKey={xAxisDataKey}
                 tickFormatter={formatXAxis}
-                stroke="#9ca3af"
-                tick={{ fontSize: 12 }}
+                stroke="rgba(148, 163, 184, 0.6)"
+                tick={{ fontSize: 10 }}
+                axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
+                tickLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
               />
               <YAxis
                 unit={yAxisUnit}
-                stroke="#9ca3af"
-                tick={{ fontSize: 12 }}
+                stroke="rgba(148, 163, 184, 0.6)"
+                tick={{ fontSize: 10 }}
+                axisLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
+                tickLine={{ stroke: 'rgba(148, 163, 184, 0.2)' }}
               />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
+              <Tooltip 
+                content={<CustomTooltip />} 
+                cursor={{ stroke: 'rgba(148, 163, 184, 0.2)', strokeWidth: 1, strokeDasharray: '3 3' }}
+              />
+              <Legend 
+                wrapperStyle={{ 
+                  paddingTop: 10,
+                  fontSize: 12, 
+                  opacity: 0.8
+                }}
+              />
               {lines.map((line, index) => (
                 <Line
                   key={line.dataKey}
-                  type="monotone"
+                  type={line.type || 'monotone'}
                   dataKey={line.dataKey}
                   name={line.name}
                   stroke={line.color || DEFAULT_COLORS[index % DEFAULT_COLORS.length]}
                   strokeWidth={line.strokeWidth || 2}
-                  activeDot={{ r: 6 }}
-                  dot={{ r: 3 }}
+                  dot={{ r: line.dotSize || 2, strokeWidth: 1, fill: '#fff' }}
+                  activeDot={{ 
+                    r: line.activeDotSize || 5, 
+                    strokeWidth: 1, 
+                    boxShadow: '0 0 6px rgba(0,0,0,0.2)' 
+                  }}
                 />
               ))}
             </RechartsLineChart>
           </ResponsiveContainer>
         ) : (
-          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-full text-foreground/60">
+            <span className="material-icons-outlined mr-2 text-sm">show_chart</span>
             No data available
           </div>
         )}

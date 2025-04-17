@@ -8,6 +8,9 @@ interface CardProps {
   action?: ReactNode;
   loading?: boolean;
   error?: string | null;
+  variant?: 'neumorph' | 'inset' | 'flat';
+  noPadding?: boolean;
+  elevation?: 'low' | 'medium' | 'high';
 }
 
 const Card: React.FC<CardProps> = ({
@@ -18,27 +21,65 @@ const Card: React.FC<CardProps> = ({
   action,
   loading = false,
   error = null,
+  variant = 'neumorph',
+  noPadding = false,
+  elevation = 'medium',
 }) => {
+  // Create consistent neumorphic variants with no borders
+  const variantClasses = {
+    neumorph: 'neumorph bg-background',
+    inset: 'neumorph-inset bg-background',
+    flat: 'bg-background rounded-2xl',
+  };
+
+  // Elevation only affects neumorph variant
+  const elevationClasses = {
+    low: variant === 'neumorph' ? 'neumorph-sm' : '',
+    medium: variant === 'neumorph' ? 'neumorph' : '',
+    high: variant === 'neumorph' ? 'neumorph-lg' : '',
+  };
+
   return (
-    <div className={`glass neumorph gradient-bg shadow-glass p-0 rounded-3xl border border-white/30 backdrop-blur-md ${className}`}>
+    <div 
+      className={`
+        ${variantClasses[variant]} 
+        ${elevation && variant === 'neumorph' ? elevationClasses[elevation] : ''} 
+        overflow-hidden
+        ${className}
+      `}
+    >
       {(title || subtitle || action) && (
-        <div className="px-6 py-4 border-b border-white/20 flex justify-between items-center bg-white/10 backdrop-blur-sm rounded-t-3xl">
+        <div className="px-5 py-4 flex justify-between items-center">
           <div>
-            {title && <h3 className="text-xl font-semibold accent drop-shadow-sm">{title}</h3>}
-            {subtitle && <p className="text-sm text-gray-500 dark:text-gray-300">{subtitle}</p>}
+            {title && (
+              <h3 className="text-base font-medium text-foreground tracking-tight">
+                {title}
+              </h3>
+            )}
+            {subtitle && (
+              <p className="text-sm text-foreground/60 mt-0.5">
+                {subtitle}
+              </p>
+            )}
           </div>
           {action && <div>{action}</div>}
         </div>
       )}
-      <div className="p-6 relative">
+      <div className={`relative ${noPadding ? '' : 'p-5'}`}>
         {loading && (
-          <div className="absolute inset-0 bg-white/40 dark:bg-gray-900/40 flex items-center justify-center z-10 rounded-3xl">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500"></div>
+          <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-10 backdrop-blur-sm">
+            <svg className="animate-spin h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"></circle>
+              <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
           </div>
         )}
         {error ? (
-          <div className="text-danger-600 dark:text-danger-400 text-sm p-4 bg-danger-50 dark:bg-danger-900/20 rounded">
-            <span className="material-icons-outlined text-sm align-middle mr-1">error</span>
+          <div className="text-danger-500 text-sm p-4 bg-danger-500/5 neumorph-inset">
             {error}
           </div>
         ) : (

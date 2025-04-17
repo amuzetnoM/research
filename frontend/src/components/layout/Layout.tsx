@@ -11,7 +11,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const { sidebarOpen } = useAppStore();
 
   return (
-    <div className="flex h-screen bg-gray-100 dark:bg-gray-900">
+    <div className="flex h-screen bg-background overflow-hidden">
+      {/* Subtle Gradient Background */}
+      <div className="fixed inset-0 bg-gradient-to-br from-primary-50 to-background -z-10"></div>
+      
       {/* Sidebar */}
       <Sidebar />
       
@@ -21,7 +24,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <Navbar />
         
         {/* Main Content Area */}
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-auto p-5 pb-10 space-y-6 animate-fade-in">
           {children}
         </main>
       </div>
