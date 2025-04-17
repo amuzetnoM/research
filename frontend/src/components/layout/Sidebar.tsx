@@ -7,30 +7,30 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const menuItems = [
-    { path: '/', label: 'Dashboard' },
-    { path: '/research', label: 'Research' },
-    { path: '/models', label: 'Models' },
-    { path: '/analytics', label: 'Analytics' },
-    { path: '/publications', label: 'Publications' },
-    { path: '/settings', label: 'Settings' },
+    { path: '/dashboard', label: 'Dashboard', icon: 'dashboard' },
+    { path: '/containers', label: 'Containers', icon: 'dns' },
+    { path: '/frameworks', label: 'Frameworks', icon: 'extension' },
+    { path: '/results', label: 'Results', icon: 'analytics' },
+    { path: '/experiments', label: 'Experiments', icon: 'bubble_chart' },
+    { path: '/research', label: 'Research & Publications', icon: 'menu_book' },
+    { path: '/settings', label: 'Settings', icon: 'settings' },
   ];
 
   return (
     <aside
-      className={`fixed inset-y-0 left-0 bg-surface border-r border-base transition-all duration-300 z-30 flex flex-col ${sidebarOpen ? 'w-56' : 'w-16'}`}
+      className={`fixed inset-y-0 left-0 glass neumorph shadow-glass border-r border-white/20 transition-all duration-300 z-30 flex flex-col ${sidebarOpen ? 'w-56' : 'w-20'}`}
       aria-label="Main navigation"
     >
       {/* Sidebar Header */}
-      <div className="flex items-center justify-between h-16 px-4 border-b border-base">
+      <div className="flex items-center justify-between h-16 px-4 border-b border-white/10">
         {sidebarOpen && (
-          <span className="text-lg font-bold tracking-tight text-foreground">Research Platform</span>
+          <span className="text-lg font-bold tracking-tight accent">Research Platform</span>
         )}
         <button
           onClick={toggleSidebar}
           className="p-2 rounded transition-base hover:bg-background-alt focus:outline-none"
           aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
         >
-          {/* Simple SVG hamburger/close icon */}
           {sidebarOpen ? (
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           ) : (
@@ -48,20 +48,20 @@ const Sidebar: React.FC = () => {
               <li key={item.path}>
                 <Link
                   to={item.path}
-                  className={`block px-4 py-2 rounded text-base font-medium transition-base
-                    ${isActive ? 'bg-primary/10 text-primary font-semibold' : 'text-foreground/80 hover:bg-background-alt'}
-                    text-left w-full`}
+                  className={`flex items-center gap-3 px-4 py-2 rounded-2xl font-medium transition-base text-base ${
+                    isActive ? 'bg-primary-100/40 text-primary-600' : 'text-foreground/80 hover:bg-white/10'
+                  }`}
                   tabIndex={0}
                 >
-                  {item.label}
+                  <span className="material-icons-round text-xl">{item.icon}</span>
+                  {sidebarOpen && <span>{item.label}</span>}
                 </Link>
               </li>
             );
           })}
         </ul>
       </nav>
-      {/* Version or footer (optional, minimal) */}
-      <div className="px-4 py-3 border-t border-base text-xs text-muted text-center">
+      <div className="px-4 py-3 border-t border-white/10 text-xs text-muted text-center">
         v0.1.0
       </div>
     </aside>

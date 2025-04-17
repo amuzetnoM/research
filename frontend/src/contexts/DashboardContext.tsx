@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useReducer, useEffect, ReactNode } from 'react';
-import { logger } from '@utils/logger';
-import { configService } from '@utils/configService';
+import { logger } from '@/utils/logger';
+import { configService } from '@/utils/configService';
 import { 
   getContainerMetrics, 
   getContainerHealth,

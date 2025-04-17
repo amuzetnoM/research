@@ -206,3 +206,19 @@ This checklist tracks our progress through the implementation of the research da
 - [x] Added proper error handling
 - [ ] Testing implementation (Next)
 - [ ] Missing components implementation (Next)
+
+## Phase 10: New Research Dashboard Structure (2025)
+
+- [ ] Remove all old/redundant pages and routes
+- [ ] Create new landing page (cover page with single button)
+- [ ] Implement Dashboard: Real-time analytics, customizable panels (Grafana/Prometheus + custom charts)
+- [ ] Implement Containers: Docker/container management, document/model upload/offload, enhanced controls
+- [ ] Implement Frameworks: Manage, combine, and fine-tune frameworks, workflow builder
+- [ ] Implement Results: Analytics, history, report management, detailed results
+- [ ] Implement Experiments: Mind Map board for notes, findings, connections
+- [ ] Implement Research/Publications: Two tabs, manage/upload/share/pin/comment/like research & publications
+- [ ] Implement Settings: User preferences, theme, personalization
+- [ ] Ensure all pages/components use global glassmorphic/neumorphic styling
+- [ ] Ensure dark/light mode works everywhere
+- [ ] Sidebar and Navbar always present (except landing page)
+- [ ] Prepare for frontend deployment (build, optimize, test)

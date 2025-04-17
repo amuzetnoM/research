@@ -1,6 +1,9 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 
+// LEGACY: This hook uses WebSocket for real-time metrics. Deprecated in favor of REST polling/SSE.
+// TODO: Remove or refactor to use SSE after backend integration.
+
 interface WebSocketMetricsOptions {
   url: string;
   topics?: string[];

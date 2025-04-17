@@ -117,6 +117,9 @@ export function useEnvironmentMonitoring({
     staleTime: 1000, // Consider data stale after 1 second
   });
 
+  // LEGACY: WebSocket logic for environment monitoring is deprecated.
+  // Please use REST polling or SSE for real-time updates.
+  // TODO: Remove WebSocket logic after SSE integration.
   // Set up WebSocket connection if enabled
   useEffect(() => {
     if (!useWebSockets) return;

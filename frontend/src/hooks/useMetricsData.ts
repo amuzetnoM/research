@@ -1,9 +1,10 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import visualizationService from '@/services/visualizationService';
 
 export const useMetricsData = (containerId: string, metrics: string[], timeRange: string) => {
   const queryClient = useQueryClient();
+  // Only REST polling is used for real-time updates
   const [isRealtime, setIsRealtime] = useState(true);
 
   const { data, error, isLoading } = useQuery({
@@ -13,22 +14,6 @@ export const useMetricsData = (containerId: string, metrics: string[], timeRange
     retry: 3,
     staleTime: 4000,
   });
-
-  // Set up WebSocket subscription
-  useEffect(() => {
-    if (!isRealtime) return;
-
-    const unsubscribe = visualizationService.subscribeToMetrics(metrics, (newData) => {
-      queryClient.setQueryData(['metrics', containerId, metrics, timeRange], (old: any) => ({
-        ...old,
-        ...newData,
-      }));
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [containerId, metrics, isRealtime, queryClient, timeRange]);
 
   return {
     data,

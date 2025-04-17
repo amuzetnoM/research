@@ -133,6 +133,10 @@ const STREAMING_CONFIG = {
   INTERVAL: 1000,
 };
 
+// LEGACY: WebSocket-based real-time metric streaming is deprecated.
+// Please migrate to REST polling or SSE for all real-time data needs.
+// TODO: Remove WebSocket streaming after SSE integration.
+
 // Added streaming data buffer
 let streamBuffer: Record<string, any[]> = {};
 

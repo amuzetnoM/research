@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { apiClient } from '../services/api/client';
+import apiClient from '../services/apiClient';
 
 interface ModelParameter {
   id: string;

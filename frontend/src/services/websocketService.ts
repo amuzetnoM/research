@@ -1,3 +1,7 @@
+// LEGACY: WebSocketService is now deprecated for real-time metrics/monitoring.
+// Please use REST polling or SSE for all new features. This class remains for backward compatibility only.
+// TODO: Remove this service after SSE integration is complete.
+
 type MessageHandler = (data: any) => void;
 
 class WebSocketService {

@@ -59,11 +59,11 @@ const GaugeChart: React.FC<GaugeChartProps> = ({
     <Card
       title={title}
       subtitle={subtitle}
-      className={className}
+      className={`glass neumorph-inset ${className}`}
       loading={loading}
       error={error}
     >
-      <div style={{ width: '100%', height }}>
+      <div style={{ width: '100%', height }} className="glass neumorph-inset relative">
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie

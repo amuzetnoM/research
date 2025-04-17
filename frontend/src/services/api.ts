@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
-import { logger } from '@utils/logger';
+import { logger } from '@/utils/logger';
 
 // API endpoints configuration
 export const ENDPOINTS = {

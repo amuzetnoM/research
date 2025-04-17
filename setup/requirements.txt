@@ -34,3 +34,8 @@ flake8>=4.0.0
 torch>=1.7.0
 # TensorFlow integration
 # tensorflow>=2.4.0
+
+# ---
+# Frontend dev dependencies (Node.js, not Python):
+#   jest, @types/jest, @testing-library/react-hooks, @types/testing-library__react, ts-jest
+# These are installed automatically by setup/system_setup.py

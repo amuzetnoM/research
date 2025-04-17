@@ -1,31 +1,30 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
-import Container from './pages/Container';
-import Models from './pages/Models';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
-import { ThemeProvider } from './hooks/useTheme';
-import { AppStoreProvider } from './store/appStore';
+import Landing from './pages/Landing';
+import Dashboard from './pages/Dashboard';
+import Containers from './pages/Containers';
+import Frameworks from './pages/Frameworks';
+import Results from './pages/Results';
+import Experiments from './pages/Experiments';
 import ResearchPublications from './pages/ResearchPublications';
+import Settings from './pages/Settings';
 
-const App: React.FC = () => {
-  return (
-    <ThemeProvider>
-      <AppStoreProvider>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Dashboard />} />
-            <Route path="/containers/:containerId" element={<Container />} />
-            <Route path="/models" element={<Models />} />
-            <Route path="/research" element={<ResearchPublications />} />
-            <Route path="/analytics" element={<Dashboard />} /> {/* Placeholder for Analytics page */}
-            <Route path="/publications" element={<ResearchPublications />} /> {/* Fixed: Now using ResearchPublications */}
-            <Route path="/settings" element={<Dashboard />} /> {/* Placeholder for Settings page */}
-          </Routes>
-        </Layout>
-      </AppStoreProvider>
-    </ThemeProvider>
-  );
-};
+const App = () => (
+  <Router>
+    <Routes>
+      <Route path="/" element={<Landing />} />
+      <Route element={<Layout />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/containers" element={<Containers />} />
+        <Route path="/frameworks" element={<Frameworks />} />
+        <Route path="/results" element={<Results />} />
+        <Route path="/experiments" element={<Experiments />} />
+        <Route path="/research" element={<ResearchPublications />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+    </Routes>
+  </Router>
+);
 
 export default App;

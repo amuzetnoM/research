@@ -468,12 +468,12 @@ def make_executable(file_path: Union[str, Path]) -> bool:
 
 def setup_node_environment() -> bool:
     """Set up Node.js environment for frontend development.
+    Also ensures all required frontend dev dependencies (Jest, React Testing Library, etc.) are installed.
     
     Returns:
         True if successful, False otherwise
     """
     logger.info("Setting up Node.js environment")
-    
     try:
         # Check if Node.js is installed
         try:
@@ -481,34 +481,28 @@ def setup_node_environment() -> bool:
             logger.info(f"Node.js is already installed: {result.stdout.strip()}")
         except (subprocess.SubprocessError, FileNotFoundError):
             logger.warning("Node.js not found. Running install_tools.bat...")
-            
-            # Use the provided install script
             install_script = PROJECT_ROOT / "frontend" / "install_tools.bat"
             if not install_script.exists():
                 logger.error("Node.js installation script not found")
                 return False
-            
             logger.info("Running Node.js installation script...")
             subprocess.run([str(install_script)], check=True)
-        
-        # Check if frontend directory exists, if not create it
         frontend_dir = PROJECT_ROOT / "frontend"
         if not frontend_dir.exists():
             logger.info("Creating frontend directory...")
             frontend_dir.mkdir(parents=True, exist_ok=True)
-        
-        # Install frontend dependencies if package.json exists
         package_json = frontend_dir / "package.json"
         if package_json.exists():
             logger.info("Installing frontend dependencies...")
-            subprocess.run(
-                ["npm", "install"],
-                cwd=str(frontend_dir),
-                check=True
-            )
+            subprocess.run(["npm", "install"], cwd=str(frontend_dir), check=True)
+            # Ensure all required dev dependencies for testing are present
+            logger.info("Ensuring required frontend dev dependencies are installed (Jest, React Testing Library, etc.)...")
+            subprocess.run([
+                "npm", "install", "--save-dev",
+                "jest", "@types/jest", "@testing-library/react-hooks", "@types/testing-library__react", "ts-jest", "--legacy-peer-deps"
+            ], cwd=str(frontend_dir), check=True)
         else:
             logger.info("package.json not found. Skipping dependency installation.")
-        
         return True
     except subprocess.CalledProcessError as e:
         logger.error(f"Error setting up Node.js environment: {e}")
@@ -516,6 +510,10 @@ def setup_node_environment() -> bool:
     except Exception as e:
         logger.error(f"Unexpected error setting up Node.js environment: {e}")
         return False
+# ---
+# Frontend dev dependencies for reference:
+#   jest, @types/jest, @testing-library/react-hooks, @types/testing-library__react, ts-jest
+# These are installed automatically by setup_node_environment().
 
 
 def prepare_docker_environment(use_gpu: bool = False) -> bool:

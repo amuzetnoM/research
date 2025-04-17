@@ -19,14 +19,14 @@ const Button: React.FC<ButtonProps> = ({
 }) => {
   // Define style variants with consistent neumorphic styling and no borders
   const variantStyles = {
-    primary: 'neumorph bg-accent-500 text-white',
-    secondary: 'neumorph-sm text-foreground/90',
-    success: 'neumorph-sm bg-success-500/10 text-success-500',
-    danger: 'neumorph-sm bg-danger-500/10 text-danger-500',
-    warning: 'neumorph-sm bg-warning-500/10 text-warning-500',
-    info: 'neumorph-sm bg-accent-500/10 text-accent-700',
-    ghost: 'bg-transparent text-foreground/80',
-    neumorph: 'neumorph-sm text-foreground/90',
+    primary: 'glass neumorph shadow-neumorph-bulge bg-primary-500 text-white',
+    secondary: 'glass neumorph shadow-neumorph-bulge text-primary-600 bg-white/60 hover:bg-white/80',
+    success: 'glass neumorph shadow-neumorph-bulge text-success-600 bg-success-100/60 hover:bg-success-200/80',
+    danger: 'glass neumorph shadow-neumorph-bulge text-danger-600 bg-danger-100/60 hover:bg-danger-200/80',
+    warning: 'glass neumorph shadow-neumorph-bulge text-warning-600 bg-warning-100/60 hover:bg-warning-200/80',
+    info: 'glass neumorph shadow-neumorph-bulge text-primary-500 bg-primary-100/60 hover:bg-primary-200/80',
+    ghost: 'glass neumorph shadow-neumorph-bulge bg-transparent text-primary-600 hover:bg-primary-50/40',
+    neumorph: 'glass neumorph shadow-neumorph-bulge text-foreground/90',
   };
 
   // Define size variants

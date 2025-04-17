@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEnvironmentMonitoring } from '@/hooks/useEnvironmentMonitoring';
 import { Card } from '@/components/common/Card';
 import { LineChart } from '@/components/visualizations/LineChart';
-import { GaugeChart } from '@/components/visualizations/GaugeChart';
+import { GaugeChart } from '@/components/charts';
 import { Alert } from '@/components/common/Alert';
 import { Button } from '@/components/common/Button';
 import { Tabs, TabPanel } from '@/components/common/Tabs';
