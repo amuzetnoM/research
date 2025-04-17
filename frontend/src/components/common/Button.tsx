@@ -1,58 +1,97 @@
 import React, { ButtonHTMLAttributes } from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { cn } from '@/lib/utils';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'ghost' | 'neumorph';
   size?: 'xs' | 'sm' | 'md' | 'lg';
-  loading?: boolean;
   fullWidth?: boolean;
+  loading?: boolean;
+  children: React.ReactNode;
 }
 
 const Button: React.FC<ButtonProps> = ({
-  children,
-  variant = 'neumorph',
+  variant = 'primary',
   size = 'md',
-  loading = false,
   fullWidth = false,
-  disabled,
+  loading = false,
+  children,
   className = '',
   ...props
 }) => {
-  // Define style variants with consistent neumorphic styling and no borders
-  const variantStyles = {
-    primary: 'glass neumorph shadow-neumorph-bulge bg-primary-500 text-white',
-    secondary: 'glass neumorph shadow-neumorph-bulge text-primary-600 bg-white/60 hover:bg-white/80',
-    success: 'glass neumorph shadow-neumorph-bulge text-success-600 bg-success-100/60 hover:bg-success-200/80',
-    danger: 'glass neumorph shadow-neumorph-bulge text-danger-600 bg-danger-100/60 hover:bg-danger-200/80',
-    warning: 'glass neumorph shadow-neumorph-bulge text-warning-600 bg-warning-100/60 hover:bg-warning-200/80',
-    info: 'glass neumorph shadow-neumorph-bulge text-primary-500 bg-primary-100/60 hover:bg-primary-200/80',
-    ghost: 'glass neumorph shadow-neumorph-bulge bg-transparent text-primary-600 hover:bg-primary-50/40',
-    neumorph: 'glass neumorph shadow-neumorph-bulge text-foreground/90',
+  const { isDarkMode } = useTheme();
+
+  // Define variant styles based on theme
+  const getVariantStyle = (variant: string) => {
+    if (isDarkMode) {
+      // Dark mode variants
+      switch(variant) {
+        case 'primary':
+          return 'bg-blue-600 hover:bg-blue-700 text-white';
+        case 'secondary':
+          return 'bg-gray-700 hover:bg-gray-800 text-gray-200';
+        case 'success':
+          return 'bg-green-600 hover:bg-green-700 text-white';
+        case 'danger':
+          return 'bg-red-600 hover:bg-red-700 text-white';
+        case 'warning':
+          return 'bg-yellow-500 hover:bg-yellow-600 text-white';
+        case 'info':
+          return 'bg-cyan-600 hover:bg-cyan-700 text-white';
+        case 'ghost':
+          return 'bg-transparent hover:bg-gray-800 text-gray-300';
+        case 'neumorph':
+          return 'bg-gray-900 text-gray-300 shadow-inner shadow-black/90 hover:bg-gray-800/80';
+        default:
+          return 'bg-blue-600 hover:bg-blue-700 text-white';
+      }
+    } else {
+      // Light mode variants
+      switch(variant) {
+        case 'primary':
+          return 'bg-blue-600 hover:bg-blue-700 text-white';
+        case 'secondary':
+          return 'bg-gray-200 hover:bg-gray-300 text-gray-800';
+        case 'success':
+          return 'bg-green-600 hover:bg-green-700 text-white';
+        case 'danger':
+          return 'bg-red-600 hover:bg-red-700 text-white';
+        case 'warning':
+          return 'bg-yellow-500 hover:bg-yellow-600 text-white';
+        case 'info':
+          return 'bg-cyan-600 hover:bg-cyan-700 text-white';
+        case 'ghost':
+          return 'bg-transparent hover:bg-gray-100 text-gray-700';
+        case 'neumorph':
+          return 'bg-white text-gray-700 shadow-inner shadow-white/90 hover:bg-gray-100/80';
+        default:
+          return 'bg-blue-600 hover:bg-blue-700 text-white';
+      }
+    }
   };
 
   // Define size variants
   const sizeStyles = {
-    xs: 'px-3 py-1.5 text-xs',
-    sm: 'px-4 py-2 text-sm',
-    md: 'px-5 py-2.5 text-base',
-    lg: 'px-6 py-3 text-lg',
+    xs: 'px-2 py-1 text-xs rounded-lg',
+    sm: 'px-3 py-1.5 text-sm rounded-lg',
+    md: 'px-4 py-2 text-base rounded-xl',
+    lg: 'px-6 py-3 text-lg rounded-xl',
   };
-
-  const baseStyles = `
-    btn inline-flex items-center justify-center font-medium tracking-tight
-    focus:outline-none 
-    disabled:opacity-50 disabled:pointer-events-none
-  `;
 
   return (
     <button
-      className={`
-        ${baseStyles}
-        ${variantStyles[variant]}
-        ${sizeStyles[size]}
-        ${fullWidth ? 'w-full' : ''}
-        ${className}
-      `}
-      disabled={disabled || loading}
+      className={cn(
+        "inline-flex items-center justify-center font-medium transition-all duration-300",
+        "focus:outline-none disabled:opacity-50 disabled:pointer-events-none",
+        "border border-transparent",
+        isDarkMode ? "border-gray-800" : "border-gray-200",
+        getVariantStyle(variant),
+        sizeStyles[size],
+        fullWidth ? 'w-full' : '',
+        variant === 'neumorph' || variant === 'ghost' ? 'hover:scale-[1.02]' : '',
+        className
+      )}
+      disabled={props.disabled || loading}
       {...props}
     >
       {loading ? (
@@ -75,5 +114,4 @@ const Button: React.FC<ButtonProps> = ({
 };
 
 export default Button;
-// Add named export to support both import styles
 export { Button };

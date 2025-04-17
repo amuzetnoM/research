@@ -8,14 +8,11 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@utils': path.resolve(__dirname, './src/utils'),
-      '@services': path.resolve(__dirname, './src/services'),
-      '@components': path.resolve(__dirname, './src/components'),
-      '@hooks': path.resolve(__dirname, './src/hooks'),
     },
   },
   server: {
-    port: 5173,
+    port: 5174, // Update to match the port Vite is automatically selecting
+    strictPort: false, // Allow Vite to use alternative ports if needed
     proxy: {
       '/api/metrics': {
         target: 'http://localhost:9090',

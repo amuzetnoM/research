@@ -1,73 +1,68 @@
-import React, { ReactNode } from 'react';
+import React from 'react';
+import { useTheme } from '@/contexts/ThemeContext';
+import { cn } from '@/lib/utils';
 
 interface CardProps {
+  children: React.ReactNode;
   title?: string;
   subtitle?: string;
-  children: ReactNode;
   className?: string;
-  action?: ReactNode;
   loading?: boolean;
   error?: string | null;
-  variant?: 'neumorph' | 'inset' | 'flat';
-  noPadding?: boolean;
-  elevation?: 'low' | 'medium' | 'high';
 }
 
-const Card: React.FC<CardProps> = ({
-  title,
-  subtitle,
-  children,
+const Card: React.FC<CardProps> = ({ 
+  children, 
+  title, 
+  subtitle, 
   className = '',
-  action,
   loading = false,
-  error = null,
-  variant = 'neumorph',
-  noPadding = false,
-  elevation = 'medium',
+  error = null
 }) => {
-  // Create consistent neumorphic variants with no borders
-  const variantClasses = {
-    neumorph: 'neumorph bg-background',
-    inset: 'neumorph-inset bg-background',
-    flat: 'bg-background rounded-2xl',
-  };
-
-  // Elevation only affects neumorph variant
-  const elevationClasses = {
-    low: variant === 'neumorph' ? 'neumorph-sm' : '',
-    medium: variant === 'neumorph' ? 'neumorph' : '',
-    high: variant === 'neumorph' ? 'neumorph-lg' : '',
-  };
+  const { isDarkMode } = useTheme();
 
   return (
-    <div 
-      className={`
-        ${variantClasses[variant]} 
-        ${elevation && variant === 'neumorph' ? elevationClasses[elevation] : ''} 
-        overflow-hidden
-        ${className}
-      `}
+    <div
+      className={cn(
+        "p-6 rounded-2xl transition-all duration-300",
+        isDarkMode
+          ? "bg-gray-900 shadow-inner shadow-black/90"
+          : "bg-white shadow-inner shadow-white/90",
+        "border border-transparent",
+        isDarkMode ? "border-gray-800" : "border-gray-200",
+        "transition-shadow duration-300",
+        "hover:scale-[1.01]",
+        "overflow-hidden",
+        className
+      )}
     >
-      {(title || subtitle || action) && (
-        <div className="px-5 py-4 flex justify-between items-center">
-          <div>
-            {title && (
-              <h3 className="text-base font-medium text-foreground tracking-tight">
-                {title}
-              </h3>
+      {title && (
+        <div className="mb-4">
+          <h2
+            className={cn(
+              "text-xl font-semibold transition-colors duration-300",
+              isDarkMode ? "text-gray-100" : "text-gray-900",
+              "font-light"
             )}
-            {subtitle && (
-              <p className="text-sm text-foreground/60 mt-0.5">
-                {subtitle}
-              </p>
-            )}
-          </div>
-          {action && <div>{action}</div>}
+          >
+            {title}
+          </h2>
+          {subtitle && (
+            <p
+              className={cn(
+                "text-sm transition-colors duration-300",
+                isDarkMode ? "text-gray-400" : "text-gray-600",
+              )}
+            >
+              {subtitle}
+            </p>
+          )}
         </div>
       )}
-      <div className={`relative ${noPadding ? '' : 'p-5'}`}>
-        {loading && (
-          <div className="absolute inset-0 bg-background/80 flex items-center justify-center z-10 backdrop-blur-sm">
+
+      <div className="w-full">
+        {loading ? (
+          <div className="flex justify-center items-center p-4">
             <svg className="animate-spin h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2"></circle>
               <path
@@ -77,9 +72,11 @@ const Card: React.FC<CardProps> = ({
               ></path>
             </svg>
           </div>
-        )}
-        {error ? (
-          <div className="text-danger-500 text-sm p-4 bg-danger-500/5 neumorph-inset">
+        ) : error ? (
+          <div className={cn(
+            "text-sm p-4 rounded-xl",
+            isDarkMode ? "bg-red-900/20 text-red-300" : "bg-red-100 text-red-600",
+          )}>
             {error}
           </div>
         ) : (
@@ -91,5 +88,4 @@ const Card: React.FC<CardProps> = ({
 };
 
 export default Card;
-// Add named export to support both import styles
 export { Card };

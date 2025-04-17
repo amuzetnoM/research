@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Card from '../components/common/Card';
 import Button from '../components/common/Button';
 import Toggle from '../components/common/Toggle';
 import { configService } from '../utils/configService';
+import { useTheme } from '@/contexts/ThemeContext';
+import { Slider } from '@/components/ui/slider';
+import { cn } from '@/lib/utils';
 
 const featureFlags = [
   { key: 'enableGrafanaIntegration', label: 'Grafana Integration' },
@@ -24,10 +27,15 @@ const themeOptions = [
 ];
 
 const Settings = () => {
+  const { theme, setTheme, backgroundValue, setBackgroundValue, isDarkMode } = useTheme();
   const [flags, setFlags] = useState({ ...configService.getConfig().featureFlags });
   const [dashboard, setDashboard] = useState({ ...configService.getConfig().dashboardSettings });
-  const [theme, setTheme] = useState(dashboard.defaultTheme);
   const [saving, setSaving] = useState(false);
+
+  // Sync theme with configService when component mounts
+  useEffect(() => {
+    setDashboard(prev => ({ ...prev, defaultTheme: theme }));
+  }, [theme]);
 
   const handleFlagChange = (key: string, value: boolean) => {
     setFlags(f => ({ ...f, [key]: value }));
@@ -38,19 +46,10 @@ const Settings = () => {
     setTheme(value as 'light' | 'dark' | 'system');
     setDashboard(d => ({ ...d, defaultTheme: value }));
     configService.updateSetting('defaultTheme', value as any);
-    // Apply theme immediately
-    if (value === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else if (value === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      // System preference
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    }
+  };
+
+  const handleBackgroundChange = (value: number[]) => {
+    setBackgroundValue(value[0]);
   };
 
   const handleSave = () => {
@@ -60,23 +59,28 @@ const Settings = () => {
   };
 
   return (
-    <div className="relative min-h-[90vh]">
-      {/* Blob gradient background with blur */}
-      <div className="absolute inset-0 -z-10 blur-md" style={{
-        background: 'radial-gradient(circle at 20% 30%, #a5b4fc 0%, #f0f9ff 40%, #e0e7ef 100%)',
-        opacity: 0.7
-      }} />
-      <h1 className="text-3xl font-bold accent mb-6">Settings</h1>
-      <Card title="User Preferences & Personalization" className="glass neumorph backdrop-blur-lg">
+    <div className="space-y-8">
+      <h1 className={cn(
+        "text-3xl font-bold mb-6 transition-colors duration-300",
+        isDarkMode ? "text-gray-100" : "text-gray-900"
+      )}>
+        Settings
+      </h1>
+      
+      <Card title="Theme Settings">
         <div className="space-y-6">
           <div>
-            <h2 className="text-lg font-semibold mb-2">Theme</h2>
+            <h2 className={cn(
+              "text-lg font-semibold mb-2",
+              isDarkMode ? "text-gray-200" : "text-gray-800"
+            )}>
+              Theme
+            </h2>
             <div className="flex gap-4">
               {themeOptions.map(opt => (
                 <Button
                   key={opt.value}
-                  variant={theme === opt.value ? 'primary' : 'ghost'}
-                  className="shadow-neumorph-bulge"
+                  variant={theme === opt.value ? 'primary' : 'neumorph'}
                   onClick={() => handleThemeChange(opt.value)}
                 >
                   {opt.label}
@@ -84,82 +88,180 @@ const Settings = () => {
               ))}
             </div>
           </div>
+          
           <div>
-            <h2 className="text-lg font-semibold mb-2">Feature Flags</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {featureFlags.map(flag => (
-                <div key={flag.key} className="flex items-center gap-4 p-3 rounded-xl glass neumorph-inset">
-                  <span className="font-medium">{flag.label}</span>
-                  <Toggle
-                    enabled={!!flags[flag.key as keyof typeof flags]}
-                    onChange={v => handleFlagChange(flag.key, v)}
-                  />
-                </div>
-              ))}
+            <h2 className={cn(
+              "text-lg font-semibold mb-2",
+              isDarkMode ? "text-gray-200" : "text-gray-800"
+            )}>
+              Background Adjustment
+            </h2>
+            <Slider
+              value={[backgroundValue]}
+              onValueChange={handleBackgroundChange}
+              min={0}
+              max={100}
+              step={1}
+            />
+          </div>
+        </div>
+      </Card>
+      
+      <Card title="Feature Flags">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {featureFlags.map(flag => (
+            <div 
+              key={flag.key} 
+              className={cn(
+                "flex items-center justify-between p-3 rounded-xl",
+                isDarkMode 
+                  ? "bg-gray-800/50 shadow-inner shadow-black/40" 
+                  : "bg-gray-100/70 shadow-inner shadow-white/70"
+              )}
+            >
+              <span className={cn(
+                "font-medium",
+                isDarkMode ? "text-gray-200" : "text-gray-700"
+              )}>
+                {flag.label}
+              </span>
+              <Toggle
+                enabled={!!flags[flag.key as keyof typeof flags]}
+                onChange={v => handleFlagChange(flag.key, v)}
+              />
             </div>
+          ))}
+        </div>
+      </Card>
+      
+      <Card title="Dashboard Settings">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="flex flex-col gap-1">
+            <label className={cn(
+              "font-medium",
+              isDarkMode ? "text-gray-200" : "text-gray-700"
+            )}>
+              Refresh Interval (ms)
+            </label>
+            <input
+              type="number"
+              className={cn(
+                "rounded-xl px-3 py-2",
+                isDarkMode 
+                  ? "bg-gray-800 text-gray-200 border border-gray-700" 
+                  : "bg-white/70 text-gray-800 border border-gray-200",
+                "shadow-inner",
+                isDarkMode ? "shadow-black/40" : "shadow-gray-200/70"
+              )}
+              value={dashboard.refreshInterval}
+              onChange={e => setDashboard(d => ({ ...d, refreshInterval: Number(e.target.value) }))}
+              min={5000}
+              step={1000}
+            />
           </div>
-          <div>
-            <h2 className="text-lg font-semibold mb-2">Dashboard Settings</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <label className="font-medium">Refresh Interval (ms)</label>
-                <input
-                  type="number"
-                  className="rounded-xl px-3 py-1 bg-white/30 neumorph-inset"
-                  value={dashboard.refreshInterval}
-                  onChange={e => setDashboard(d => ({ ...d, refreshInterval: Number(e.target.value) }))}
-                  min={5000}
-                  step={1000}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="font-medium">Max Data Points</label>
-                <input
-                  type="number"
-                  className="rounded-xl px-3 py-1 bg-white/30 neumorph-inset"
-                  value={dashboard.maxDataPoints}
-                  onChange={e => setDashboard(d => ({ ...d, maxDataPoints: Number(e.target.value) }))}
-                  min={100}
-                  step={100}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="font-medium">Date Format</label>
-                <input
-                  type="text"
-                  className="rounded-xl px-3 py-1 bg-white/30 neumorph-inset"
-                  value={dashboard.dateFormat}
-                  onChange={e => setDashboard(d => ({ ...d, dateFormat: e.target.value }))}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="font-medium">Time Format</label>
-                <input
-                  type="text"
-                  className="rounded-xl px-3 py-1 bg-white/30 neumorph-inset"
-                  value={dashboard.timeFormat}
-                  onChange={e => setDashboard(d => ({ ...d, timeFormat: e.target.value }))}
-                />
-              </div>
-              <div className="flex flex-col gap-1">
-                <label className="font-medium">Decimal Precision</label>
-                <input
-                  type="number"
-                  className="rounded-xl px-3 py-1 bg-white/30 neumorph-inset"
-                  value={dashboard.decimalPrecision}
-                  onChange={e => setDashboard(d => ({ ...d, decimalPrecision: Number(e.target.value) }))}
-                  min={0}
-                  max={8}
-                />
-              </div>
-            </div>
+          
+          {/* Other dashboard settings with the same styling */}
+          <div className="flex flex-col gap-1">
+            <label className={cn(
+              "font-medium",
+              isDarkMode ? "text-gray-200" : "text-gray-700"
+            )}>
+              Max Data Points
+            </label>
+            <input
+              type="number"
+              className={cn(
+                "rounded-xl px-3 py-2",
+                isDarkMode 
+                  ? "bg-gray-800 text-gray-200 border border-gray-700" 
+                  : "bg-white/70 text-gray-800 border border-gray-200",
+                "shadow-inner",
+                isDarkMode ? "shadow-black/40" : "shadow-gray-200/70"
+              )}
+              value={dashboard.maxDataPoints}
+              onChange={e => setDashboard(d => ({ ...d, maxDataPoints: Number(e.target.value) }))}
+              min={100}
+              step={100}
+            />
           </div>
-          <div className="flex gap-4 mt-6">
-            <Button variant="primary" className="shadow-neumorph-bulge px-8 py-3 text-lg" onClick={handleSave} loading={saving}>
-              Save Settings
-            </Button>
-            <Button variant="ghost" onClick={() => window.location.reload()}>Reload</Button>
+          
+          {/* More dashboard settings */}
+          <div className="flex flex-col gap-1">
+            <label className={cn(
+              "font-medium",
+              isDarkMode ? "text-gray-200" : "text-gray-700"
+            )}>
+              Date Format
+            </label>
+            <input
+              type="text"
+              className={cn(
+                "rounded-xl px-3 py-2",
+                isDarkMode 
+                  ? "bg-gray-800 text-gray-200 border border-gray-700" 
+                  : "bg-white/70 text-gray-800 border border-gray-200",
+                "shadow-inner",
+                isDarkMode ? "shadow-black/40" : "shadow-gray-200/70"
+              )}
+              value={dashboard.dateFormat}
+              onChange={e => setDashboard(d => ({ ...d, dateFormat: e.target.value }))}
+            />
           </div>
+          
+          <div className="flex flex-col gap-1">
+            <label className={cn(
+              "font-medium",
+              isDarkMode ? "text-gray-200" : "text-gray-700"
+            )}>
+              Time Format
+            </label>
+            <input
+              type="text"
+              className={cn(
+                "rounded-xl px-3 py-2",
+                isDarkMode 
+                  ? "bg-gray-800 text-gray-200 border border-gray-700" 
+                  : "bg-white/70 text-gray-800 border border-gray-200",
+                "shadow-inner",
+                isDarkMode ? "shadow-black/40" : "shadow-gray-200/70"
+              )}
+              value={dashboard.timeFormat}
+              onChange={e => setDashboard(d => ({ ...d, timeFormat: e.target.value }))}
+            />
+          </div>
+          
+          <div className="flex flex-col gap-1">
+            <label className={cn(
+              "font-medium",
+              isDarkMode ? "text-gray-200" : "text-gray-700"
+            )}>
+              Decimal Precision
+            </label>
+            <input
+              type="number"
+              className={cn(
+                "rounded-xl px-3 py-2",
+                isDarkMode 
+                  ? "bg-gray-800 text-gray-200 border border-gray-700" 
+                  : "bg-white/70 text-gray-800 border border-gray-200",
+                "shadow-inner",
+                isDarkMode ? "shadow-black/40" : "shadow-gray-200/70"
+              )}
+              value={dashboard.decimalPrecision}
+              onChange={e => setDashboard(d => ({ ...d, decimalPrecision: Number(e.target.value) }))}
+              min={0}
+              max={8}
+            />
+          </div>
+        </div>
+        
+        <div className="flex gap-4 mt-6">
+          <Button variant="primary" onClick={handleSave} loading={saving}>
+            Save Settings
+          </Button>
+          <Button variant="neumorph" onClick={() => window.location.reload()}>
+            Reload
+          </Button>
         </div>
       </Card>
     </div>

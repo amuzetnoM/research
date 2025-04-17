@@ -59,11 +59,11 @@ export interface AppConfig {
 
 // Default configuration
 const defaultConfig: AppConfig = {
-  environment: process.env.NODE_ENV === 'production' 
-    ? Environment.PRODUCTION 
+  environment: import.meta.env.MODE === 'production'
+    ? Environment.PRODUCTION
     : Environment.DEVELOPMENT,
-  version: process.env.REACT_APP_VERSION || '0.1.0',
-  buildDate: process.env.REACT_APP_BUILD_DATE || new Date().toISOString(),
+  version: import.meta.env.VITE_APP_VERSION || '0.1.0',
+  buildDate: import.meta.env.VITE_APP_BUILD_DATE || new Date().toISOString(),
   apiBaseUrl: '/api',
   metricsEndpoint: '/metrics',
   grafanaUrl: '/grafana',
@@ -78,7 +78,7 @@ const defaultConfig: AppConfig = {
     enableLocalStorage: true,
     enableDarkMode: true,
     enableAdvancedCharts: true,
-    enableExperimentalFeatures: process.env.NODE_ENV !== 'production',
+    enableExperimentalFeatures: import.meta.env.MODE !== 'production',
   },
   dashboardSettings: {
     refreshInterval: 30000, // 30 seconds
@@ -90,8 +90,8 @@ const defaultConfig: AppConfig = {
     decimalPrecision: 2,
   },
   errorReportingEnabled: true,
-  analyticsEnabled: process.env.NODE_ENV === 'production',
-  logLevel: process.env.NODE_ENV === 'production' ? 'info' : 'debug',
+  analyticsEnabled: import.meta.env.MODE === 'production',
+  logLevel: import.meta.env.MODE === 'production' ? 'info' : 'debug',
   maxLogEntries: 1000,
   container1Url: '/api/container1',
   container2Url: '/api/container2',
@@ -219,7 +219,7 @@ class ConfigService {
         if (parsedConfig.featureFlags) {
           // Only override non-critical feature flags
           const safeFlags = { ...parsedConfig.featureFlags };
-          if (process.env.NODE_ENV === 'production') {
+          if (import.meta.env.MODE === 'production') {
             safeFlags.enableExperimentalFeatures = false;
           }
           this.config.featureFlags = {

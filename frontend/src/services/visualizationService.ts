@@ -2,7 +2,6 @@
  * API service for fetching visualization data
  */
 import apiClient from './apiClient';
-import websocketService from './websocketService';
 import { dataService } from '../../../dataService/files/dataService';
 
 // API endpoints
@@ -97,83 +96,14 @@ const handleError = (error: any) => {
   };
 };
 
-// WebSocket support for real-time updates
-const WEBSOCKET_URL = 'ws://localhost:8080/metrics';
-
-let wsConnected = false;
-
-const connectWebSocket = async () => {
-  if (wsConnected) return;
-  
-  try {
-    await websocketService.connect(WEBSOCKET_URL);
-    wsConnected = true;
-  } catch (error) {
-    console.error('Failed to connect to WebSocket:', error);
-    throw error;
-  }
-};
-
-// Real-time subscription method
-export const subscribeToMetrics = (metrics: string[], callback: (data: any) => void) => {
-  connectWebSocket().then(() => {
-    websocketService.subscribe('metrics', callback);
-    websocketService.send('subscribe', { metrics });
-  }).catch(console.error);
-
-  return () => {
-    websocketService.unsubscribe('metrics', callback);
-    websocketService.send('unsubscribe', { metrics });
-  };
-};
-
-// Added real-time streaming configuration
-const STREAMING_CONFIG = {
-  BATCH_SIZE: 100,
-  MAX_POINTS: 10000,
-  INTERVAL: 1000,
-};
-
-// LEGACY: WebSocket-based real-time metric streaming is deprecated.
-// Please migrate to REST polling or SSE for all real-time data needs.
-// TODO: Remove WebSocket streaming after SSE integration.
-
-// Added streaming data buffer
-let streamBuffer: Record<string, any[]> = {};
-
-export const startMetricStream = (metric: string, onData: (data: any) => void) => {
-  if (!streamBuffer[metric]) {
-    streamBuffer[metric] = [];
-  }
-
-  const ws = new WebSocket(`${ENDPOINTS.prometheus}/api/v1/stream`);
-  
-  ws.onmessage = (event) => {
-    const data = JSON.parse(event.data);
-    streamBuffer[metric].push(data);
-
-    if (streamBuffer[metric].length >= STREAMING_CONFIG.BATCH_SIZE) {
-      onData(streamBuffer[metric]);
-      streamBuffer[metric] = streamBuffer[metric].slice(-STREAMING_CONFIG.MAX_POINTS);
-    }
-  };
-
-  return () => ws.close();
-};
-
 // API Functions
 export const fetchMetrics = async (query: string, start?: number, end?: number) => {
   try {
-    const params = new URLSearchParams({
-      query,
-      ...(start && { start: start.toString() }),
-      ...(end && { end: end.toString() }),
-    });
-
-    const response = await apiClient.get(`${ENDPOINTS.prometheus}/query_range?${params}`);
-    return transformTimeSeriesData(response.data);
+    // Use dataService for REST/SSE
+    return await dataService.fetch('metrics', { query, start, end });
   } catch (error) {
     handleError(error);
+    throw error;
   }
 };
 
@@ -238,8 +168,6 @@ const visualizationService = {
   fetchMetrics,
   fetchContainerMetrics,
   fetchGrafanaDashboard,
-  subscribeToMetrics,
-  startMetricStream,
   getGrafanaEmbedUrl,
 };
 
