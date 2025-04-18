@@ -278,7 +278,7 @@ As we move into an era where AI systems will make decisions of increasing conseq
 
 ## Documentation and Checklists
 
-    WE NEED BETTER DOCUMENTATION
+> WE NEED BETTER DOCUMENTATION
 
 ---
 
