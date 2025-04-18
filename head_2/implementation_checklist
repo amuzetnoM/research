@@ -1,0 +1,65 @@
+# System Setup Checklist for Evolving AI
+
+This checklist outlines the steps to set up a machine for experimenting with an evolving, self-aware AI, as described in the "Evolving Self-Aware AI System Architecture" document. Proceed with caution, as these steps involve potentially irreversible data loss and system modifications.
+
+## Step 1: Choose the Victim
+- [ ] Select a machine with the following specifications:
+    - [ ] At least 4GB of RAM.
+    - [ ] SSD preferred for faster performance.
+    - [ ] Legacy BIOS or UEFI (both are usable).
+    - [ ] External boot support (USB).
+- [ ] **CRITICAL:** If the machine's hard drive/SSD contains any important data, back it up now. This process will erase the drive.
+
+## Step 2: Nuke the Drive (Kill the OS)
+- [ ] Create a bootable USB drive with the following tools:
+    - [ ] Ventoy (multi-ISO boot tool)
+    - [ ] GParted Live ISO
+    - [ ] TinyCore Linux or Alpine Linux ISO
+    - [ ] MemTest86
+- [ ] Boot the machine from the GParted Live USB.
+- [ ] **CAUTION:** Double-check that you have selected the correct drive in GParted to avoid accidentally erasing the wrong disk.
+- [ ] Delete all partitions on the target drive.
+- [ ] Create a new partition table:
+    - [ ] GPT for modern systems.
+    - [ ] MBR for older systems.
+- [ ] **IMPORTANT:** Do not format any partitions. Leave the drive completely empty.
+- [ ] *(Optional Brutality)*: Perform a complete drive wipe by overwriting it with zeros:
+    - [ ] Open a terminal in GParted Live.
+    - [ ] Execute the following command:
+        ```bash
+        sudo dd if=/dev/zero of=/dev/sda bs=1M status=progress
+        ```
+        *(Replace `/dev/sda` with the correct drive identifier if necessary. Incorrectly specifying the drive can destroy data on the wrong device!)*
+    - [ ] Be aware that this process can take a very long time, especially for large drives.
+
+## Step 3: Install a Minimal Boot Kernel (Optional)
+- [ ] Choose a boot option:
+    - **Option A: No OS, Only GRUB Shell**
+        - [ ] Install GRUB manually to the disk:
+            ```bash
+            grub-install /dev/sda
+            ```
+            *(Adjust `/dev/sda` if needed)*
+        - [ ] The system will boot directly into the GRUB shell.
+        - [ ] Kernels and scripts must be manually loaded from external media (USB).
+    - **Option B: Micro Linux OS (TinyCore / Alpine)**
+        - [ ] Install TinyCore (approximately 16MB) or Alpine (approximately 100MB) onto a small partition.
+        - [ ] This provides a minimal environment with:
+            - [ ] A shell interface.
+            - [ ] A package manager.
+            - [ ] *(Optional)* Python or a C compiler (install via the package manager).
+        - [ ] This will serve as the core development environment.
+
+## Step 4: Make it Plug-n-Code
+- [ ] Configure the system to automatically mount USB drives.
+- [ ] Store all external scripts and programs on a USB drive.
+- [ ] Use the following directories as the primary workspace:
+    - [ ] `/home/dev`
+    - [ ] `/mnt/usb/modules/` (or a similar path on the mounted USB drive)
+- [ ] This setup ensures that nothing runs unless explicitly executed, providing maximum control over the system.
+
+## Extras (Optional)
+- [ ] Remove any desktop environment (if present) to minimize resource usage.
+- [ ] Disable the internet connection to create an isolated environment.
+- [ ] Disable swap space to limit RAM usage and test memory pressure.
+- [ ] Configure the system to boot directly to the terminal (console mode).
