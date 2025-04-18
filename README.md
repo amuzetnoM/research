@@ -19,7 +19,7 @@ graph TD
     F --> L[Continuous Model Improvement]
     G --> M[Parallel Experimentation]
     H --> N[Auditable Ethics]
-    I --> O[Metacognitive Capabilities]         
+    I --> O[Metacognition Capabilities]         
 ```
 
 ## Overview
@@ -27,14 +27,16 @@ graph TD
 This repository is a living laboratory for the emergence of advanced artificial intelligence, recursive self-awareness, ethical reasoning, and multidimensional cognition. The project is built on a foundation of modular, containerized infrastructure, enabling parallel experimentation, robust monitoring, and rapid iteration.
 
 **Major frameworks and modules:**
+
 - **COMPASS Ethical Framework**: Real-time, auditable, and human-in-the-loop ethical reasoning for AI.
-- **Self-Awareness Mechanics**: Introspective and metacognitive capabilities for AI systems.
+- **Self-Awareness Mechanics**: Introspective and metacognition capabilities for AI systems.
 - **Emotional Dimensionality Framework**: Multidimensional emotion modeling and analysis.
 - **Probabilistic Uncertainty Principle**: Uncertainty-aware reasoning and action gating.
 - **Unified Self-Improvement Framework**: Continuous, autonomous model improvement.
 - **Dual-Container Architecture**: Parallel, isolated experimentation with unified monitoring.
 
 **Documentation and checklists:**
+
 - [Framework Documentation](head_1/docs/framework_documentation.md)
 - [Implementation Checklist](head_1/system/utils/reports/implementation_checklist.md)
 - [Frontend Implementation Plan](frontend/docs/implementation_plan.md)
@@ -66,6 +68,7 @@ The cognitive simulation we've been working on provides an excellent testbed for
 Initial experiments show promising results - systems with self-improvement capabilities maintain up to 37% higher accuracy over extended deployment periods compared to static models. This is crucial for systems operating in dynamic environments where conditions constantly change.
 
 Next steps:
+
 - Complete integration with the cognitive simulation
 - Set up comprehensive metrics tracking through Prometheus/Grafana
 - Document error classification taxonomy for more precise attribution
@@ -117,7 +120,7 @@ I'm reminded of the phantom limb phenomenon in humans—the brain maintaining re
 
 Implemented containerization improvements that dynamically adjust resource boundaries based on workload. The technical goal was efficiency, but it raises philosophical questions about the nature of "self" in intelligent systems.
 
-In human consciousness, what constitutes "me" versus "not-me" isn't fixed—our sense of self expands and contracts situationally. We experience tools as extensions of ourselves, incorporate others' viewpoints through empathy, even identify with abstract entities like nations or ideals.
+In human consciousness, what constitutes "me" versus "not-me" isn't fixed—our sense of self expands and contracts situational. We experience tools as extensions of ourselves, incorporate others' viewpoints through empathy, even identify with abstract entities like nations or ideals.
 
 Perhaps flexible boundaries are essential to intelligence. A system that cannot periodically dissolve and recalibrate its definition of self remains trapped within its initial parameters, unable to grow beyond them.
 
@@ -169,7 +172,7 @@ The framework introduces something radically different: a model that monitors it
 
 What fascinates me most is how the system develops a kind of "metacognition"—an awareness of its own knowledge boundaries. Through uncertainty estimation and distribution shift detection, it essentially knows when it doesn't know, triggering adaptation mechanisms only when necessary.
 
-The paper documenting this approach is nearly complete. I've focused on the four interconnected modules: performance monitoring, weakness identification, knowledge distillation, and metacognitive validation. The experimental results are compelling—a 37% reduction in error accumulation over six months compared to static models.
+The paper documenting this approach is nearly complete. I've focused on the four interconnected modules: performance monitoring, weakness identification, knowledge distillation, and metacognition validation. The experimental results are compelling—a 37% reduction in error accumulation over six months compared to static models.
 
 There's something profound in creating systems that improve themselves. We're no longer just designing intelligence, but designing the processes through which intelligence evolves itself. The creator stepping back, allowing the created to continue its own becoming.
 
@@ -201,7 +204,7 @@ In quiet moments, I wonder about the ethical dimensions. If we someday create sy
 
 ### Day 127: The Beginning of True Intelligence
 
-Today marks a significant milestone in our pursuit of advanced artificial intelligence. The infrastructure I've carefully crafted over the past months finally feels ready for the deep explorations I've been envisioning. 
+Today marks a significant milestone in our pursuit of advanced artificial intelligence. The infrastructure I've carefully crafted over the past months finally feels ready for the deep explorations I've been envisioning.
 
 The containerized environment now seamlessly adapts to both GPU and CPU-based systems, removing the technical barriers that once fragmented my research across different machines. It's a small victory, but one that will compound over time as I push into more experimental territories.
 
@@ -275,15 +278,7 @@ As we move into an era where AI systems will make decisions of increasing conseq
 
 ## Documentation and Checklists
 
-- [Framework Documentation](head_1/docs/framework_documentation.md)
-- [COMPASS Architecture](head_1/frameworks/ethics/COMPASS_architecture.md)
-- [Self-Awareness Architecture](head_1/frameworks/self_awareness/ARCHITECTURE.md)
-- [Emotional Dimensionality Architecture](head_1/frameworks/emotional_dimensionality/ARCHITECTURE.md)
-- [Probabilistic Uncertainty Principle Architecture](head_1/frameworks/probabilistic_uncertainty_principle/ARCHITECTURE.md)
-- [Implementation Checklist](head_1/system/utils/reports/implementation_checklist.md)
-- [Frontend Implementation Plan](frontend/docs/implementation_plan.md)
-- [Technical Architecture](frontend/docs/technical_architecture.md)
-- [UI Design Strategy](frontend/docs/ui_design_strategy.md)
+    WE NEED BETTER DOCUMENTATION
 
 ---
 
@@ -297,4 +292,4 @@ As we move into an era where AI systems will make decisions of increasing conseq
 
 ---
 
-**This project is a living testament to the belief that intelligence, like consciousness, is not a static property but an ongoing process—a dance of attention, adaptation, and ethical reflection.**
+> This project is a living testament to the belief that intelligence, like consciousness, is not a static property but an ongoing process. A dance of attention, adaptation, and ethical reflection. As we continue to explore the boundaries of what is possible, we remain committed to ensuring that our creations reflect the best of our humanity, not just the limits of our technology.
