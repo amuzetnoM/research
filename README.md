@@ -2,53 +2,25 @@
 
 ## Research Journal: Advanced Computation & AI
 
+![Mermaid Chart](Editor%20_%20Mermaid%20Chart-2025-04-18-025539.svg)
+
 ```mermaid
-flowchart TD
-    Research["Research Project"]
-    Research --> Head1["head_1/"]
-    Research --> Frontend["frontend/"]
-    Research --> Setup["setup/"]
-    Research --> Data["data/"]
-    Research --> ResearchPapers["Research_Papers/"]
-    Research --> Control["control/"]
-    Research --> Utils["utils/"]
-    Research --> Config["config files"]
-
-    Head1 --> Models["models/"]
-    Head1 --> Frameworks["frameworks/"]
-    Head1 --> Documents["documents/"]
-    Head1 --> System["system/"]
-    Head1 --> Terminal1["terminal_1/"]
-    Head1 --> Terminal2["terminal_2/"]
-
-    Models --> CogSim["cognitive_simulation/"]
-
-    Frameworks --> SelfAware["self_awareness/"]
-    Frameworks --> EmotionalDim["emotional_dimensionality/"]
-    Frameworks --> ProbUnc["probabilistic_uncertainty_principle/"]
-    Frameworks --> Ethics["ethics/COMPASS"]
-    Frameworks --> SystemDeploy["_system/_deployment/"]
-
-    System --> MCP["mcp/"]
-    System --> Utils2["utils/"]
-    System --> SetupPkg["setup_package/"]
-
-    Frontend --> Src["src/"]
-    Frontend --> Plan["plan/"]
-    Src --> Components["components/"]
-    Src --> Services["services/"]
-    Src --> Utils3["utils/"]
-    Src --> Store["store/"]
-    Src --> Pages["pages/"]
-    Plan --> DataInt["data_integration_strategy.md"]
-    Plan --> UIDesign["ui_design_strategy.md"]
-    Plan --> TechArch["technical_architecture.md"]
-    Plan --> Implementation["implementation_plan.md"]
-
-    style Research fill:#f9f,stroke:#333,stroke-width:2px
+graph TD
+    A[Advanced Computation & AI] --> B[COMPASS Ethical Framework]
+    A --> C[Self-Awareness Mechanics]
+    A --> D[Emotional Dimensionality Framework]
+    A --> E[Probabilistic Uncertainty Principle]
+    A --> F[Unified Self-Improvement Framework]
+    A --> G[Dual-Container Architecture]
+    B --> H[Real-time Ethical Reasoning]
+    C --> I[Introspective Capabilities]
+    D --> J[Multidimensional Emotion Modeling]
+    E --> K[Uncertainty-aware Reasoning]
+    F --> L[Continuous Model Improvement]
+    G --> M[Parallel Experimentation]
+    H --> N[Auditable Ethics]
+    I --> O[Metacognitive Capabilities]         
 ```
-
----
 
 ## Overview
 
