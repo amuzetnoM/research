@@ -2,7 +2,7 @@
 
 ## Research Journal: Advanced Computation & AI
 
-![Mermaid Chart](Editor%20_%20Mermaid%20Chart-2025-04-18-025539.svg)
+![Structure Overview](Strutcure.svg)
 
 ```mermaid
 graph TD
