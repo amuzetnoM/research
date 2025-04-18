@@ -9,7 +9,7 @@ import numpy as np
 from typing import Callable, Union, Any, Optional, List, Dict, TypeVar, Generic
 import logging
 
-from pup.core.belief_state import BeliefState
+from ___files.core.belief_state import BeliefState
 
 # Type variable for the action result
 T = TypeVar('T')

@@ -17,8 +17,8 @@ import torchvision.transforms as transforms
 from typing import Tuple, List, Dict, Any, Optional
 
 # Import PUP components
-from pup.core import BeliefState, ConfidenceExecutor
-from pup.integrations.pytorch import MonteCarloDropout, torch_to_belief_state
+from ___files.core import BeliefState, ConfidenceExecutor
+from ___files.integrations.pytorch import MonteCarloDropout, torch_to_belief_state
 
 
 # Define a simple CNN with dropout for uncertainty estimation

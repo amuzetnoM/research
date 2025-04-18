@@ -14,9 +14,9 @@ logger = logging.getLogger(__name__)
 
 try:
     # Attempt to import PUP components
-    from head_1.frameworks.probabalistic_uncertainty_principle.pup.belief_state import BeliefState
-    from head_1.frameworks.probabalistic_uncertainty_principle.pup.uncertainty_propagator import UncertaintyPropagator
-    from head_1.frameworks.probabalistic_uncertainty_principle.pup.confidence_executor import ConfidenceExecutor
+    from head_1.frameworks.probabalistic_uncertainty_principle.___files.belief_state import BeliefState
+    from head_1.frameworks.probabalistic_uncertainty_principle.___files.uncertainty_propagator import UncertaintyPropagator
+    from head_1.frameworks.probabalistic_uncertainty_principle.___files.confidence_executor import ConfidenceExecutor
     HAS_PUP = True
 except ImportError:
     logger.warning("PUP Framework not found. Import failed.")

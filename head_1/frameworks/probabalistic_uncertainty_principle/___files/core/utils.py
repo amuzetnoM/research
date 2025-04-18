@@ -10,7 +10,7 @@ from typing import Union, List, Dict, Any, Optional, Tuple, Callable
 import math
 import logging
 
-from pup.core.belief_state import BeliefState
+from ___files.core.belief_state import BeliefState
 
 # Set up logging
 logger = logging.getLogger(__name__)

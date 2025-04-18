@@ -15,8 +15,8 @@ try:
 except ImportError:
     TF_AVAILABLE = False
 
-from pup.core.belief_state import BeliefState
-from pup.core.uncertainty_propagator import UncertaintyPropagator
+from ___files.core.belief_state import BeliefState
+from ___files.core.uncertainty_propagator import UncertaintyPropagator
 
 # Set up logging
 logger = logging.getLogger(__name__)

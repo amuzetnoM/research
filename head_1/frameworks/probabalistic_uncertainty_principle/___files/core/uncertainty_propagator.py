@@ -11,7 +11,7 @@ import math
 from multiprocessing import Pool, cpu_count
 from functools import partial
 
-from pup.core.belief_state import BeliefState
+from ___files.core.belief_state import BeliefState
 
 
 class UncertaintyPropagator:
