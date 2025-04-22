@@ -1,5 +1,73 @@
 # System Report Log
 
+## Project Structure and Architecture
+
+This project is a modular AI research environment designed for advanced experimentation, monitoring, and self-improvement. It is structured into several layers, each with specific responsibilities and components. The layers are designed to be highly modular, allowing for independent development, testing, and deployment of individual components.
+
+### Framework Layers and Interactions
+
+The core of the system consists of the following layers:
+
+1.  **Infrastructure & Orchestration:**
+    *   **Description:** This layer provides the foundational infrastructure for the entire system. It includes tools and configurations for containerization, orchestration, and resource management.
+    *   **Key Components:**
+        *   **Docker and Docker Compose:** Used for creating and managing isolated containers for each service and component, ensuring consistency across different environments. Docker Compose defines the relationships and configurations between these containers.
+        *   **Containerization:** Each major component of the system (monitoring, AI frameworks, state management, frontend) is packaged as a Docker container, allowing for easy deployment and scaling.
+    *   **Interaction:** This layer is the base upon which all other layers are built. It ensures that all components can run consistently and communicate with each other.
+
+2.  **Monitoring & Diagnostics:**
+    *   **Description:** This layer is responsible for monitoring the health and performance of the system and providing diagnostic information for troubleshooting and optimization.
+    *   **Key Components:**
+        *   **Prometheus:** A time-series database that collects metrics from various system components and containers.
+        *   **Grafana:** A visualization tool that creates dashboards to display the metrics collected by Prometheus, allowing for real-time monitoring of system performance.
+        *   **Node Exporter & cAdvisor:** Prometheus exporters that collect system-level and container-level metrics (CPU, memory, disk usage, network activity, etc.).
+        *   **Diagnostic Scripts:** Python, JavaScript, and Bash scripts that perform system sweeps, resource checks, and identify potential issues.
+        *   **Error Handling:** A multi-layered error handling system (Bash, Python, JavaScript) with logging, retry mechanisms, and graceful degradation strategies.
+    *   **Interaction:** This layer monitors the infrastructure layer and all subsequent layers. It provides feedback on their health and performance and enables proactive identification and resolution of issues.
+
+3.  **AI Frameworks:**
+    *   **Description:** This layer implements various AI frameworks, each responsible for a specific aspect of the system's cognitive capabilities.
+    *   **Key Components:**
+        *   **Self-Awareness Mechanics:** Tracks the system's self-introspection, capabilities, and awareness (epistemic, temporal, social).
+        *   **COMPASS (Ethics Framework):** Provides ethical reasoning and governance for the system's actions.
+        *   **Emotional Dimensionality:** Models and tracks "emotional" states of the system, allowing for adaptive control based on these states.
+        *   **Cognitive Simulation:** Provides advanced reasoning and analytical capabilities.
+        *   **Probabilistic Uncertainty Principle:** Manages uncertainty in AI systems
+    *   **Interaction:** These frameworks interact with the state management layer to access and store information about the system's state and with the communication layer to receive inputs and provide outputs.
+
+4.  **State Management:**
+    *   **Description:** This layer manages the system's internal state, including data storage, retrieval, and querying capabilities.
+    *   **Key Components:**
+        *   **CNU (Core Neurological State Manager):** A centralized memory and query engine that integrates information from all frameworks and logs.
+        *   **Memory Database:** Stores system data, logs, and states, providing a unified view of the system's knowledge and history.
+        *   **Query Engine:** Allows for querying the system's memory, enabling frameworks and other components to retrieve relevant information.
+        *   **Web3/NFT Integration:** Integrates with Web3 technologies and NFTs for decentralized and persistent memory storage.
+    *   **Interaction:** This layer interacts with all AI frameworks to manage their data and state. It also provides data to the communication layer for external access.
+
+5.  **Communication & APIs:**
+    *   **Description:** This layer handles communication between different system components and external systems through standardized APIs.
+    *   **Key Components:**
+        *   **dataService Abstraction:** Provides a unified interface for different communication protocols (REST, SSE, WebSocket).
+        *   **REST APIs:** For standard data requests and responses.
+        *   **SSE (Server-Sent Events):** For real-time, unidirectional data updates from the server to clients.
+        *   **WebSocket:** For bidirectional, real-time communication between clients and the server.
+        *   **MCP (Context Protocol):** Manages context and session information, provides a unified interface for model providers, and exposes system information.
+    *   **Interaction:** This layer facilitates communication between all other layers and provides interfaces for external access and control of the system.
+
+6.  **Frontend Dashboard:**
+    *   **Description:** This layer provides a user interface for monitoring and interacting with the system in real-time.
+    *   **Key Components:**
+        *   **React/TypeScript Dashboard:** A web-based interface that displays real-time environment monitoring data, metrics visualizations, and alerts.
+        *   **Hooks and Services:** Abstractions (e.g., `useEnvironmentMonitoring`, `monitoringService`) that handle data fetching and protocol interactions.
+        *   **UI Components:** Reusable components for displaying data, controls, and visualizations.
+    *   **Interaction:** The frontend dashboard interacts with the communication layer to retrieve data from the system and provides a user-friendly interface for monitoring and controlling the system.
+
+### Component Interactions and Data Flow
+
+The following diagram illustrates the high-level interactions between the different layers and components:
+
+
+
 > This is a system generated report to provide an overview of the current state, health, and diagnostics of the modular AI research environment. It includes details on infrastructure, monitoring, AI frameworks, state management, communication protocols, and frontend dashboard.
 
 - This report is intended for developers, researchers, and system administrators involved in the project. It serves as a comprehensive oversight of the system's architecture, protocols, and implementation checklists. The report is structured to provide a clear understanding of the system's components, their status, and any recommendations for optimization or troubleshooting.

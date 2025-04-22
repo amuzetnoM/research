@@ -32,5 +32,7 @@
     "python.analysis.extraPaths": [
         "./head_1/frameworks/self_awareness"
     ],
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "IDX.aI.enableInlineCompletion": true,
+    "IDX.aI.enableCodebaseIndexing": true
 }
