@@ -293,3 +293,5 @@ As we move into an era where AI systems will make decisions of increasing conseq
 ---
 
 > This project is a living testament to the belief that intelligence, like consciousness, is not a static property but an ongoing process. A dance of attention, adaptation, and ethical reflection. As we continue to explore the boundaries of what is possible, we remain committed to ensuring that our creations reflect the best of our humanity, not just the limits of our technology.
+
+[![Jekyll site CI](https://github.com/amuzetnom02/research/actions/workflows/jekyll-docker.yml/badge.svg)](https://github.com/amuzetnom02/research/actions/workflows/jekyll-docker.yml)
