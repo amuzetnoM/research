@@ -22,6 +22,8 @@ Options:
     --grafana-user USER Set Grafana admin username
     --grafana-password PASS Set Grafana admin password
     --reset-monitoring  Reset monitoring configuration
+    --enable-temporal-locationing Enable temporal locationing framework
+    --enable-social-dimensionality Enable social dimensionality framework
 """
 
 import argparse
@@ -164,6 +166,16 @@ class EnvironmentManager:
         else:
             self.env_vars['ENABLE_MONITORING'] = 'false'
         
+        # Temporal locationing settings
+        if self.args.enable_temporal_locationing:
+            self.env_vars['ENABLE_TEMPORAL_LOCATIONING'] = 'true'
+        else:
+            self.env_vars['ENABLE_TEMPORAL_LOCATIONING'] = 'false'
+        # Social dimensionality settings
+        if self.args.enable_social_dimensionality:
+            self.env_vars['ENABLE_SOCIAL_DIMENSIONALITY'] = 'true'
+        else:
+            self.env_vars['ENABLE_SOCIAL_DIMENSIONALITY'] = 'false'
         return self.env_vars
     
     def determine_compose_files(self):
@@ -388,6 +400,11 @@ def parse_arguments():
     monitoring_group.add_argument('--grafana-password', default='admin',
                                 help='Password for Grafana')
     
+    # Framework settings
+    framework_group = parser.add_argument_group('Framework Configuration')
+    framework_group.add_argument('--enable-temporal-locationing', action='store_true', help='Enable temporal locationing framework')
+    framework_group.add_argument('--enable-social-dimensionality', action='store_true', help='Enable social dimensionality framework')
+
     # Development options
     dev_group = parser.add_argument_group('Development Options')
     dev_group.add_argument('--build', action='store_true',

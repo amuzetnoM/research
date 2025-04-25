@@ -25,7 +25,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Union, Set, Any
+from typing import Dict, List, Tuple, Union, Any
 from datetime import datetime
 
 # Try to import optional modules, but don't fail if they're not available
@@ -253,13 +253,11 @@ def install_dependencies(packages: List[str] = None, force: bool = False) -> boo
     
     # Upgrade pip first
     try:
-        logger.info("Upgrading pip...")
-        subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], 
-                      check=True, capture_output=True)
+        logger.info("Upgrading pip...")        
+        result = subprocess.run([sys.executable, "-m", "pip", "install", "--upgrade", "pip"], check=True, capture_output=True, text=True)
+        logger.debug(result.stdout)
     except subprocess.CalledProcessError as e:
         logger.error(f"Failed to upgrade pip: {e}")
-        # Continue anyway
-    
     # Install packages
     for package in packages:
         try:
@@ -267,7 +265,7 @@ def install_dependencies(packages: List[str] = None, force: bool = False) -> boo
             cmd = [sys.executable, "-m", "pip", "install", package]
             if force:
                 cmd.extend(["--upgrade", "--force-reinstall"])
-            
+
             result = subprocess.run(cmd, check=True, capture_output=True, text=True)
             logger.debug(result.stdout)
         except subprocess.CalledProcessError as e:
@@ -275,6 +273,7 @@ def install_dependencies(packages: List[str] = None, force: bool = False) -> boo
             logger.error(e.stderr)
             return False
     
+
     logger.info("All dependencies installed successfully")
     return True
 
@@ -288,15 +287,15 @@ def check_docker() -> bool:
     try:
         # Check Docker
         result = subprocess.run(["docker", "--version"], 
-                               check=True, capture_output=True, text=True)
+                               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         logger.info(f"Docker detected: {result.stdout.strip()}")
         
         # Check if Docker daemon is running
         result = subprocess.run(["docker", "info"], 
-                               check=True, capture_output=True, text=True)
+                               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         logger.debug("Docker daemon is running")
         
-        # Check Docker Compose if applicable
+        # Check Docker Compose
         try:
             result = subprocess.run(["docker-compose", "--version"], 
                                    check=True, capture_output=True, text=True)
@@ -336,7 +335,7 @@ def detect_gpu(force_gpu: bool = False, disable_gpu: bool = False) -> bool:
     # Check for NVIDIA GPU (Linux/Windows)
     try:
         result = subprocess.run(["nvidia-smi"], 
-                               check=True, capture_output=True, text=True)
+                               check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         gpu_info = result.stdout
         logger.info("NVIDIA GPU detected")
         logger.debug(f"GPU info: {gpu_info}")
@@ -348,7 +347,7 @@ def detect_gpu(force_gpu: bool = False, disable_gpu: bool = False) -> bool:
     if platform.system() == "Windows" and not has_gpu:
         try:
             result = subprocess.run(["wmic", "path", "win32_VideoController", "get", "name"], 
-                                   check=True, capture_output=True, text=True)
+                                   check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             if "NVIDIA" in result.stdout:
                 logger.info("NVIDIA GPU detected via WMIC")
                 has_gpu = True
@@ -359,7 +358,7 @@ def detect_gpu(force_gpu: bool = False, disable_gpu: bool = False) -> bool:
     if has_gpu and check_docker():
         try:
             result = subprocess.run(["docker", "run", "--rm", "--gpus", "all", "nvidia/cuda:11.0-base", "nvidia-smi"],
-                                   check=True, capture_output=True, text=True)
+                                   check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             logger.info("Docker GPU support confirmed")
         except subprocess.SubprocessError:
             logger.warning("GPU detected but Docker GPU support not available")
@@ -477,14 +476,15 @@ def setup_node_environment() -> bool:
     try:
         # Check if Node.js is installed
         try:
-            result = subprocess.run(["node", "--version"], check=True, capture_output=True, text=True)
+            result = subprocess.run(["node", "--version"], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
             logger.info(f"Node.js is already installed: {result.stdout.strip()}")
         except (subprocess.SubprocessError, FileNotFoundError):
             logger.warning("Node.js not found. Running install_tools.bat...")
             install_script = PROJECT_ROOT / "frontend" / "install_tools.bat"
             if not install_script.exists():
                 logger.error("Node.js installation script not found")
-                return False
+                return False   
+
             logger.info("Running Node.js installation script...")
             subprocess.run([str(install_script)], check=True)
         frontend_dir = PROJECT_ROOT / "frontend"
@@ -494,13 +494,15 @@ def setup_node_environment() -> bool:
         package_json = frontend_dir / "package.json"
         if package_json.exists():
             logger.info("Installing frontend dependencies...")
-            subprocess.run(["npm", "install"], cwd=str(frontend_dir), check=True)
+            result = subprocess.run(["npm", "install"], cwd=str(frontend_dir), check=True, capture_output=True, text=True)
+            logger.debug(result.stdout)
             # Ensure all required dev dependencies for testing are present
             logger.info("Ensuring required frontend dev dependencies are installed (Jest, React Testing Library, etc.)...")
-            subprocess.run([
-                "npm", "install", "--save-dev",
-                "jest", "@types/jest", "@testing-library/react-hooks", "@types/testing-library__react", "ts-jest", "--legacy-peer-deps"
-            ], cwd=str(frontend_dir), check=True)
+            result = subprocess.run([
+                "npm", "install", "--save-dev", "jest", "@types/jest", "@testing-library/react-hooks",
+                "@testing-library/react", "@types/testing-library__jest", "@testing-library/jest-dom", "ts-jest", "--legacy-peer-deps"
+            ], cwd=str(frontend_dir), check=True, capture_output=True, text=True)
+            logger.debug(result.stdout)
         else:
             logger.info("package.json not found. Skipping dependency installation.")
         return True
@@ -510,6 +512,7 @@ def setup_node_environment() -> bool:
     except Exception as e:
         logger.error(f"Unexpected error setting up Node.js environment: {e}")
         return False
+
 # ---
 # Frontend dev dependencies for reference:
 #   jest, @types/jest, @testing-library/react-hooks, @types/testing-library__react, ts-jest
@@ -566,14 +569,14 @@ WORKDIR /app
 # Create requirements file
 RUN echo "numpy>=1.19.0" > /tmp/requirements.txt && \\
     echo "matplotlib>=3.3.0" >> /tmp/requirements.txt && \\
-    echo "psutil>=5.8.0" >> /tmp/requirements.txt && \\
-    echo "requests>=2.25.0" >> /tmp/requirements.txt && \\
-    echo "flask>=2.0.0" >> /tmp/requirements.txt && \\
-    echo "prometheus-client>=0.11.0" >> /tmp/requirements.txt && \\
+    echo "psutil>=5.9.8" >> /tmp/requirements.txt && \\
+    echo "requests>=2.31.0" >> /tmp/requirements.txt && \\
+    echo "flask>=3.0.0" >> /tmp/requirements.txt && \\
+    echo "prometheus-client>=0.19.0" >> /tmp/requirements.txt && \\
     echo "jupyter>=1.0.0" >> /tmp/requirements.txt && \\
     echo "jupyterlab>=3.0.0" >> /tmp/requirements.txt && \\
-    echo "torch>=1.9.0" >> /tmp/requirements.txt
-
+    echo "torch>=2.2.0" >> /tmp/requirements.txt
+    
 # Install Python dependencies
 RUN pip3 install --no-cache-dir -r /tmp/requirements.txt
 
@@ -601,14 +604,14 @@ WORKDIR /app
 # Create requirements file
 RUN echo "numpy>=1.19.0" > /tmp/requirements.txt && \\
     echo "matplotlib>=3.3.0" >> /tmp/requirements.txt && \\
-    echo "psutil>=5.8.0" >> /tmp/requirements.txt && \\
-    echo "requests>=2.25.0" >> /tmp/requirements.txt && \\
-    echo "flask>=2.0.0" >> /tmp/requirements.txt && \\
-    echo "prometheus-client>=0.11.0" >> /tmp/requirements.txt && \\
+    echo "psutil>=5.9.8" >> /tmp/requirements.txt && \\
+    echo "requests>=2.31.0" >> /tmp/requirements.txt && \\
+    echo "flask>=3.0.0" >> /tmp/requirements.txt && \\
+    echo "prometheus-client>=0.19.0" >> /tmp/requirements.txt && \\
     echo "jupyter>=1.0.0" >> /tmp/requirements.txt && \\
     echo "jupyterlab>=3.0.0" >> /tmp/requirements.txt
 
-# Install Python dependencies
+# Install Python dependencies	
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
 
 # Copy entrypoint script
@@ -621,7 +624,7 @@ EXPOSE 8888 6006 8000 9090
 # Set entrypoint
 ENTRYPOINT ["/entrypoint.sh"]
 """)
-        
+
         # Create docker-compose.yml
         compose_path = DOCKER_DIR / "docker-compose.yml"
         with open(compose_path, 'w') as f:
@@ -644,7 +647,7 @@ services:
             if use_gpu:
                 f.write("""    deploy:
       resources:
-        reservations:
+        reservations:    
           devices:
             - driver: nvidia
               count: all
@@ -711,7 +714,7 @@ REM Check for NVIDIA GPU
 where nvidia-smi >nul 2>&1
 if %ERRORLEVEL% neq 0 (
     echo Warning: NVIDIA drivers not detected. This might affect GPU support.
-    echo Consider installing NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html
+        echo Consider installing NVIDIA Container Toolkit: https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html    
 ) else (
     echo NVIDIA GPU detected. Enabling GPU support.
 )
@@ -760,7 +763,7 @@ def setup_frameworks() -> bool:
             logger.warning(f"No setup.py found for framework: {framework_path}")
             continue
             
-        logger.info(f"Installing framework: {framework_path}")
+        logger.info(f"Installing framework: {framework_path}")    
         try:
             # Install in development mode
             result = subprocess.run(
@@ -862,6 +865,7 @@ def setup_environment(
     return True
 
 
+
 def get_environment_summary() -> Dict[str, Any]:
     """Get a summary of the environment.
     
@@ -892,6 +896,7 @@ def get_environment_summary() -> Dict[str, Any]:
     return summary
 
 
+
 def parse_arguments() -> argparse.Namespace:
     """Parse command-line arguments.
     
@@ -913,7 +918,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--skip-deps", action="store_true",
                        help="Skip dependency installation")
     parser.add_argument("--force-deps", action="store_true",
-                       help="Force reinstallation of dependencies")
+                       help="Force reinstallation of dependencies")    
     parser.add_argument("--skip-docker", action="store_true",
                        help="Skip Docker environment setup")
     parser.add_argument("--skip-frameworks", action="store_true",
@@ -933,6 +938,7 @@ def parse_arguments() -> argparse.Namespace:
     parser.add_argument("--dry-run", action="store_true",
                        help="Simulate setup without making actual changes")
     parser.add_argument("--cleanup", action="store_true",
+
                        help="Clean up unnecessary files after setup")
     
     return parser.parse_args()
@@ -982,12 +988,12 @@ def main() -> int:
             
             # Check Python version
             if not check_python_version():
-                logger.error("Incompatible Python version")
+                logger.error("Incompatible Python version")                
                 success = False
             
             # Check dependencies
             installed, missing = check_dependencies()
-            if missing and not args.skip_deps:
+            if missing and not args.skip_deps:            
                 print(f"Would install missing dependencies: {', '.join(missing)}")
             
             # Check Docker
@@ -998,7 +1004,7 @@ def main() -> int:
             # Check GPU
             use_gpu = detect_gpu(force_gpu=args.gpu, disable_gpu=args.no_gpu)
             print(f"{'Would enable' if use_gpu else 'Would not enable'} GPU support")
-            
+        
             print("\nDirectories that would be created:")
             for directory in [
                 PROJECT_ROOT / "head_1",
@@ -1025,7 +1031,7 @@ def main() -> int:
                     print("  - TensorFlow")
             
         else:
-            # Run actual environment setup
+            # Run actual environment setup            
             success = setup_environment(
                 install_deps=not args.skip_deps,
                 force_deps=args.force_deps,
@@ -1038,7 +1044,7 @@ def main() -> int:
         
         end_time = time.time()
         duration = end_time - start_time
-        minutes, seconds = divmod(int(duration), 60)
+        minutes, seconds = divmod(int(duration), 60)    
         
         if success:
             if args.dry_run:
@@ -1067,7 +1073,7 @@ def main() -> int:
             else:
                 logger.error("System setup failed")
             return 1
-            
+        
     except KeyboardInterrupt:
         logger.info("Setup interrupted by user")
         print("\nSetup interrupted by user. The environment may be partially configured.")
@@ -1076,6 +1082,6 @@ def main() -> int:
         logger.error(f"Unhandled error in setup: {e}")
         return 1
 
-
+        
 if __name__ == "__main__":
     sys.exit(main())

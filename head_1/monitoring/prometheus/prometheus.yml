@@ -80,3 +80,28 @@ scrape_configs:
       env: 'research'
   tls_config:
     insecure_skip_verify: true
+
+# Scrape configuration for Temporal Locationing Framework
+- job_name: 'temporal_locationing'
+  scrape_interval: 15s
+  metrics_path: /metrics
+  static_configs:
+  - targets: [ 'temporal_locationing:9091' ]  # Adjust port if necessary
+    labels:
+      framework: 'temporal_locationing'
+      env: 'research'
+  tls_config:
+    insecure_skip_verify: true
+
+# Scrape configuration for Social Dimensionality Framework
+- job_name: 'social_dimensionality'
+  scrape_interval: 15s
+  metrics_path: /metrics
+  static_configs:
+  - targets: [ 'social_dimensionality:9092' ]  # Adjust port if necessary
+    labels:
+      framework: 'social_dimensionality'
+      env: 'research'
+  tls_config:
+    insecure_skip_verify: true
+    insecure_skip_verify: true

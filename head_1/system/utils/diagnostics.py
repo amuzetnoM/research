@@ -5,6 +5,8 @@ Diagnostic and Error Handling Utilities for AI Research Environment
 This module provides comprehensive error handling, diagnostics, and monitoring
 capabilities for the research environment, including performance tracking,
 error logging, and recovery mechanisms.
+It also provides temporal awareness and social awareness features to the AI, to make it able to interact with the environment in a more natural way.
+
 """
 
 import atexit
@@ -17,6 +19,8 @@ import sys
 import traceback
 import time
 from datetime import datetime
+from collections import defaultdict
+
 from pathlib import Path
 from typing import Any, Callable, Dict, List, Optional, Type, Union, Tuple
 
@@ -28,6 +32,8 @@ try:
     from utils.system_utils import system_manager
 except ImportError:
     # Add parent directory to path for imports if needed
+    print("Error in imports")
+    print(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     try:
         from utils.system_utils import system_manager
@@ -35,6 +41,17 @@ except ImportError:
         logger.warning("Could not import system_utils. Some diagnostic features will be limited.")
         system_manager = None
 
+try:
+    from frameworks.temporal_locationing.___files.temporal_framework import TemporalFramework
+    from frameworks.social_dimensionality.___files.social_framework import SocialFramework
+except ImportError:
+    print("Error importing frameworks")
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+    try:
+        from frameworks.temporal_locationing.___files.temporal_framework import TemporalFramework
+        from frameworks.social_dimensionality.___files.social_framework import SocialFramework
+    except ImportError:
+        logger.warning("Could not import frameworks. Some diagnostic features will be limited.")
 
 # Define exception classes for the research environment
 class EnvironmentError(Exception):
@@ -76,6 +93,78 @@ class DiagnosticCollector:
     """Collects diagnostic information about the system and environment."""
     
     def __init__(self, log_dir: str = "logs"):
+        """Initialize the temporal and social awareness.
+        """
+        self.interaction_memory = defaultdict(list)
+        self.temporal_memory = []
+        self.current_time = datetime.now()
+
+
+    def update_current_time(self, new_time: datetime) -> None:
+        """Update the current time.
+        
+        Args:
+            new_time: The new current time.
+        """
+        self.current_time = new_time
+        self.temporal_memory.append(("Time update", self.current_time))
+
+
+    def get_current_time(self) -> datetime:
+        """Get the current time.
+
+        Returns:
+            The current time.
+        """
+        return self.current_time
+
+
+    def record_interaction(self, agent_id: str, action: str, outcome: str) -> None:
+        """Record an interaction with another agent.
+
+        Args:
+            agent_id: The id of the other agent.
+            action: The action taken.
+            outcome: The outcome of the action.
+        """
+        self.interaction_memory[agent_id].append({
+            "time": self.current_time,
+            "action": action,
+            "outcome": outcome
+        })
+
+    
+
+
+    def get_agent_interactions(self, agent_id: str) -> List[Dict]:
+        """Get the interactions with a specific agent.
+
+        Args:
+            agent_id: The id of the agent.
+
+        Returns:
+            The interactions with the agent.
+        """
+        return self.interaction_memory[agent_id]
+
+
+    def get_temporal_memory(self) -> List[Tuple]:
+        """Get the temporal memory.
+
+        Returns:
+            The temporal memory.
+        """
+        return self.temporal_memory
+
+
+    def get_future_projection(self, action: str) -> str:
+        """Project the outcome of a potential future action.
+        """
+        return f"If I do {action}, then the future will be..."
+
+
+
+    def __init__(self, log_dir: str = "logs"):
         """Initialize the diagnostic collector."""
         self.log_dir = Path(log_dir)
         self.log_dir.mkdir(exist_ok=True)
@@ -84,6 +173,7 @@ class DiagnosticCollector:
         
         # Register shutdown handler
         atexit.register(self.save_diagnostics)
+        
     
     def collect_system_info(self) -> Dict:
         """Collect system information."""
@@ -462,6 +552,156 @@ def run_diagnostics() -> Dict:
 # Create singleton instance for easy access
 diagnostic_collector = DiagnosticCollector()
 
+def test_temporal_awareness():
+    temporal_framework = TemporalFramework()
+
+    """Test the temporal awareness functions."""
+    print("Testing Temporal Awareness:")
+
+    # Initial time
+    initial_time = diagnostic_collector.get_current_time()
+    print(f"  Initial time: {initial_time}")
+
+    # Update time
+    new_time = temporal_framework.get_current_time()
+    diagnostic_collector.update_current_time(new_time) #update the diagnostic
+    print(f"  Updated time: {diagnostic_collector.get_current_time()}") #check if the time was updated
+
+    # Temporal memory
+    memory = diagnostic_collector.get_temporal_memory()
+    print("  Temporal memory:")
+    for event, time in memory:
+        print(f"    - {event} at {time}")
+    
+    
+    # Test time unit conversions
+    time_in_seconds = 3600
+    time_in_minutes = temporal_framework.convert_time_unit(time_in_seconds, "seconds", "minutes")
+    time_in_hours = temporal_framework.convert_time_unit(time_in_seconds, "seconds", "hours")
+    print(f"  {time_in_seconds} seconds in minutes: {time_in_minutes}")
+    print(f"  {time_in_seconds} seconds in hours: {time_in_hours}")
+
+    # Test future projection
+    future_projection = temporal_framework.project_future_outcome("Run a complex simulation")
+    print(f"  Future Projection: {future_projection}")
+    
+    # Future projection
+    future = diagnostic_collector.get_future_projection("analyze data")
+    print(f"  Future projection: {future}")
+
+
+
+
+def test_social_awareness():
+    social_framework = SocialFramework()
+    """Test the social awareness functions."""
+    print("\nTesting Social Awareness:")
+
+    # Record interactions
+    diagnostic_collector.record_interaction("AgentA", "request_data", "success")
+    diagnostic_collector.record_interaction("AgentB", "provide_info", "success")
+    diagnostic_collector.record_interaction("AgentA", "send_result", "success")
+    diagnostic_collector.record_interaction("AgentB", "request_review", "pending")
+
+    # Get interactions
+    interactions_A = diagnostic_collector.get_agent_interactions("AgentA")
+    print(f"  Interactions with AgentA:")
+    for interaction in interactions_A:
+        print(f"    - {interaction['time']} : {interaction['action']} : {interaction['outcome']}")
+
+    interactions_B = diagnostic_collector.get_agent_interactions("AgentB")
+    print(f"  Interactions with AgentB:")
+    for interaction in interactions_B:
+        print(f"    - {interaction['time']} : {interaction['action']} : {interaction['outcome']}")
+
+    # Test role determination
+    agent_role = social_framework.determine_agent_role("AgentA", "provide_info")
+    print(f"  Role of AgentA when providing info: {agent_role}")
+
+    # Test interaction analysis
+    interaction_analysis = social_framework.analyze_interaction("AgentA", "AgentB")
+    print(f"  Analysis of interactions between AgentA and AgentB:")
+    for key, value in interaction_analysis.items():
+        print(f"    - {key}: {value}")
+
+
+def test_memory_usage():
+    """Test memory usage."""
+    try:
+        import psutil
+        mem = psutil.virtual_memory()
+        logger.error(f"Memory stats: {mem.percent}% used, {mem.available/(1024**2):.1f}MB available")
+        error_details['memory_stats'] = {
+            'percent_used': mem.percent,
+            'available_mb': mem.available/(1024**2)
+        }
+    except ImportError:
+        pass
+
+
+def test_system_utils():
+    """Test temporal and social awareness functions."""
+    test_frameworks_monitoring()
+    test_temporal_awareness()
+    test_social_awareness()
+
+    try:
+        test_memory_usage()
+    except Exception as e:
+        handle_exception("Error in memory usage test", e)
+
+def test_frameworks_monitoring():
+    """Test if the temporal locationing framework and the social dimensionality framework are being properly monitored."""
+    print("\nTesting Frameworks Monitoring:")
+
+    try:
+        # Check if temporal framework is being monitored
+        temporal_framework = TemporalFramework()
+        
+        # Test current time retrieval
+        current_time = temporal_framework.get_current_time()
+        print(f"  Temporal Framework - Current Time: {current_time}")
+        if current_time is None:
+            raise ValueError("Temporal Framework - Current Time retrieval failed")
+        else:
+            print("  Temporal Framework - Current Time retrieval test passed")
+
+        # Test time unit conversion
+        converted_time = temporal_framework.convert_time_unit(60, "seconds", "minutes")
+        print(f"  Temporal Framework - Time Unit Conversion: 60 seconds = {converted_time} minutes")
+        if converted_time != 1:
+            raise ValueError("Temporal Framework - Time Unit Conversion test failed")
+        else:
+            print("  Temporal Framework - Time Unit Conversion test passed")
+
+        # Check if social framework is being monitored
+        social_framework = SocialFramework()
+
+        # Test social interaction tracking
+        social_framework.record_interaction("AgentA", "request_data", "success")
+        interaction = social_framework.get_agent_interactions("AgentA")
+        print(f"  Social Framework - Tracked interactions: {interaction}")
+        if not interaction:
+            raise ValueError("Social Framework - Tracked interactions test failed")
+        else:
+            print("  Social Framework - Tracked interactions test passed")
+
+    except Exception as e:
+        print(f"  Error: {e}")
+        handle_exception("Frameworks monitoring test failed", e)
+
+def test_system_utils():
+    """Test all functions."""
+    test_temporal_awareness()
+    test_social_awareness()
+
+    try:
+        test_memory_usage()
+    except Exception as e:
+        handle_exception("Error in memory usage test", e)
+
+
+
 
 if __name__ == "__main__":
     # Configure logging
@@ -472,6 +712,9 @@ if __name__ == "__main__":
     
     # Set up error handlers
     setup_error_handlers()
+    
+    # Test functions
+    test_system_utils()
     
     # Run diagnostics
     run_diagnostics()

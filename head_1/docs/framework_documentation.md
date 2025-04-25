@@ -1,6 +1,6 @@
 # Advanced AI Frameworks Documentation
 
-This document provides comprehensive documentation for the Self-Awareness Mechanics and Emotional Dimensionality Framework (EDF) implementations.
+This document provides comprehensive documentation for the Self-Awareness Mechanics, Emotional Dimensionality Framework (EDF), Temporal Locationing Framework, and Social Dimensionality Framework implementations.
 
 ## Table of Contents
 
@@ -13,6 +13,14 @@ This document provides comprehensive documentation for the Self-Awareness Mechan
    - [Core Concepts](#core-concepts)
    - [Available Models](#available-models)
    - [Usage Examples](#usage-examples)
+4. [Temporal Locationing Framework](#temporal-locationing-framework)
+   - [Core Concepts](#temporal-core-concepts)
+   - [Usage Examples](#usage-examples)
+   - [Monitoring](#temporal-monitoring)
+5. [Social Dimensionality Framework](#social-dimensionality-framework)
+   - [Core Concepts](#social-core-concepts)
+   - [Usage Examples](#usage-examples)
+   - [Usage Examples](#usage-examples)
 4. [Framework Integration](#framework-integration)
    - [Using the Bridge](#using-the-bridge)
    - [Advanced Applications](#advanced-applications)
@@ -21,10 +29,12 @@ This document provides comprehensive documentation for the Self-Awareness Mechan
 
 ## Introduction
 
-The AI Research environment includes two advanced frameworks that implement theoretical concepts from our research papers:
+The AI Research environment includes four advanced frameworks that implement theoretical concepts from our research papers:
 
 1. **Self-Awareness Mechanics** - Provides computational self-awareness through monitoring and modeling of system capabilities and limitations
 2. **Emotional Dimensionality Framework** - Provides advanced sentiment analysis beyond simple polarity detection
+3. **Temporal Locationing Framework** - Provides awareness of time and how it affects the system.
+4. **Social Dimensionality Framework** - Provides awareness of the system's interactions with other agents.
 
 These frameworks can be used independently or together through an integration bridge.
 
@@ -41,16 +51,37 @@ The framework consists of five core modules:
 3. **Capability Assessment Module (CAM)** - Models the system's abilities and limitations
 4. **Confidence Estimation Module (CEM)** - Quantifies uncertainty across all predictions
 5. **Regulatory Control Module (RCM)** - Modifies system behavior based on self-awareness
+6. **Temporal Awareness Module (TAM)** - Tracks and reasons about time, including past, present, and future.
+7. **Social Awareness Module (SAM)** - Manages interactions with other agents and maintains a history of those interactions.
 
 The framework also includes a metrics tracking system that measures performance across the five dimensions of computational self-awareness:
 
 - Introspective Awareness
 - Capability Awareness
 - Epistemic Awareness
-- Temporal Awareness
-- Social Awareness
+
+### Module Interactions
+
+The Self-Awareness framework modules interact in the following ways:
+
+-   **SMM (State Monitoring Module):** Provides real-time data to all other modules, including TAM and SAM, about the system's current state.
+-   **KMM (Knowledge Modeling Module):** TAM and SAM store temporal and social data in the KMM.
+-   **CAM (Capability Assessment Module):** TAM helps CAM make better predictions about future capabilities based on time. SAM can update knowledge of capabilities based on social interactions.
+-   **CEM (Confidence Estimation Module):** TAM and SAM provide additional context for better confidence estimates.
+-   **RCM (Regulatory Control Module):**  TAM and SAM information informs RCM about optimal resource allocation over time and in social contexts.
+
+### Temporal Awareness Module (TAM)
+
+The Temporal Awareness Module (TAM) is responsible for tracking time and its relationship to system operations.
+
+#### Usage Examples
+
+
 
 ### Usage Examples for Emotional Dimensionality Framework
+
+#### Basic Initialization
+
 
 #### Basic Initialization and Usage
 

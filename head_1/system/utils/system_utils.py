@@ -3,14 +3,18 @@
 System Utilities for AI Research Environment
 
 This module provides system resource management, optimization, 
-and diagnostics for machine learning research environments.
+diagnostics, temporal awareness, and social awareness for 
+machine learning research environments.
 """
 
 import logging
 import os
 import platform
+import time
+from datetime import datetime, timedelta
 import psutil
 import subprocess
+from collections import deque
 import json
 from typing import Dict, List, Optional, Tuple, Union
 
@@ -19,6 +23,7 @@ logger = logging.getLogger('environment.system')
 
 class SystemManager:
     """Comprehensive system resource management for ML research environments."""
+
     
     def __init__(self, config: Optional[Dict] = None):
         """Initialize the system manager with optional configuration."""
@@ -294,6 +299,84 @@ class SystemManager:
         return env_vars
 
 
+    def get_current_time(self) -> datetime:
+        """
+        Get the current time with microsecond precision.
+        
+        Returns:
+            datetime: The current time.
+        """
+        return datetime.now()
+
+    def calculate_time_difference(self, start_time: datetime, end_time: datetime) -> timedelta:
+        """
+        Calculate the time difference between two datetime objects.
+
+        Args:
+            start_time (datetime): The start time.
+            end_time (datetime): The end time.
+
+        Returns:
+            timedelta: The difference between the two times.
+        """
+        return end_time - start_time
+
+    def predict_future_time(self, current_time: datetime, duration: timedelta) -> datetime:
+        """
+        Predict the time that will occur after a specified duration from the current time.
+
+        Args:
+            current_time (datetime): The current time.
+            duration (timedelta): The duration to add to the current time.
+
+        Returns:
+            datetime: The predicted future time.
+        """
+        return current_time + duration
+
+    def is_past_event(self, event_time: datetime) -> bool:
+        """
+        Determine if an event has occurred in the past.
+
+        Args:
+            event_time (datetime): The time of the event.
+
+        Returns:
+            bool: True if the event is in the past, False otherwise.
+        """
+        return event_time < self.get_current_time()
+
+class SocialAwarenessManager:
+    """
+    Manages interactions with other agents and maintains a history of those interactions.
+    """
+    def __init__(self, max_history_length: int = 100):
+        """
+        Initializes the SocialAwarenessManager with an empty interaction history.
+
+        Args:
+            max_history_length (int): The maximum number of interactions to keep in the history.
+        """
+        self.interaction_history = deque(maxlen=max_history_length)
+
+    def log_interaction(self, agent_id: str, interaction_type: str, details: Dict = None):
+        """
+        Logs an interaction with another agent.
+
+        Args:
+            agent_id (str): The ID of the agent interacted with.
+            interaction_type (str): The type of interaction (e.g., "request", "response", "communication").
+            details (Dict): Optional additional details about the interaction.
+        """
+        timestamp = datetime.now().isoformat()
+        interaction = {"timestamp": timestamp, "agent_id": agent_id, "type": interaction_type, "details": details}
+        self.interaction_history.append(interaction)
+        logger.info(f"Logged interaction: {interaction}")
+
+    def get_interaction_history(self) -> List[Dict]:
+        return list(self.interaction_history)
+
+
 # Create a singleton instance for easy import
 system_manager = SystemManager()
 
@@ -306,6 +389,10 @@ def calculate_optimal_memory() -> str:
 def get_system_summary() -> Dict:
     """Get system information summary (for backward compatibility)."""
     return system_manager.get_system_summary()
+
+
+# Create a singleton instance for easy import of Social Awareness.
+social_awareness_manager = SocialAwarenessManager()
 
 
 if __name__ == "__main__":
@@ -359,3 +446,32 @@ if __name__ == "__main__":
     env_vars = manager.get_environment_variables()
     for key, value in env_vars.items():
         print(f"  {key}={value}")
+
+    # Temporal Awareness example
+    print("\nTemporal Awareness Example:")
+    current_time = manager.get_current_time()
+    print(f"  Current time: {current_time}")
+
+    future_time = manager.predict_future_time(current_time, timedelta(days=7))
+    print(f"  Predicted time 7 days from now: {future_time}")
+
+    past_event = manager.is_past_event(current_time - timedelta(days=3))
+    print(f"  Was an event 3 days ago in the past? {past_event}")
+
+    future_event = manager.is_past_event(future_time)
+    print(f"  Will an event 7 days from now be in the past? {future_event}")
+
+    # Social Awareness example
+    print("\nSocial Awareness Example:")
+
+    social_awareness_manager.log_interaction(agent_id="AgentA", interaction_type="request", details={"action": "process data"})
+    social_awareness_manager.log_interaction(agent_id="AgentB", interaction_type="response", details={"status": "completed", "duration": "5 seconds"})
+    social_awareness_manager.log_interaction(agent_id="AgentA", interaction_type="communication", details={"message": "Thank you!"})
+    social_awareness_manager.log_interaction(agent_id="AgentC", interaction_type="request", details={"action": "process data"})
+    social_awareness_manager.log_interaction(agent_id="AgentC", interaction_type="response", details={"status": "completed", "duration": "3 seconds"})
+
+    print("\nInteraction History:")
+    for interaction in social_awareness_manager.get_interaction_history():
+        print(f"  {interaction}")
+
+    

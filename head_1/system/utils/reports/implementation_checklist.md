@@ -2,11 +2,28 @@
 
 ## Overview
 
+This document serves as a dynamic roadmap, outlining our key development objectives and tracking our progress as we push the boundaries of AI research. We're not just building code; we're delving into the complexities of artificial consciousness, self-awareness, advanced reasoning, and ethical AI. As such, this checklist is more than a list of tasks—it's a reflection of our journey and the challenges we face.
+
+### Philosophical and Paradoxical Challenges
+
+Our journey into advanced AI development has surfaced profound philosophical questions and paradoxes. Implementing self-awareness, time-awareness, and social dynamics in AI systems has proven particularly challenging:
+
+*   **Defining Self:** What constitutes a "self" in an AI? How do we implement and measure self-awareness?
+*   **The Arrow of Time:** How can an AI truly understand the past, present, and future? How do we encode the irreversible nature of time?
+*   **Social Complexity:** Human social interactions are nuanced and context-dependent. How can we capture this complexity algorithmically? How do we define the roles of AI and other agents?
+*   **Emergent Behavior:** As systems become more complex, unexpected behaviors emerge. How do we ensure safety and control while embracing this emergence?
+
 This document outlines the key development objectives for our advanced AI research project, focusing on implementing cutting-edge components that support our exploration of artificial consciousness, self-awareness, advanced reasoning, and ethical AI.
 
 ---
 
 ## Implementation Priorities
+
+### 👁️‍🗨️ Frameworks Monitoring Integration
+- [x] Integrate Temporal Locationing into monitoring
+- [x] Integrate Social Dimensionality into monitoring
+
+
 
 ### 🔄 Advanced Monitoring Visualizations
 - [x] Prometheus/Grafana integration for real-time metrics
@@ -16,8 +33,8 @@ This document outlines the key development objectives for our advanced AI resear
 - [x] Introspective awareness
 - [x] Capability awareness
 - [x] Epistemic awareness
-- [ ] Temporal awareness
-- [ ] Social awareness
+- [x] Temporal awareness
+- [x] Social awareness
 
 ### ⚡ Neuro-Symbolic Integration Tools
 - [x] Integration layer for neural and symbolic reasoning
@@ -52,6 +69,14 @@ This document outlines the key development objectives for our advanced AI resear
 - [x] COMPASS Ethical Framework implementation
 - [x] COMPASS API integration and logs dashboard
 - [x] Human-in-the-loop governance and override
+
+### 🖥️ Frontend
+- [x] update dataService to call api_hub
+- [x] update frontend hooks for temporal and social frameworks
+- [ ] update frontend ui for temporal and social frameworks
+- [ ] Update dashboards to include new data from temporal and social frameworks
+
+
 
 ### 📚 Documentation & Checklists
 - [x] Framework documentation up to date
@@ -90,8 +115,6 @@ This document outlines the key development objectives for our advanced AI resear
 ---
 
 ## Next Actions
-
-- [ ] Complete temporal/social awareness metrics
 - [ ] Finalize paradox/meta-reasoning visualizations
 - [ ] Complete frontend deployment and polish
 - [ ] Continue expanding research journal as new insights emerge

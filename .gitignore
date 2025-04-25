@@ -180,3 +180,5 @@ cython_debug/
 
 # But keep the directory
 !.gitignore
+
+/node_modules
